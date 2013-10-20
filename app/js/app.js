@@ -10,9 +10,13 @@ var mabvApp = angular.module('mabvApp', [
 mabvApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
-      when('/', {
-        templateUrl: 'partials/file-data.html',
-        controller: 'fileDataCtrl'
+      when('/file-data/bar', {
+        templateUrl: '../partials/file-data-bar.html',
+        controller: 'fdBarCtrl'
+      }).
+      when('/file-data/line', {
+          templateUrl: '../partials/file-data-line.html',
+          controller: 'fdLinkeCtrl'
       });
   }
 ]);
