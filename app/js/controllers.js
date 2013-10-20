@@ -4,7 +4,7 @@
 
 var mabvControllers = angular.module('mabvControllers', []);
 
-mabvControllers.controller('FileDataCtrl', ['$scope'
+mabvControllers.controller('FileDataCtrl', ['$scope',
   function FileDataCtrl($scope) {
-  }); 
+  } 
 ]);
