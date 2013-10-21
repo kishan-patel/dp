@@ -4,12 +4,12 @@
 
 var mabvControllers = angular.module('mabvControllers', []);
 
-mabvControllers.controller('fdBarCtrl', ['$scope',
-  function FileDataCtrl($scope) {
+mabvControllers.controller('FdBarCtrl', ['$scope',
+  function FdBarCtrl($scope) {
   } 
 ]);
 
-mabvControllers.controller('fdLineCtrl', ['$scope',
-  function FileDataCtrl($scope) {
+mabvControllers.controller('FdLineCtrl', ['$scope',
+  function FdLineCtrl($scope) {
   }
 ]);
