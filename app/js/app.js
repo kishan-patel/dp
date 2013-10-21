@@ -4,8 +4,7 @@
 
 var mabvApp = angular.module('mabvApp', [
   'ngRoute',
-  'lineController',
-  'radian'
+  'lineController'
 ]);
 
 mabvApp.config(['$routeProvider',
@@ -22,4 +21,4 @@ mabvApp.config(['$routeProvider',
       otherwise({
         redirectTo: '/file-data/line'
       });
-  }]);
+}]);

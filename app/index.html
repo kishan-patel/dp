@@ -3,22 +3,21 @@
 <head>
   <meta charset="utf-8">
   <title>MAB Viewer</title>
-  <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css"/>
-  <link rel="sytlesheet" href="lib/bootstrap/css/bootstrap-responsive.min.css"/>
-  <link rel="stylesheet" href="lib/radian/src/radian.css"/>
+  <link type="text/css" rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css"/>
+  <link type="text/css" rel="stylesheet" href="lib/bootstrap/css/bootstrap-responsive.min.css"/>
+	<link type="text/css" rel="stylesheet" href="lib/rickshaw/src/css/graph.css"/>
+  <link type="text/css" rel="stylesheet" href="lib/rickshaw/src/css/detail.css"/>
+  <link type="text/css" rel="stylesheet" href="lib/rickshaw/src/css/legend.css"/>
+  <link type="text/css" rel="stylesheet" href="css/app.css"/>
   <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  <script src="lib/bootstrap/js/bootstrap.min.js"></script>
   <script src="lib/angular/angular.min.js"></script>
   <script src="lib/angular/angular-route.min.js"></script>
-  <script src="lib/bootstrap/js/bootstrap.min.js"></script>
-  <script src="lib/radian/radian.js"></script>
-  <script src="lib/radian/lib/d3.v2.js"></script>
-  <script src="lib/radian/lib/escodegen.browser.js"></script>
-  <script src="lib/radian/lib/jquery.csv.js"></script>
-  <script src="lib/rickshaw/vendor/d3.min.js"></script>
-  <script src="lib/rickshaw/vendor/d3.layout.min.js"></script>
-  <script src="lib/rickshaw/rickshaw.min.js"></script>
+  <script src="lib/rickshaw/vendor/d3.v3.js"></script>
+  <script src="lib/rickshaw/rickshaw.js"></script>
   <script src="js/app.js"></script>
   <script src="js/lineController.js"></script>
+	<script src="js/fileReader.js"></script>
 </head>
 <body>
   <div class="container-fluid">
@@ -32,7 +31,6 @@
           <center>
             <h1>MAB Plots</h1>
           </center>
-          <br/>
           <div ng-view></div>
         </div>
       </div>
