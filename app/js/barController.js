@@ -2,12 +2,11 @@
 
 /* Controllers */
 
-angular.module('lineController', [])
-  .directive('fdLine', function () {
+angular.module('barController', [])
+  .directive('fdBar', function () {
     return {
       restrict: 'E',
       template: '<input type=\"file\"/ id=\"file\">' +
-        '<div id=\"chart_container\">' +
         '<div id=\"chart\"></div>' +
         '<div id=\"legend\"></div>' +
         '</div>',
@@ -15,24 +14,24 @@ angular.module('lineController', [])
         $('#file').change(function (evt) {
           FR.readFile(evt, function (data) {
             var palette = new Rickshaw.Color.Palette();
-						debugger;
+
             for (var obj in data) {
               data[obj].color = palette.color();
             }
 
             // instantiate our graph!
+            debugger;
 
             var graph = new Rickshaw.Graph({
               element: document.getElementById("chart"),
               width: 960,
               height: 500,
-              renderer: 'line',
+              renderer: 'bar',
               series: data
 
             });
 
             graph.render();
-            var legend = document.querySelector('#legend');
 
             var Hover = Rickshaw.Class.create(Rickshaw.Graph.HoverDetail, {
               xFormatter: function (x) {

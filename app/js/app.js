@@ -4,6 +4,7 @@
 
 var mabvApp = angular.module('mabvApp', [
   'ngRoute',
+  'barController',
   'lineController'
 ]);
 
@@ -19,6 +20,6 @@ mabvApp.config(['$routeProvider',
         //controller: 'FdLineCtrl'
       }).
       otherwise({
-        redirectTo: '/file-data/line'
+        redirectTo: '/file-data/bar'
       });
 }]);
