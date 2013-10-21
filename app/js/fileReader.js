@@ -52,7 +52,7 @@
             return e.name == uniqueArms[j];
           })[0];
           data = result.data
- 	        data.push({
+          data.push({
             x: i,
             y: armRecord.timesPlayed == 0 ? 0: armRecord.wins/armRecord.timesPlayed
           });
