@@ -13,7 +13,7 @@ angular.module('lineController', [])
       '</div>',
     link: function (scope, element, attrs) {
       $('#file').change(function (evt) {
-        FR.readFile(evt, function (data) {
+        FR.readFile(evt, "line", function (data) {
           var palette = new Rickshaw.Color.Palette();
           
           for (var obj in data) {

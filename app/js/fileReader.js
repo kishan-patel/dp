@@ -1,5 +1,5 @@
 (function (FR, undefined) {
-  FR.readFile = function (evnt, func) {
+  FR.readFile = function (evnt, type, func) {
     var callback = func;
     var files = evnt.target.files;
     var file = files[0];
@@ -8,7 +8,7 @@
     //This handler is called once the data from the file is read.
     reader.onload = (function (theFile, formatData, callback) {
       return function (e) {
-        var data = formatData(e.srcElement.result);
+        var data = formatData(e.srcElement.result, type);
         callback(data);
       };
     })(file, formatData, callback);
@@ -17,7 +17,7 @@
     reader.readAsText(file);
   };
 
-  function formatData(fileString) {
+  function formatData(fileString, type) {
     var arrayOfLines = fileString.match(/[^\r\n]+/g);
     var uniqueArms = getUniqueArms(arrayOfLines); 
     var series = [];
@@ -41,43 +41,44 @@
     for (var i = 0; i < arrayOfLines.length; i++) {
       tokens = arrayOfLines[i].split(",");
       
-      //To make all of the array sizes equal. If for a particular clock
-      //tick an arm wasn't played, it retains its previous information.
-      for(var j=0; j<uniqueArms.length; j++){
-        if(uniqueArms[j] != tokens[0]){
-          armRecord = $.grep(history, function(e){
-            return e.name == uniqueArms[j]
-          })[0]; 
-          result = $.grep(series, function(e){
-            return e.name == uniqueArms[j];
-          })[0];
-          data = result.data
-          data.push({
-            x: i,
-            y: armRecord.timesPlayed == 0 ? 0: armRecord.wins/armRecord.timesPlayed
-          });
-        }else{
-          armRecord = $.grep(history, function(e){
-            return e.name == tokens[0];
-          })[0];
-          result = $.grep(series, function(e){
-            return e.name == tokens[0];
-          })[0]; 
-          data = result.data;
-          if(tokens[1] == 1){
-            armRecord.wins++;
-            armRecord.timesPlayed++;
-          }else{
-            armRecord.timesPlayed++;
+      armRecord = $.grep(history, function(e){
+        return e.name == tokens[0];
+      })[0];
+      result = $.grep(series, function(e){
+        return e.name == tokens[0];
+      })[0];
+      data = result.data;
+      if(tokens[1] == 1){
+        armRecord.wins++;
+        armRecord.timesPlayed++;
+      }else{
+        armRecord.timesPlayed++;
+      }
+      data.push({
+        x: i,
+        y: type === "scatter" ? armRecord.wins : armRecord.wins / armRecord.timesPlayed
+      });
+
+      if(type === "bar"){
+        //To make all of the array sizes equal. If for a particular clock
+        //tick an arm wasn't played, it retains its previous information.
+        for(var j=0; j<uniqueArms.length; j++){
+          if(uniqueArms[j] != tokens[0]){
+            armRecord = $.grep(history, function(e){
+              return e.name == uniqueArms[j]
+            })[0]; 
+            result = $.grep(series, function(e){
+              return e.name == uniqueArms[j];
+            })[0];
+            data = result.data
+            data.push({
+              x: i,
+              y: armRecord.timesPlayed == 0 ? 0: armRecord.wins/armRecord.timesPlayed
+            });
           }
-          data.push({
-            x: i,
-            y: armRecord.wins / armRecord.timesPlayed
-          });
         }
       }
     }
-
     return series;
   };
 

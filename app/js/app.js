@@ -5,7 +5,8 @@
 var mabvApp = angular.module('mabvApp', [
   'ngRoute',
   'barController',
-  'lineController'
+  'lineController',
+  'scatterController'
 ]);
 
 mabvApp.config(['$routeProvider',
@@ -18,6 +19,9 @@ mabvApp.config(['$routeProvider',
       when('/file-data/line', {
         templateUrl: 'partials/file-data-line.html',
         //controller: 'FdLineCtrl'
+      }).
+      when('/file-data/scatter', {
+        templateUrl: 'partials/file-data-scatter.html',
       }).
       otherwise({
         redirectTo: '/file-data/bar'

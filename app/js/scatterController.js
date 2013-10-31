@@ -2,8 +2,8 @@
 
 /* Controllers */
 
-angular.module('barController', [])
-.directive('fdBar', function () {
+angular.module('scatterController', [])
+.directive('fdScatter', function () {
   return {
     restrict: 'E',
     template: '<input type=\"file\"/ id=\"file\">' +
@@ -12,7 +12,7 @@ angular.module('barController', [])
       '</div>',
     link: function (scope, element, attrs) {
       $('#file').change(function (evt) {
-        FR.readFile(evt, "bar", function (data) {
+        FR.readFile(evt, "scatter", function (data) {
           var palette = new Rickshaw.Color.Palette();
 
           for (var obj in data) {
@@ -23,7 +23,7 @@ angular.module('barController', [])
             element: document.getElementById("chart"),
             width: 960,
             height: 500,
-            renderer: 'bar',
+            renderer: 'scatterplot',
             series: data
           });
           graph.render();
