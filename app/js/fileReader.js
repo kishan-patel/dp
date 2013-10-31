@@ -49,9 +49,16 @@
       })[0];
       data = result.data;
       if(tokens[1] == 1){
-        armRecord.wins++;
-        armRecord.timesPlayed++;
+        if(type === "scatter"){
+          armRecord.wins = 11;
+        }else{
+          armRecord.wins++;
+          armRecord.timesPlayed++;
+        }
       }else{
+        if(type === "scatter"){
+          armRecord.wins = 10;
+        }
         armRecord.timesPlayed++;
       }
       data.push({
@@ -59,7 +66,7 @@
         y: type === "scatter" ? armRecord.wins : armRecord.wins / armRecord.timesPlayed
       });
 
-      if(type === "bar"){
+      if(type === "bar" || type === "line"){
         //To make all of the array sizes equal. If for a particular clock
         //tick an arm wasn't played, it retains its previous information.
         for(var j=0; j<uniqueArms.length; j++){
@@ -84,8 +91,7 @@
 
   function getUniqueArms(arrayOfLines){
     var arms = [];
-    var tokens = [];
-
+    var tokens = []; 
     for(var i=0; i<arrayOfLines.length; i++){
       tokens = arrayOfLines[i].split(",");       
 

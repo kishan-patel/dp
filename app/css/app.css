@@ -18,7 +18,7 @@ body {
                         margin: 0 0 0 30px;
                 }
                 #legend {
-                        text-align: center;
+                        #text-align: center;
                 }
                 .rickshaw_graph .detail {
                         background: none;
