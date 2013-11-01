@@ -6,6 +6,7 @@
         return x + "seconds"                                                    
       },                                                                           
       render: function (args) {                                                    
+        var legend = $("#legend_1")[0];//+args.detail[0].name)[0];
         legend.innerHTML = args.domainX + " s";                                    
                                                                                    
         args.detail.sort(function (a, b) {                                         

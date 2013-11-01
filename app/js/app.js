@@ -6,7 +6,6 @@ var mabvApp = angular.module('mabvApp', [
   'ngRoute',
   'barController',
   'lineController',
-  'scatterController'
 ]);
 
 mabvApp.config(['$routeProvider',

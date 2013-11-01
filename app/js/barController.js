@@ -7,9 +7,9 @@ angular.module('barController', [])
   return {
     restrict: 'E',
     template: '<input type=\"file\"/ id=\"file\"><br/>' +
-      '<div id=\"chart\"></div>' +
-      '<div id=\"legend\"></div>' +
-      '</div>',
+      '<br/><br/><div id=\"chart\"></div>' +
+      '<div id=\"legend\"></div>',
+      //'</div>',
     link: function (scope, element, attrs) {
       $('#file').change(function (evt) {
         FR.readFile(evt, "bar", function (data) {
@@ -22,6 +22,8 @@ angular.module('barController', [])
           //Initialise graph and render it
           var graph = new Rickshaw.Graph({
             element: document.getElementById("chart"),
+            max: 1.1,
+            min: -0.1,
             renderer: 'bar',
             series: data
           });

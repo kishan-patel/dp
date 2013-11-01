@@ -8,8 +8,8 @@
     //This handler is called once the data from the file is read.
     reader.onload = (function (theFile, formatData, callback) {
       return function (e) {
-        var data = formatData(e.srcElement.result, type);
-        callback(data);
+        //var data = formatData(e.srcElement.result, type);
+        callback(e.srcElement.result);
       };
     })(file, formatData, callback);
 
