@@ -7,10 +7,11 @@ angular.module('lineController', [])
   return {
     restrict: 'E',
     template: 
-      '<input type=\"file\"/ id=\"file\">' +
+      //'<div class=\"jumbotron\">'+
       '<div id="line_chart_container"></div>',
+      //'</div>',
     link: function (scope, element, attrs) {
-      $('#file').change(function (evt) {
+      $('#file_upload').change(function (evt) {
         FR.readFile(evt, 'line', function (fileString) {
           var data = DataUtil.getLineData(fileString);
           var palette = new Rickshaw.Color.Palette();
@@ -28,7 +29,7 @@ angular.module('lineController', [])
             singleArmData = [];
             singleArmData.push(data[key]);
             
-            $('<br/><br/><div><div id=\"'+yAxisId+'\"></div>' + 
+            $('<br/><br/><div ng-include=\"\'./partials/navbar.html\'\"></div><div><div id=\"'+yAxisId+'\"></div>' + 
               '<div id=\"'+chartId+'\"></div>' +
               '<div id=\"'+legendId+'\"></div></div>')
              .appendTo('#line_chart_container');
@@ -38,8 +39,8 @@ angular.module('lineController', [])
               element: document.getElementById(chartId),                             
               min: -0.1,                                                             
               max: 1.1,                                                              
-              width: 800,
-              height: 500,
+              width: 600,
+              height: 250,
               renderer: 'line',                                                      
               series: singleArmData 
             });                                                                      

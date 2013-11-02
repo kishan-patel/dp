@@ -11,18 +11,16 @@ var mabvApp = angular.module('mabvApp', [
 mabvApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
-      when('/file-data/bar', {
-        templateUrl: 'partials/file-data-bar.html',
-        //controller: 'FdBarCtrl'
+      when('/file', {
+        templateUrl: 'partials/file-upload.html',
       }).
-      when('/file-data/line', {
-        templateUrl: 'partials/file-data-line.html',
-        //controller: 'FdLineCtrl'
+      when('/live', {
+        templateUrl: 'partials/live-stream.html',
       }).
-      when('/file-data/scatter', {
-        templateUrl: 'partials/file-data-scatter.html',
+      when('/simulator', {
+        templateUrl: 'partials/simulator.html',
       }).
       otherwise({
-        redirectTo: '/file-data/bar'
+        redirectTo: '/file-data/file-upload.html'
       });
 }]);

@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="en" ng-app="mabvApp">
 <head>
-  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MAB Viewer</title>
   <link type="text/css" rel="stylesheet" href="lib/css/bootstrap.min.css"/>
-  <link type="text/css" rel="stylesheet" href="lib/css/bootstrap-responsive.min.css"/>
+  <link type="text/css" rel="stylesheet" href="lib/css/bootstrap-theme.min.css"/>
   <link type="text/css" rel="stylesheet" href="lib/css/graph.css"/>
   <link type="text/css" rel="stylesheet" href="lib/css/detail.css"/>
   <link type="text/css" rel="stylesheet" href="lib/css/legend.css"/>
@@ -23,32 +23,7 @@
   <script src="js/dataUtil.js"></script>
 </head>
 <body>
-  <div class="container bs-docs-container">
-    <div class="row">
-      <div class="col-md-3">
-        <div ng-include="'./partials/sidebar.html'"></div>
-      </div>
-      <div class="col-md-9">
-        <h1>MAB Plots</h1>
-        <div ng-view></div>
-      </div>
-    </div>
-  </div>
-  <!--<div class="container-fluid">
-    <div class="row-fluid">
-      <div class="span2">
-        <br/>
-        <div ng-include="'./partials/sidebar.html'"></div>
-      </div>
-      <div class="span10">
-        <div class="container">
-          <center>
-            <h1>MAB Plots</h1>
-          </center>
-          <div ng-view></div>
-        </div>
-      </div>
-    </div>
-  </div>-->
+  <div ng-include="'./partials/navbar.html'"></div>
+  <div ng-view></div>
 </body>
 </html>

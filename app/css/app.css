@@ -1,36 +1,34 @@
 body { 
-                        font-family: Arial, sans-serif 
-                }
-                #chart_container {
-                        width: 960px;
-                }
-                .swatch {
-                        display: inline-block;
-                        width: 10px;
-                        height: 10px;
-                        margin: 0 8px 0 0;
-                }
-                .label {
-                        display: inline-block;
-                }
-                .line {
-                        display: inline-block;
-                        margin: 0 0 0 30px;
-                }
-                #legend {
-                        #text-align: center;
-                }
-                .rickshaw_graph .detail {
-                        background: none;
-                }
-
-.col-md-3 {
-width: 25%;
-}
-.col-md-9 {
-width: 75%;
+  font-family: Arial, sans-serif 
 }
 
-.col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11 {
-float: left;
+#chart_container {
+  width: 960px;
 }
+
+.swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0 8px 0 0;
+}
+
+.label {
+  display: inline-block;
+}
+
+.line {
+  display: inline-block;
+  margin: 0 0 0 30px;
+}
+
+#legend {
+ text-align: center;
+}
+
+.rickshaw_graph .detail {
+ background: none;
+}
+
+
+

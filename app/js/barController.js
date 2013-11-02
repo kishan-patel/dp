@@ -6,10 +6,9 @@ angular.module('barController', [])
 .directive('fdBar', function () {
   return {
     restrict: 'E',
-    template: '<input type=\"file\"/ id=\"file\"><br/>' +
-      '<br/><br/><div id=\"chart\"></div>' +
+    template: 
+      '<div id=\"chart\"></div>' +
       '<div id=\"legend\"></div>',
-      //'</div>',
     link: function (scope, element, attrs) {
       $('#file').change(function (evt) {
         FR.readFile(evt, "bar", function (data) {
