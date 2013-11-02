@@ -49,7 +49,8 @@ angular.module('lineController', [])
               min: -0.1,                                                             
               max: 1.1,                                                              
               renderer: 'line',                                                      
-              series: singleArmData 
+              series: singleArmData, 
+              interpolation: 'linear'
             });                                                                      
             graph.render();
             
