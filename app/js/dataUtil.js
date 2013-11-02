@@ -1,6 +1,45 @@
 (function (DataUtil, undefined) {                                              
   DataUtil.getBarData = function(fileString){
-    return this.barData;
+    var arrayOfLines = fileString.match(/[^\r\n]+/g);
+    var uniqueArms = getUniqueArms(arrayOfLines);
+    var series = [];
+    var tokens = [];
+    var result, data;
+    
+    for(var i=0; i<uniqueArms.length; i++){
+        series.push({
+          "name": uniqueArms[i],
+          "data": []
+        });
+    }
+
+    for(var i = 0; i< arrayOfLines.length; i++){
+      tokens = arrayOfLines[i].split(',');
+        
+      for(var j=0; j<uniqueArms.length; j++){
+        if(uniqueArms[j] != tokens[0]){
+          result = $.grep(series, function(e){
+            return e.name == uniqueArms[j];
+          })[0];
+          data = result.data;
+          data.push({
+              x: i,
+              y: 0
+          });
+        }else{
+          result = $.grep(series, function(e){
+              return e.name == uniqueArms[j];
+          })[0];
+          data = result.data;
+          data.push({
+              x: i,
+              y: parseInt(tokens[1])
+          });
+       }
+      }
+    }
+
+    return series;
   }
  
   DataUtil.getLineData = function(fileString){
