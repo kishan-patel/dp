@@ -114,40 +114,54 @@ function LineFltrCtrl($scope){
         })[0].graph;
         series = graph.series;
         if(activeOnly){
-            data = series[0].data
-            for(var i=0; i<data.length; i++){
-              if(i==0){
-                prevPlayed = data[i].played;
-              }
+            if(series.length == 1){
+              data = series[0].data
+              
+              for(var i=0; i<data.length; i++){
+                if(i==0){
+                  prevPlayed = data[i].played;
+                }
 
-              if(prevPlayed != data[i].played){
+                if(prevPlayed != data[i].played){
+                  tmpData.push(data[i]);
+                  if(prevPlayed){
+                    newSeries.push({color: '#30c020', name: 'a', data: tmpData});
+                  }else{
+                    newSeries.push({color: '#c05020', name: 'ia', data: tmpData});
+                  }
+                  tmpData = [];
+                }
+
                 tmpData.push(data[i]);
-                if(prevPlayed){
-                  newSeries.push({color: '#30c020', name: 'a', data: tmpData});
-                }else{
-                  newSeries.push({color: '#c05020', name: 'ia', data: tmpData});
-                }
-                tmpData = [];
-              }
+                prevPlayed = data[i].played;
 
-              tmpData.push(data[i]);
-              prevPlayed = data[i].played;
-
-              if(i==data.length-1){
-                if(data[i].played){
-                  newSeries.push({color: '#30c020', name: 'a', data: tmpData});
-                }else{
-                  newSeries.push({color: '#c05020', name: 'ia', data: tmpData});
+                if(i==data.length-1){
+                  if(data[i].played){
+                    newSeries.push({color: '#30c020', name: 'a', data: tmpData});
+                  }else{
+                    newSeries.push({color: '#c05020', name: 'ia', data: tmpData});
+                  }
                 }
               }
+
+              active = graph.series.active;
+              graph.series = newSeries; 
+              graph.series.active = active;
+              graph.render();
             }
-
-            active = graph.series.active;
-            graph.series = newSeries; 
-            graph.series.active = active
-            graph.render();
         }else{
-
+            if(series.length != 1){
+              for(var i=0; i<series.length; i++){
+                 for(var j=0; j<series[i].data.length; j++){
+                     tmpData.push(series[i].data[j]);
+                 }
+              }
+              newSeries.push({color: '#30c020', name:arm, data: tmpData}); 
+              active = graph.series.active;
+              graph.series = newSeries;
+              graph.series.active = active;
+              graph.render();
+            }
         }
     }
 }
