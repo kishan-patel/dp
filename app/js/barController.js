@@ -17,8 +17,8 @@ angular.module('barController', [])
           
           $('#bar_plot_container').empty();
 
-          for (var obj in data) {
-            data[obj].color = palette.color();
+          for (var obj in data.data) {
+            data.data[obj].color = palette.color();
           }
 
           $('<div class="panel panel-default">'+
@@ -34,15 +34,27 @@ angular.module('barController', [])
             max: 1.1,
             min: -0.1,
             renderer: 'bar',
-            series: data
+            series: data.data
           });
+          if(data.type == 'timestamp'){
+              graph.renderer.unstack = true;
+          }
           graph.render();
           
           //Add extensions
-          var xAxis = new Rickshaw.Graph.Axis.Time({
-            graph: graph
-          });
-          xAxis.render();
+          if(data.type == 'timestamp'){
+            var xAxis = new Rickshaw.Graph.Axis.X({
+              graph: graph,
+              pixelsPerTick: 50,
+              tickFormat: GraphUtil.formatTime
+            });
+            xAxis.render();
+          }else{
+            var xAxis = new Rickshaw.Graph.Axis.Time({
+              graph: graph
+            });
+            xAxis.render();
+          }
 
           var yAxis = new Rickshaw.Graph.Axis.Y({
             graph: graph

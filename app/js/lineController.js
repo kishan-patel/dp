@@ -16,7 +16,14 @@ var lineControllers = angular.module('lineController', [])
     link: function (scope, element, attrs) {
       $('#file_upload').change(function (evt) {
         FR.readFile(evt, 'line', function (fileString) {
-          var data = DataUtil.getLineData(fileString);
+          var dataObj = DataUtil.getLineData(fileString);
+          var data = dataObj.data;
+          var type = dataObj.type;
+          
+          //!!!!!!!!! WE HAVE TO FIX THIS!!!!!!!!!!!!!
+          if(type == 'timestamp'){
+              return;
+          }
           var palette = new Rickshaw.Color.Palette();
           var singleArmData = [];
           var yAxisId, chartId, legendId, plotString, plotStringCompiled, graph, xAxis, yAxis, Hover, hover;
@@ -50,10 +57,11 @@ var lineControllers = angular.module('lineController', [])
                       '<form role=\"form\" id="line-plot-arm-'+data[key].name+'">'+
                         '<div class=\"checkbox\">'+
                           '<label><input type=\"checkbox\" ng-model="activeOnly">show active</label>'+
-                        '</div>'+
+                        '</div>'+                                                
                         '<button type=\"submit\" class=\"btn btn-default btn-xs\"'+ 
-                             'ng-click="updateLine(activeOnly,'+data[key].name+')">Submit</button>'+
+                             'ng-click="updateLine(activeOnly,'+data[key].name+')">Apply</button>'+
                       '</form>'+
+                      '</div>'+
                     '</td>'+
                   '</tr>'+
                 '</table>'+
@@ -80,10 +88,20 @@ var lineControllers = angular.module('lineController', [])
             graph.render();
              
             //Graph extensions                                                       
-            xAxis = new Rickshaw.Graph.Axis.Time({                               
-              graph: graph                                                           
-            });                                                                      
-            xAxis.render();                                                          
+            if(data.type == 'timestamp'){
+              var xAxis = new Rickshaw.Graph.Axis.X({
+                graph: graph,
+                pixelsPerTick: 50,
+                tickFormat: GraphUtil.formatTime
+              });
+              xAxis.render();
+            }else{
+              var xAxis = new Rickshaw.Graph.Axis.Time({
+                graph: graph
+              });
+              xAxis.render();
+            }
+
             yAxis = new Rickshaw.Graph.Axis.Y({                                  
               graph: graph                                                           
             });                                                                      
