@@ -1,7 +1,10 @@
 'use strict';
 
 /* Controllers */
+//!!!!!!!!!!THESE GLOBAL VARIABLES HAVE TO BE REMOVED!!!!!!!!!!!!!  
 var armToGraph = [];
+var fileData;
+var functionApplied;
 
 var lineControllers = angular.module('lineController', [])
 .directive('fdLine', function ($compile) {
@@ -19,6 +22,7 @@ var lineControllers = angular.module('lineController', [])
           var dataObj = DataUtil.getLineData(fileString);
           var data = dataObj.data;
           var type = dataObj.type;
+          fileData = data;
           
           //!!!!!!!!! WE HAVE TO FIX THIS!!!!!!!!!!!!!
           if(type == 'timestamp'){
@@ -58,8 +62,14 @@ var lineControllers = angular.module('lineController', [])
                         '<div class=\"checkbox\">'+
                           '<label><input type=\"checkbox\" ng-model="activeOnly">show active</label>'+
                         '</div>'+                                                
+                        '<div>'+
+                          '<select ng-model="functionToApply">'+
+                            '<option value="">Select function to apply</option>'+
+                            '<option value="UCB 1">UCB 1</option>'+
+                          '</select>'+
+                        '</div><br/>'+
                         '<button type=\"submit\" class=\"btn btn-default btn-xs\"'+ 
-                             'ng-click="updateLine(activeOnly,'+data[key].name+')">Apply</button>'+
+                             'ng-click="updateLine(activeOnly,'+data[key].name+', functionToApply)">Apply</button>'+
                       '</form>'+
                       '</div>'+
                     '</td>'+
@@ -124,7 +134,7 @@ function LineFltrCtrl($scope){
       armToGraph.push({"arm":arm.arm, "graph":graph.graph});
     }
 
-    $scope.updateLine = function(activeOnly, arm){
+    $scope.updateLine = function(activeOnly, arm, functionToApply){
         var graph, series, data, newSeries=[], tmpData = [], prevPlayed, active; 
             
         graph = $.grep(armToGraph, function(e){
@@ -132,7 +142,7 @@ function LineFltrCtrl($scope){
         })[0].graph;
         series = graph.series;
         if(activeOnly){
-            if(series.length == 1){
+            if(series.length == 1 || (series.length == 2 && functionApplied)){
               data = series[0].data
               
               for(var i=0; i<data.length; i++){
@@ -165,11 +175,19 @@ function LineFltrCtrl($scope){
               active = graph.series.active;
               graph.series = newSeries; 
               graph.series.active = active;
-              graph.render();
+              //graph.render();
+            }else{
+                for(var i=0; i<series.length; i++){
+                    if(series[i].name == "UCB 1")
+                        continue;
+                    newSeries.push({color:series[i].color, name: series[i].name, data: series[i].data});
+                }
             }
         }else{
-            if(series.length != 1){
+            if(series.length != 1 || series.length == 3){
               for(var i=0; i<series.length; i++){
+                 if(series[i].name === "UCB 1")
+                     continue;
                  for(var j=0; j<series[i].data.length; j++){
                      tmpData.push(series[i].data[j]);
                  }
@@ -178,8 +196,42 @@ function LineFltrCtrl($scope){
               active = graph.series.active;
               graph.series = newSeries;
               graph.series.active = active;
-              graph.render();
+              //graph.render();
+            }else{
+                newSeries.push({color: '#30c020', name: arm, data: series[0].data});
             }
         }
+
+        if(functionToApply === "UCB 1"){
+          var armData = $.grep(fileData, function(e){
+                          return e.name == arm;
+                        })[0].data; 
+          var wins = 0;
+          var timesPlayed = 0; 
+          var score = 0;
+          var ucbData = [];
+          for(var i=0; i<armData.length; i++){
+              if(armData[i].played == true){
+                  timesPlayed++;
+                  if(armData[i].win == "1"){
+                      wins++;
+                  }
+              }
+              if(timesPlayed > 0){
+                score = wins/timesPlayed + Math.sqrt((2*Math.log(i+1))/timesPlayed);
+              }
+              ucbData.push({x:i, y:Math.min(1,score)});
+          }
+
+          active = graph.series.active
+          newSeries.push({color: '#6060c0', name:"UCB 1", data: ucbData});
+          graph.series = newSeries;
+          graph.series.active = active
+          functionApplied = true;
+        }else{
+          functionApplied = false;
+        }
+
+        graph.render();
     }
 }
