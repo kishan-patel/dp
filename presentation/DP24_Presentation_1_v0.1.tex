@@ -1,7 +1,7 @@
 \documentclass{beamer}
 \setbeamertemplate{navigation symbols}{}
 \usepackage{beamerthemeshadow}
-
+\usepackage{amsmath}
 \begin{document}
 
 \title[Dashboard for MAB Algorithms]{Dashboard for Multi Armed Bandit (MAB) Algorithms}
@@ -119,45 +119,97 @@ WO as a bandit problem
 \end{tabular}
 \end{frame}
 
-\subsection{Viewing File Data}
-\begin{frame}{Viewing File Data}
-TODO: Explain what this is about and put a screenshot
+\subsection{File Upload}
+\begin{frame}{File Upload}
+ 	\begin{itemize}
+   		\item The results of the simulation is saved in a file
+		\item Most basic file contains information about each clock tick (arm selected and result achieved)
+		\item Multiple formats supported: CSV, JSON, Tabular
+		\item Interface needed to allow user to upload the file
+		\item Once file is loaded, charts are generated
+	\end{itemize}
 \end{frame}
 
-\subsection{Viewing When a Particular Arm is Played}
-\begin{frame}{Viewing When a Particular Arm is Played}
-TODO: Explain what this is about and put a screenshot
+\begin{frame}{File Upload - Bar Chart}
+\begin{itemize}
+\item The bar chart simply represents the data at each clock tick - A 1 or 0. 
+\item In this example, for the first three clock ticks, there was no gain for any arm. For the next three clock ticks, arm 1 resulted in a reward and for the last two clock ticks, arm 2 resulted in a reward.
+\end{itemize}
+\includegraphics[scale=0.25]{barchart.png}
+\end{frame}
+
+\begin{frame}{File Upload - Line Chart}
+\begin{itemize}
+\item The line chart represents the average reward received over time
+\item Each point on the line represents the number of times the arm was played divided by the total time elapsed
+\end{itemize}
+\includegraphics[scale=0.25]{linechart.png}
+\end{frame}
+
+\subsection{Arm Details}
+\begin{frame}{Arm Details}
+\begin{itemize}
+\item Ability to differentiate between time arm was active/unactive
+\end{itemize}
+\includegraphics[scale=0.25]{linechartactive.png}
 \end{frame}
 
 \subsection{Viewing Results by Time}
 \begin{frame}{Viewing Results by Time}
-TODO: Explain what this is about and put a screenshot
+\begin{itemize}
+\item For website optimization, traffic varies by time of day
+\item In order to normalize time zones, bar chart displays results by hour
+\end{itemize}
+\includegraphics[scale=0.25]{barcharttime.png}
 \end{frame}
 
-\subsection{Running a Particular Simulation on Known Data}
-\begin{frame}{Running a Particular Simulation on Known Data}
-TODO: Explain what this is about and put a screenshot
+\subsection{Applying a Function}
+\begin{frame}{Applying a Function}
+\begin{itemize}
+\item Function is applied to the static data to generate a simulated line
+\item Some functions include: UCB, Epsilon Greedy
+\end{itemize}
+\includegraphics[scale=0.25]{linechartfunction.png}
 \end{frame}
 
 \section{Future Plans}
 
-\subsection{Support for Live Data}
-\begin{frame}{Support for Live Data}
-TODO: Explain what this is about
+\subsection{Future Plans }
+\begin{frame}{Support for Live Data and Enhanced Interactivity}
+\begin{itemize}
+\item Next major goal is to add support for live data
+\item The application would listen to events sent by some client and produce graphs in realtime
+\item The idea is to support multiple clients each having their own graphs
+\item Increase in interactivity includes: hover effects, adding a slider to accomodate for large data and adding more filtering options
+\item Define a common interface to communicate with the Web Application
+\end{itemize}
 \end{frame}
 
-\subsection{Enhance Interactivity}
-\begin{frame}{Enhance Interactivity}
-TODO: Explain what this is about
+
+\section{Organization}
+
+\subsection{Communication}
+\begin{frame}{Communication}
+\begin{itemize}
+\item Primary forms of communication include: Email and Texts
+\item Source code and documents are available on Dropbox
+\item Tasks/Issues are created on GitHub so each member can easily pick a task and begin working on it
+\item This is our backlog and new tasks will be added during each milestone
+\item We aren't using any software process models like waterfall or agile
+\end{itemize}
 \end{frame}
 
-\section{Methodology}
-
-\subsection{Organization and Challenges}
-\begin{frame}{Organization and Challenges}
-TODO: 
-Organization: Talk about how the group organizes itself (meetings breakdown, how we communicate)
-\newline Challenges: Talk about the challenges faced eg. in picking charting library, learning curve 
+\subsection{Issue Tracker}
+\begin{frame}{Issue Tracker}
+\includegraphics[scale=0.25]{gitissues.png}
 \end{frame}
 
+\subsection{Challenges}
+\begin{frame}{Challenges}
+\begin{itemize}
+\item Testing will be challenging: We're not used to writing tests for web applications
+\item Adding support for multiple clients and supporting live streaming is something that seems interesting as well as challenging
+\item Finding a common schedule to work together
+\end{itemize}
+\end{frame}
 \end{document}
