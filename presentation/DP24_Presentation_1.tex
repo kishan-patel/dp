@@ -2,6 +2,7 @@
 \setbeamertemplate{navigation symbols}{}
 \usepackage{beamerthemeshadow}
 \usepackage{amsmath}
+\usepackage{chronology}
 \begin{document}
 
 \title[Dashboard for MAB Algorithms]{Dashboard for Multi Armed Bandit (MAB) Algorithms}
@@ -125,8 +126,8 @@ WO as a bandit problem
    		\item The results of the simulation is saved in a file
 		\item Most basic file contains information about each clock tick (arm selected and result achieved)
 		\item Multiple formats supported: CSV, JSON, Tabular
-		\item Interface needed to allow user to upload the file
 		\item Once file is loaded, charts are generated
+		\item The end objective is to support live data in addition to file upload
 	\end{itemize}
 \end{frame}
 
@@ -174,7 +175,7 @@ WO as a bandit problem
 
 \section{Future Plans}
 
-\subsection{Future Plans }
+\subsection{Features }
 \begin{frame}{Support for Live Data and Enhanced Interactivity}
 \begin{itemize}
 \item Next major goal is to add support for live data
@@ -185,6 +186,21 @@ WO as a bandit problem
 \end{itemize}
 \end{frame}
 
+\subsection{Timeline}
+\begin{frame}{Timeline}
+\textbf{DP1}:
+\begin{itemize}
+\item Make sure file upload is solid - all features discussed during meeting are fully implemented and functional
+\item UI enhancements - filter and hover effects to name a few
+\item Start looking into live stream
+\end{itemize}
+\textbf{DP2}:
+\begin{itemize}
+\item Implement live stream
+\item Add additional features as needed
+\end{itemize}
+\end{frame}
+
 
 \section{Organization}
 
@@ -192,7 +208,7 @@ WO as a bandit problem
 \begin{frame}{Communication}
 \begin{itemize}
 \item Primary forms of communication include: Email and Texts
-\item Source code and documents are available on Dropbox
+\item GitHub is used for source code and Dropbox is used for documents
 \item Tasks/Issues are created on GitHub so each member can easily pick a task and begin working on it
 \item This is our backlog and new tasks will be added during each milestone
 \item We aren't using any software process models like waterfall or agile
