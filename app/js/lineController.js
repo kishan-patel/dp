@@ -5,6 +5,7 @@
 var armToGraph = [];
 var fileData;
 var functionApplied;
+var armColor = [];
 
 var lineControllers = angular.module('lineController', [])
 .directive('fdLine', function ($compile) {
@@ -34,8 +35,13 @@ var lineControllers = angular.module('lineController', [])
 
           $('#line_chart_container').empty();
 
-          for (var obj in data) {
+          /*for (var obj in data) {
             data[obj].color = '#30c020';
+          }*/
+
+          for (var obj in data) {
+            data[obj].color = palette.color();
+            armColor.push({"arm": data[obj].name, "color": data[obj].color});
           }
 
           for(var key in data){
@@ -88,7 +94,7 @@ var lineControllers = angular.module('lineController', [])
             graph = new Rickshaw.Graph({                                         
               element: document.getElementById(chartId),                             
               min: -0.1,                                                             
-              max: 1.1,                                                              
+              //max: 1.1,                                                              
               renderer: 'line',                                                      
               series: singleArmData,
               interpolation: 'linear' 
@@ -127,7 +133,13 @@ var lineControllers = angular.module('lineController', [])
   }
 });
 
-
+var getColor = function(time){
+  var activeArm = $.grep(fileData, function(e){
+          return $.grep(e.data, function(e){
+              return e.x==time && e.played==true;
+          })[0];
+      })[0];
+}
 function LineFltrCtrl($scope){
 
     $scope.addGraph = function(arm, graph){
@@ -141,65 +153,56 @@ function LineFltrCtrl($scope){
           return e.arm == arm;
         })[0].graph;
         series = graph.series;
+
         if(activeOnly){
-            if(series.length == 1 || (series.length == 2 && functionApplied)){
-              data = series[0].data
-              
-              for(var i=0; i<data.length; i++){
-                if(i==0){
-                  prevPlayed = data[i].played;
-                }
+          data = $.grep(fileData, function(e){
+            return e.name == arm;
+          })[0].data;
 
-                if(prevPlayed != data[i].played){
-                  tmpData.push(data[i]);
-                  if(prevPlayed){
-                    newSeries.push({color: '#30c020', name: 'a', data: tmpData});
-                  }else{
-                    newSeries.push({color: '#c05020', name: 'ia', data: tmpData});
-                  }
-                  tmpData = [];
-                }
-
-                tmpData.push(data[i]);
-                prevPlayed = data[i].played;
-
-                if(i==data.length-1){
-                  if(data[i].played){
-                    newSeries.push({color: '#30c020', name: 'a', data: tmpData});
-                  }else{
-                    newSeries.push({color: '#c05020', name: 'ia', data: tmpData});
-                  }
-                }
-              }
-
-              active = graph.series.active;
-              graph.series = newSeries; 
-              graph.series.active = active;
-              //graph.render();
-            }else{
-                for(var i=0; i<series.length; i++){
-                    if(series[i].name == "UCB 1")
-                        continue;
-                    newSeries.push({color:series[i].color, name: series[i].name, data: series[i].data});
-                }
+          for(var i=0; i<data.length; i++){
+            if(i==0){
+              prevPlayed = data[i].played;
             }
-        }else{
-            if(series.length != 1 || series.length == 3){
-              for(var i=0; i<series.length; i++){
-                 if(series[i].name === "UCB 1")
-                     continue;
-                 for(var j=0; j<series[i].data.length; j++){
-                     tmpData.push(series[i].data[j]);
-                 }
-              }
-              newSeries.push({color: '#30c020', name:arm, data: tmpData}); 
-              active = graph.series.active;
-              graph.series = newSeries;
-              graph.series.active = active;
-              //graph.render();
-            }else{
-                newSeries.push({color: '#30c020', name: arm, data: series[0].data});
+
+            if(prevPlayed != data[i].played){
+              tmpData.push(data[i]);
+              newSeries.push({
+                color: $.grep(armColor, function(e){ return e.arm == data[i-1].armPlayed;})[0].color,
+                name: data[i-1].armPlayed,
+                data: tmpData
+              });
+              tmpData = [];
             }
+
+            tmpData.push(data[i]);
+            prevPlayed = data[i].played;
+
+            if(i==data.length-1){
+              newSeries.push({
+                color: $.grep(armColor, function(e){ return e.arm == data[i-1].armPlayed;})[0].color,
+                name: data[i-1].armPlayed,
+                data: tmpData
+               });
+            }
+          }
+
+          active = graph.series.active;
+          graph.series = newSeries; 
+          graph.series.active = active;
+        }
+
+       if(!activeOnly){
+         data = $.grep(fileData, function(e){
+           return e.name == arm;
+         })[0].data;
+         newSeries.push({
+           color: $.grep(armColor, function(e){ return e.arm == arm;})[0].color, 
+           name: arm,
+           data: data
+         })
+         active = graph.series.active;
+         graph.series = newSeries;
+         graph.series.active = active;
         }
 
         if(functionToApply === "UCB 1"){
@@ -220,9 +223,9 @@ function LineFltrCtrl($scope){
               if(timesPlayed > 0){
                 score = wins/timesPlayed + Math.sqrt((2*Math.log(i+1))/timesPlayed);
               }
-              ucbData.push({x:i, y:Math.min(1,score)});
+              ucbData.push({x:i, y:score});
           }
-
+          debugger;
           active = graph.series.active
           newSeries.push({color: '#6060c0', name:"UCB 1", data: ucbData});
           graph.series = newSeries;
