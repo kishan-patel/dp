@@ -30,7 +30,7 @@
       arrayOfLines.shift();
       switch(type){
         case 'timestamp':
-          data = getHourlyLineData(arrayOfLines);
+          //data = getHourlyLineData(arrayOfLines);
           type = 'timestamp'
           break;
         case 'standard':
@@ -78,7 +78,7 @@
           data = result.data;
           data.push({
               x: i,
-              y: parseInt(tokens[1])
+              y: parseInt(tokens[1]) == "0" ? 1 : 2
           });
        }
       }
@@ -173,7 +173,9 @@
       data.push({
         x: i,
         y: armRecord.wins / armRecord.timesPlayed,
-        played: true
+        played: true,
+        win: tokens[1],
+        armPlayed: tokens[0]
       });
         
       //For all of the arms that are not played during the current
@@ -191,7 +193,9 @@
           data.push({
             x: i,
             y: armRecord.timesPlayed == 0 ? 0 : armRecord.wins/armRecord.timesPlayed,
-            played: false
+            played: false,
+            win: 0,
+            armPlayed: tokens[0]
           });
         }  
       }

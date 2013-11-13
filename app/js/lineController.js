@@ -1,7 +1,11 @@
 'use strict';
 
 /* Controllers */
+//!!!!!!!!!!THESE GLOBAL VARIABLES HAVE TO BE REMOVED!!!!!!!!!!!!!  
 var armToGraph = [];
+var fileData;
+var functionApplied;
+var armColor = [];
 
 var lineControllers = angular.module('lineController', [])
 .directive('fdLine', function ($compile) {
@@ -19,6 +23,7 @@ var lineControllers = angular.module('lineController', [])
           var dataObj = DataUtil.getLineData(fileString);
           var data = dataObj.data;
           var type = dataObj.type;
+          fileData = data;
           
           //!!!!!!!!! WE HAVE TO FIX THIS!!!!!!!!!!!!!
           if(type == 'timestamp'){
@@ -30,8 +35,13 @@ var lineControllers = angular.module('lineController', [])
 
           $('#line_chart_container').empty();
 
-          for (var obj in data) {
+          /*for (var obj in data) {
             data[obj].color = '#30c020';
+          }*/
+
+          for (var obj in data) {
+            data[obj].color = palette.color();
+            armColor.push({"arm": data[obj].name, "color": data[obj].color});
           }
 
           for(var key in data){
@@ -58,8 +68,14 @@ var lineControllers = angular.module('lineController', [])
                         '<div class=\"checkbox\">'+
                           '<label><input type=\"checkbox\" ng-model="activeOnly">show active</label>'+
                         '</div>'+                                                
+                        '<div>'+
+                          '<select ng-model="functionToApply">'+
+                            '<option value="">Select function to apply</option>'+
+                            '<option value="UCB 1">UCB 1</option>'+
+                          '</select>'+
+                        '</div><br/>'+
                         '<button type=\"submit\" class=\"btn btn-default btn-xs\"'+ 
-                             'ng-click="updateLine(activeOnly,'+data[key].name+')">Apply</button>'+
+                             'ng-click="updateLine(activeOnly,'+data[key].name+', functionToApply)">Apply</button>'+
                       '</form>'+
                       '</div>'+
                     '</td>'+
@@ -78,7 +94,7 @@ var lineControllers = angular.module('lineController', [])
             graph = new Rickshaw.Graph({                                         
               element: document.getElementById(chartId),                             
               min: -0.1,                                                             
-              max: 1.1,                                                              
+              //max: 1.1,                                                              
               renderer: 'line',                                                      
               series: singleArmData,
               interpolation: 'linear' 
@@ -117,69 +133,108 @@ var lineControllers = angular.module('lineController', [])
   }
 });
 
-
+var getColor = function(time){
+  var activeArm = $.grep(fileData, function(e){
+          return $.grep(e.data, function(e){
+              return e.x==time && e.played==true;
+          })[0];
+      })[0];
+}
 function LineFltrCtrl($scope){
 
     $scope.addGraph = function(arm, graph){
       armToGraph.push({"arm":arm.arm, "graph":graph.graph});
     }
 
-    $scope.updateLine = function(activeOnly, arm){
+    $scope.updateLine = function(activeOnly, arm, functionToApply){
         var graph, series, data, newSeries=[], tmpData = [], prevPlayed, active; 
             
         graph = $.grep(armToGraph, function(e){
           return e.arm == arm;
         })[0].graph;
         series = graph.series;
+
         if(activeOnly){
-            if(series.length == 1){
-              data = series[0].data
-              
-              for(var i=0; i<data.length; i++){
-                if(i==0){
-                  prevPlayed = data[i].played;
-                }
+          data = $.grep(fileData, function(e){
+            return e.name == arm;
+          })[0].data;
 
-                if(prevPlayed != data[i].played){
-                  tmpData.push(data[i]);
-                  if(prevPlayed){
-                    newSeries.push({color: '#30c020', name: 'a', data: tmpData});
-                  }else{
-                    newSeries.push({color: '#c05020', name: 'ia', data: tmpData});
-                  }
-                  tmpData = [];
-                }
-
-                tmpData.push(data[i]);
-                prevPlayed = data[i].played;
-
-                if(i==data.length-1){
-                  if(data[i].played){
-                    newSeries.push({color: '#30c020', name: 'a', data: tmpData});
-                  }else{
-                    newSeries.push({color: '#c05020', name: 'ia', data: tmpData});
-                  }
-                }
-              }
-
-              active = graph.series.active;
-              graph.series = newSeries; 
-              graph.series.active = active;
-              graph.render();
+          for(var i=0; i<data.length; i++){
+            if(i==0){
+              prevPlayed = data[i].played;
             }
-        }else{
-            if(series.length != 1){
-              for(var i=0; i<series.length; i++){
-                 for(var j=0; j<series[i].data.length; j++){
-                     tmpData.push(series[i].data[j]);
-                 }
-              }
-              newSeries.push({color: '#30c020', name:arm, data: tmpData}); 
-              active = graph.series.active;
-              graph.series = newSeries;
-              graph.series.active = active;
-              graph.render();
+
+            if(prevPlayed != data[i].played){
+              tmpData.push(data[i]);
+              newSeries.push({
+                color: $.grep(armColor, function(e){ return e.arm == data[i-1].armPlayed;})[0].color,
+                name: data[i-1].armPlayed,
+                data: tmpData
+              });
+              tmpData = [];
             }
+
+            tmpData.push(data[i]);
+            prevPlayed = data[i].played;
+
+            if(i==data.length-1){
+              newSeries.push({
+                color: $.grep(armColor, function(e){ return e.arm == data[i-1].armPlayed;})[0].color,
+                name: data[i-1].armPlayed,
+                data: tmpData
+               });
+            }
+          }
+
+          active = graph.series.active;
+          graph.series = newSeries; 
+          graph.series.active = active;
         }
+
+       if(!activeOnly){
+         data = $.grep(fileData, function(e){
+           return e.name == arm;
+         })[0].data;
+         newSeries.push({
+           color: $.grep(armColor, function(e){ return e.arm == arm;})[0].color, 
+           name: arm,
+           data: data
+         })
+         active = graph.series.active;
+         graph.series = newSeries;
+         graph.series.active = active;
+        }
+
+        if(functionToApply === "UCB 1"){
+          var armData = $.grep(fileData, function(e){
+                          return e.name == arm;
+                        })[0].data; 
+          var wins = 0;
+          var timesPlayed = 0; 
+          var score = 0;
+          var ucbData = [];
+          for(var i=0; i<armData.length; i++){
+              if(armData[i].played == true){
+                  timesPlayed++;
+                  if(armData[i].win == "1"){
+                      wins++;
+                  }
+              }
+              if(timesPlayed > 0){
+                score = wins/timesPlayed + Math.sqrt((2*Math.log(i+1))/timesPlayed);
+              }
+              ucbData.push({x:i, y:score});
+          }
+          debugger;
+          active = graph.series.active
+          newSeries.push({color: '#6060c0', name:"UCB 1", data: ucbData});
+          graph.series = newSeries;
+          graph.series.active = active
+          functionApplied = true;
+        }else{
+          functionApplied = false;
+        }
+
+        graph.render();
     }
 }

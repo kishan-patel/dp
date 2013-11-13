@@ -31,7 +31,7 @@ angular.module('barController', [])
           //Initialise graph and render it
           var graph = new Rickshaw.Graph({
             element: document.getElementById('bar_plot'),
-            max: 1.1,
+            max: data.type != "timestamp" ? 2.1 : 0,
             min: -0.1,
             renderer: 'bar',
             series: data.data
