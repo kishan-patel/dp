@@ -24,8 +24,7 @@ Supervisor: Aditya Mahajan, Design Project 1
 \subsection{Objective and Purpose}
 \begin{frame}{Objective and Purpose}
 \textbf{Objective}
-\newline To represent the results of executing a generic class of
-MAB algorithms used for Website Optimization (WO)
+\newline To build a \textbf{dashboard} in order to represent the results of executing a generic class of \textbf{Multi Armed Bandit} (MAB) algorithms used for \textbf{Website Optimization} (WO) 
 \newline
 \\\textbf{Purpose}
 \\Ease of identification of best performing (most efficient) MAB algorithm for WO as well as
@@ -54,11 +53,8 @@ Some terms to familiarize with
 \newline \textbf{Algorithm}
 \newline Look for the most optimal arm by
 \begin{itemize}
-  \item Exploring new or existing arms
-	\begin{itemize}
-		\item Existing arms to see if they perform even better
-	\end{itemize}
-  \item Exploiting the high performing arms
+  \item Exploiting the highest performing arms
+  \item Exploring other arms to see if they perform even better
 \end{itemize}
 \end{frame}
 
@@ -75,11 +71,36 @@ WO as a bandit problem
 		\item Layouts
 		\item Size of buttons
 	\end{itemize}
-  \item Gain: Effectiveness of a particular website version
+  \item Gain: \textbf{Effectiveness} of a particular website version
+	\begin{itemize}
+		\item Effectiveness can be defined as a metric of success 
+		\item Definition varies across different domains
+		\item Eg. 1 Number of purchases of a particular item on Amazon.com
+		\item Eg. 2 Number of donors on a fundraising website
+	\end{itemize}
 \end{itemize}
 \end{frame}
 
 \section{Progress till date}
+
+\subsection{Implementation Overview}
+\begin{frame}{Implementation Overview}
+\begin{enumerate}
+	\item Introduction to MAB
+	\item Model WO as a MAB problem
+	\item Identify the purpose of a creating a dashboard 
+	\begin{itemize}
+		\item Research to choose a suitable charting library
+		\item Create graphs using the chosen library
+		\item Discuss feedback with supervisor
+	\end{itemize}
+	\item Next steps
+	\begin{itemize}
+		\item Prioritize requirements and visit backlog
+		\item Create a tentative timeline for next semester
+	\end{itemize}
+\end{enumerate}
+\end{frame}
 
 \subsection{Charting Library Research}
 \begin{frame}{Charting Library Research}
@@ -93,7 +114,7 @@ WO as a bandit problem
 \begin{tabular}{| p{2.5cm} | p{8cm} |}
     \hline
      \textbf{Parameter} & \textbf{Radian} \\ \hline
-  \textbf{Reliability} \newline & In development phase \\ \hline
+  \textbf{Reliability} \newline & In development phase\newline Released in 2013 (very new) \\ \hline
   \textbf{Resource \newline Availability} &  Well organized tutorial documentation
 		\newline External resources for Angular.js directives 
 		\newline Untidy and non-intuitive Github repository \\ \hline
@@ -108,15 +129,31 @@ WO as a bandit problem
 \begin{tabular}{| p{2.5cm} | p{8cm} |}
     \hline
      \textbf{Parameter} & \textbf{Rickshaw} \\ \hline
-\textbf{Reliability}\newline & Established framework  \\ \hline
+\textbf{Reliability}\newline & Established framework\newline Released in 2011 \\ \hline
 \textbf{Resource \newline Availability} &  Limited and concise tutorial documentation
-		\newline Comprehensive '/examples' section in Github repository
-		\newline Untidy and non-intuitive Github repository \\ \hline
+		\newline Comprehensive '/examples' section in Github repository\\ \hline
 \textbf{Learning Curve}  &  Knowledge of JavaScript for functional, data and interactive plots \\ \hline
 \textbf{Features and Extensibility} & Feature rich
-		\newline Vast range of extensions to build on and extend existing functionality
-		\newline *Time fixture feature (time series graphs)\\ \hline
+		\newline Vast range of extensions to build on and extend existing functionality\\ \hline
 \end{tabular}
+\end{frame}
+
+\begin{frame}{Charting Library Research: Result}
+\begin{itemize}
+	\item Final choice: Rickshaw
+	\item Increased reliability- more established framework
+	\item Enhanced resource availability- comprehensive Github repository
+	\item Neutral learning curve
+		\begin{itemize}
+			\item Common skill between group members- JavaScript
+			\item Limited time to learn a new framework (Angular.js)
+		\end{itemize}
+	\item Rich feature set
+		\begin{itemize}
+			\item Wide range of extensions suitable for our project
+			\item Eg. Time fixture feature for incorporating time series graphs
+		\end{itemize}
+\end{itemize}
 \end{frame}
 
 \subsection{Viewing File Data}
