@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  12 NOV 2013 23:30
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  13 NOV 2013 00:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**DP24_Presentation_1_v0.1.tex
-(./DP24_Presentation_1_v0.1.tex
+**Presentation_Slides.tex
+(./Presentation_Slides.tex
 LaTeX2e <2011/06/27>
 Babel <3.9f> and hyphenation patterns for 78 languages loaded.
 (/usr/local/texlive/2013/texmf-dist/tex/latex/beamer/beamer.cls
@@ -716,23 +716,124 @@ Package: beamerouterthemesplit 2012/10/16  (rcs-revision 51a8c72084af)
 (/usr/local/texlive/2013/texmf-dist/tex/latex/beamer/themes/font/beamerfontthem
 estructurebold.sty
 Package: beamerfontthemestructurebold 2010/06/17  (rcs-revision d02a7cf4d8ae)
-)) (./DP24_Presentation_1_v0.1.aux)
-\openout1 = `DP24_Presentation_1_v0.1.aux'.
+))
+(/usr/local/texlive/2013/texmf-dist/tex/latex/chronology/chronology.sty
+Package: chronology 2010/6/12 v1.0 Horizontal timeline
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 5.
-LaTeX Font Info:    ... okay on input line 5.
+(/usr/local/texlive/2013/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2007/08/22 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count153
+\calc@Bcount=\count154
+\calc@Adimen=\dimen185
+\calc@Bdimen=\dimen186
+\calc@Askip=\skip57
+\calc@Bskip=\skip58
+LaTeX Info: Redefining \setlength on input line 76.
+LaTeX Info: Redefining \addtolength on input line 77.
+\calc@Ccount=\count155
+\calc@Cskip=\skip59
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/local/texlive/2013/texmf-dist/tex/latex/pgf/basiclayer/pgf.sty
+Package: pgf 2008/01/15 v2.10 (rcs-revision 1.12)
+
+(/usr/local/texlive/2013/texmf-dist/tex/generic/pgf/modules/pgfmoduleshapes.cod
+e.tex
+File: pgfmoduleshapes.code.tex 2010/09/09  (rcs-revision 1.13)
+\pgfnodeparttextbox=\box53
+)
+(/usr/local/texlive/2013/texmf-dist/tex/generic/pgf/modules/pgfmoduleplot.code.
+tex
+File: pgfmoduleplot.code.tex 2010/10/22  (rcs-revision 1.8)
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-0-65.sty
+Package: pgfcomp-version-0-65 2007/07/03 v2.10 (rcs-revision 1.7)
+\pgf@nodesepstart=\dimen187
+\pgf@nodesepend=\dimen188
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version
+-1-18.sty
+Package: pgfcomp-version-1-18 2007/07/23 v2.10 (rcs-revision 1.1)
+))
+(/usr/local/texlive/2013/texmf-dist/tex/latex/pgf/utilities/pgffor.sty
+(/usr/local/texlive/2013/texmf-dist/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/local/texlive/2013/texmf-dist/tex/generic/pgf/utilities/pgfkeys.code.tex)
+) (/usr/local/texlive/2013/texmf-dist/tex/generic/pgf/utilities/pgffor.code.tex
+Package: pgffor 2010/03/23 v2.10 (rcs-revision 1.18)
+\pgffor@iter=\dimen189
+\pgffor@skip=\dimen190
+\pgffor@stack=\toks40
+\pgffor@toks=\toks41
+))
+(/usr/local/texlive/2013/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.cod
+e.tex
+Package: tikz 2010/10/13 v2.10 (rcs-revision 1.76)
+
+(/usr/local/texlive/2013/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothan
+dlers.code.tex
+File: pgflibraryplothandlers.code.tex 2010/05/31 v2.10 (rcs-revision 1.15)
+\pgf@plot@mark@count=\count156
+\pgfplotmarksize=\dimen191
+)
+\tikz@lastx=\dimen192
+\tikz@lasty=\dimen193
+\tikz@lastxsaved=\dimen194
+\tikz@lastysaved=\dimen195
+\tikzleveldistance=\dimen196
+\tikzsiblingdistance=\dimen197
+\tikz@figbox=\box54
+\tikz@tempbox=\box55
+\tikztreelevel=\count157
+\tikznumberofchildren=\count158
+\tikznumberofcurrentchild=\count159
+\tikz@fig@count=\count160
+
+(/usr/local/texlive/2013/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.cod
+e.tex
+File: pgfmodulematrix.code.tex 2010/08/24  (rcs-revision 1.4)
+\pgfmatrixcurrentrow=\count161
+\pgfmatrixcurrentcolumn=\count162
+\pgf@matrix@numberofcolumns=\count163
+)
+\tikz@expandcount=\count164
+
+(/usr/local/texlive/2013/texmf-dist/tex/generic/pgf/frontendlayer/tikz/librarie
+s/tikzlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2008/06/17 v2.10 (rcs-revision 1.2)
+)))
+(/usr/local/texlive/2013/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\c@step=\count165
+\c@stepstart=\count166
+\c@stepstop=\count167
+\c@yearstart=\count168
+\c@yearstop=\count169
+\c@deltayears=\count170
+\xstart=\skip60
+\xstop=\skip61
+\unit=\skip62
+\timelinewidth=\skip63
+\timelinebox=\box56
+)
+(./Presentation_Slides.aux)
+\openout1 = `Presentation_Slides.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 6.
+LaTeX Font Info:    ... okay on input line 6.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -770,17 +871,17 @@ LaTeX Font Info:    ... okay on input line 5.
 
 (/usr/local/texlive/2013/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count153
-\scratchdimen=\dimen185
-\scratchbox=\box53
-\nofMPsegments=\count154
-\nofMParguments=\count155
-\everyMPshowfont=\toks40
-\MPscratchCnt=\count156
-\MPscratchDim=\dimen186
-\MPnumerator=\count157
-\makeMPintoPDFobject=\count158
-\everyMPtoPDFconversion=\toks41
+\scratchcounter=\count171
+\scratchdimen=\dimen198
+\scratchbox=\box57
+\nofMPsegments=\count172
+\nofMParguments=\count173
+\everyMPshowfont=\toks42
+\MPscratchCnt=\count174
+\MPscratchDim=\dimen199
+\MPnumerator=\count175
+\makeMPintoPDFobject=\count176
+\everyMPtoPDFconversion=\toks43
 ) (/usr/local/texlive/2013/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
 
@@ -797,8 +898,8 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 ABD: EveryShipout initializing macros
-\AtBeginShipoutBox=\box54
-Package hyperref Info: Link coloring OFF on input line 5.
+\AtBeginShipoutBox=\box58
+Package hyperref Info: Link coloring OFF on input line 6.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -806,58 +907,58 @@ Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count159
+\c@section@level=\count177
 )
-LaTeX Info: Redefining \ref on input line 5.
-LaTeX Info: Redefining \pageref on input line 5.
-LaTeX Info: Redefining \nameref on input line 5.
+LaTeX Info: Redefining \ref on input line 6.
+LaTeX Info: Redefining \pageref on input line 6.
+LaTeX Info: Redefining \nameref on input line 6.
 
-(./DP24_Presentation_1_v0.1.out) (./DP24_Presentation_1_v0.1.out)
+(./Presentation_Slides.out) (./Presentation_Slides.out)
 \@outlinefile=\write5
-\openout5 = `DP24_Presentation_1_v0.1.out'.
+\openout5 = `Presentation_Slides.out'.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 5.
+(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 6.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 5.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 6.
 \symnumbers=\mathgroup6
 \sympureletters=\mathgroup7
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/cmss/m/n --> OT1/cmr/m/n on input line 5.
-LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 5.
+(Font)                  OT1/cmss/m/n --> OT1/cmr/m/n on input line 6.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 6.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 5.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 6.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 5.
-LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 5.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 6.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 6.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> OT1/cmss/m/n on input line 5.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/m/n on input line 6.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> OT1/cmss/m/n on input line 5.
-LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 5.
+(Font)                  OT1/cmss/bx/n --> OT1/cmss/m/n on input line 6.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 6.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> OT1/cmss/m/it on input line 5.
+(Font)                  OT1/cmr/m/it --> OT1/cmss/m/it on input line 6.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> OT1/cmss/m/it on input line 5.
-LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 5.
+(Font)                  OT1/cmr/bx/it --> OT1/cmss/m/it on input line 6.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 6.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 5.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 6.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 5.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 6.
 LaTeX Font Info:    Overwriting symbol font `numbers' in version `bold'
-(Font)                  OT1/cmss/m/n --> OT1/cmss/bx/n on input line 5.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/bx/n on input line 6.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  OT1/cmss/m/it --> OT1/cmss/bx/it on input line 5.
+(Font)                  OT1/cmss/m/it --> OT1/cmss/bx/it on input line 6.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `bold'
-(Font)                  OT1/cmss/bx/n --> OT1/cmr/bx/n on input line 5.
+(Font)                  OT1/cmss/bx/n --> OT1/cmr/bx/n on input line 6.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> OT1/cmss/bx/n on input line 5.
+(Font)                  OT1/cmss/bx/n --> OT1/cmss/bx/n on input line 6.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/m/n --> OT1/cmss/bx/n on input line 5.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/bx/n on input line 6.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmss/m/it --> OT1/cmss/bx/it on input line 5.
+(Font)                  OT1/cmss/m/it --> OT1/cmss/bx/it on input line 6.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> OT1/cmtt/bx/n on input line 5.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/bx/n on input line 6.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/beamer/translator/dicts/translato
 r-basic-dictionary/translator-basic-dictionary-English.dict
@@ -883,29 +984,25 @@ Dictionary: translator-numbers-dictionary, Language: English
 r-theorem-dictionary/translator-theorem-dictionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
 )
-LaTeX Info: Redefining \includegraphics on input line 5.
+LaTeX Info: Redefining \includegraphics on input line 6.
 
-(./DP24_Presentation_1_v0.1.nav)
+(./Presentation_Slides.nav)
 
 Package hyperref Warning: Option `pdfauthor' has already been used,
-(hyperref)                setting the option has no effect on input line 8.
+(hyperref)                setting the option has no effect on input line 9.
 
 
 LaTeX Font Warning: Font shape `OT1/cmss/bx/n' in size <4> not available
-(Font)              size <5> substituted on input line 16.
+(Font)              size <5> substituted on input line 17.
 
 
 LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <4> not available
-(Font)              size <5> substituted on input line 16.
+(Font)              size <5> substituted on input line 17.
 
 [1{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 ]
-(./DP24_Presentation_1_v0.1.toc)
-Overfull \vbox (15.7135pt too high) detected at line 20
- []
-
-[2
+(./Presentation_Slides.toc) [2
 
 ] [3
 
@@ -920,49 +1017,49 @@ Overfull \vbox (15.7135pt too high) detected at line 20
 ] [8
 
 ]
-LaTeX Font Info:    Try loading font information for U+msa on input line 126.
+LaTeX Font Info:    Try loading font information for U+msa on input line 127.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 126.
+LaTeX Font Info:    Try loading font information for U+msb on input line 127.
 
 (/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \hbox (badness 10000) in paragraph at lines 126--126
+Underfull \hbox (badness 10000) in paragraph at lines 127--127
 []\OT1/cmss/bx/n/10.95 Learning
  []
 
 
-Underfull \hbox (badness 3417) in paragraph at lines 126--126
+Underfull \hbox (badness 3417) in paragraph at lines 127--127
 []\OT1/cmss/bx/n/10.95 Features and
  []
 
 
-Overfull \hbox (15.46405pt too wide) in paragraph at lines 126--126
+Overfull \hbox (15.46405pt too wide) in paragraph at lines 127--127
 [][]  
  []
 
 [9
 
 ]
-Underfull \hbox (badness 2538) in paragraph at lines 139--139
+Underfull \hbox (badness 2538) in paragraph at lines 140--140
 \OT1/cmss/m/n/10.95 Comprehensive '/ex-am-ples' sec-tion in Github
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 139--139
+Underfull \hbox (badness 10000) in paragraph at lines 140--140
 []\OT1/cmss/bx/n/10.95 Learning
  []
 
 
-Underfull \hbox (badness 3417) in paragraph at lines 139--139
+Underfull \hbox (badness 3417) in paragraph at lines 140--140
 []\OT1/cmss/bx/n/10.95 Features and
  []
 
 
-Overfull \hbox (15.46405pt too wide) in paragraph at lines 139--139
+Overfull \hbox (15.46405pt too wide) in paragraph at lines 140--140
 [][]  
  []
 
@@ -972,59 +1069,128 @@ Overfull \hbox (15.46405pt too wide) in paragraph at lines 139--139
 
 ] [12
 
-] [13
+] <barchart.png, id=280, 1261.71375pt x 360.34625pt>
+File: barchart.png Graphic file (type png)
 
-] [14
+<use barchart.png>
+Package pdftex.def Info: barchart.png used on input line 177.
+(pdftex.def)             Requested size: 315.42766pt x 90.08633pt.
 
-] [15
+Overfull \hbox (8.13779pt too wide) in paragraph at lines 177--177
+[]  
+ []
 
-] [16
+[13
 
-] [17
+ <./barchart.png>] <linechart.png, id=295, 1263.72125pt x 527.9725pt>
+File: linechart.png Graphic file (type png)
 
-] [18
+<use linechart.png>
+Package pdftex.def Info: linechart.png used on input line 185.
+(pdftex.def)             Requested size: 315.92953pt x 131.9928pt.
+
+Overfull \hbox (8.63966pt too wide) in paragraph at lines 185--185
+[]  
+ []
+
+[14
+
+ <./linechart.png>] <linechartactive.png, id=309, 1263.72125pt x 529.98pt>
+File: linechartactive.png Graphic file (type png)
+
+<use linechartactive.png>
+Package pdftex.def Info: linechartactive.png used on input line 192.
+(pdftex.def)             Requested size: 315.92953pt x 132.49466pt.
+
+Overfull \hbox (8.63966pt too wide) in paragraph at lines 192--192
+[]  
+ []
+
+[15
+
+ <./linechartactive.png>]
+<barcharttime.png, id=323, 1262.7175pt x 361.35pt>
+File: barcharttime.png Graphic file (type png)
+ <use barcharttime.png>
+Package pdftex.def Info: barcharttime.png used on input line 200.
+(pdftex.def)             Requested size: 315.6786pt x 90.33728pt.
+
+Overfull \hbox (8.38873pt too wide) in paragraph at lines 200--200
+[]  
+ []
+
+[16
+
+ <./barcharttime.png>]
+<linechartfunction.png, id=337, 1261.71375pt x 527.9725pt>
+File: linechartfunction.png Graphic file (type png)
+
+<use linechartfunction.png>
+Package pdftex.def Info: linechartfunction.png used on input line 208.
+(pdftex.def)             Requested size: 315.42766pt x 131.9928pt.
+
+Overfull \hbox (8.13779pt too wide) in paragraph at lines 208--208
+[]  
+ []
+
+[17
+
+ <./linechartfunction.png>] [18
+
+] [19
+
+] [20
+
+]
+<gitissues.png, id=387, 702.625pt x 561.09625pt>
+File: gitissues.png Graphic file (type png)
+ <use gitissues.png>
+Package pdftex.def Info: gitissues.png used on input line 254.
+(pdftex.def)             Requested size: 175.6558pt x 140.27371pt.
+ [21
+
+ <./gitissues.png>] [22
 
 ]
 \tf@nav=\write6
-\openout6 = `DP24_Presentation_1_v0.1.nav'.
+\openout6 = `Presentation_Slides.nav'.
 
 \tf@toc=\write7
-\openout7 = `DP24_Presentation_1_v0.1.toc'.
+\openout7 = `Presentation_Slides.toc'.
 
 \tf@snm=\write8
-\openout8 = `DP24_Presentation_1_v0.1.snm'.
+\openout8 = `Presentation_Slides.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 200.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 200.
- (./DP24_Presentation_1_v0.1.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 200.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 200.
-Package rerunfilecheck Info: File `DP24_Presentation_1_v0.1.out' has not change
-d.
-(rerunfilecheck)             Checksum: 9831877EE69804187CF0921B8BCD6FDA;1159.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 270.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 270.
+ (./Presentation_Slides.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 270.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 270.
+Package rerunfilecheck Info: File `Presentation_Slides.out' has not changed.
+(rerunfilecheck)             Checksum: 04A7BF686A39C135602264A793D0CF4B;1014.
 
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.0pt have occurred.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 200.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 270.
  ) 
 Here is how much of TeX's memory you used:
- 15896 strings out of 493315
- 300961 string characters out of 6137904
- 372912 words of memory out of 5000000
- 18909 multiletter control sequences out of 15000+600000
+ 18277 strings out of 493315
+ 351349 string characters out of 6137904
+ 421838 words of memory out of 5000000
+ 21221 multiletter control sequences out of 15000+600000
  11739 words of font info for 43 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 49i,19n,62p,453b,596s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 50i,19n,62p,448b,602s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb
 ></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb>
 </usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb
 >
-Output written on DP24_Presentation_1_v0.1.pdf (18 pages, 71187 bytes).
+Output written on Presentation_Slides.pdf (22 pages, 211531 bytes).
 PDF statistics:
- 409 PDF objects out of 1000 (max. 8388607)
- 363 compressed objects within 4 object streams
- 54 named destinations out of 1000 (max. 500000)
- 227 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 440 PDF objects out of 1000 (max. 8388607)
+ 384 compressed objects within 4 object streams
+ 61 named destinations out of 1000 (max. 500000)
+ 249 words of extra memory for PDF output out of 10000 (max. 10000000)
 

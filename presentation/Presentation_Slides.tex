@@ -66,16 +66,16 @@ WO as a bandit problem
 \newline What do each of these represent?
 \begin{itemize}
   \item Agent: User
-  \item Arm: Website version with unique
+  \item Arm: Website version with unique styling
 	\begin{itemize}
 		\item Color scheme
-		\item Layouts
+		\item Layouts 
 		\item Size of buttons
 	\end{itemize}
   \item Gain: \textbf{Effectiveness} of a particular website version
 	\begin{itemize}
 		\item Effectiveness can be defined as a metric of success 
-		\item Definition varies across different domains
+		\item Definition varies across domains
 		\item Eg. 1 Number of purchases of a particular item on Amazon.com
 		\item Eg. 2 Number of donors on a fundraising website
 	\end{itemize}
@@ -84,8 +84,8 @@ WO as a bandit problem
 
 \section{Progress till date}
 
-\subsection{Implementation Overview}
-\begin{frame}{Implementation Overview}
+\subsection{Project Execution Overview}
+\begin{frame}{Project Execution Overview}
 \begin{enumerate}
 	\item Introduction to MAB
 	\item Model WO as a MAB problem
@@ -139,7 +139,6 @@ WO as a bandit problem
 \end{tabular}
 \end{frame}
 
-<<<<<<< HEAD:presentation/DP24_Presentation_1_v0.1.tex
 \begin{frame}{Charting Library Research: Result}
 \begin{itemize}
 	\item Final choice: Rickshaw
@@ -152,17 +151,13 @@ WO as a bandit problem
 		\end{itemize}
 	\item Rich feature set
 		\begin{itemize}
-			\item Wide range of extensions suitable for our project
+			\item Wide range of extensions to customize (suitable for our project)
 			\item Eg. Time fixture feature for incorporating time series graphs
 		\end{itemize}
 \end{itemize}
 \end{frame}
 
-\subsection{Viewing File Data}
-\begin{frame}{Viewing File Data}
-TODO: Explain what this is about and put a screenshot
-=======
-\subsection{File Upload}
+\subsection{Implemented Graphs and Features}
 \begin{frame}{File Upload}
  	\begin{itemize}
    		\item The results of the simulation is saved in a file
@@ -179,7 +174,6 @@ TODO: Explain what this is about and put a screenshot
 \item In this example, for the first three clock ticks, there was no gain for any arm. For the next three clock ticks, arm 1 resulted in a reward and for the last two clock ticks, arm 2 resulted in a reward.
 \end{itemize}
 \includegraphics[scale=0.25]{barchart.png}
->>>>>>> c911af624deacb3c458107f866b35c803e873d0a:presentation/DP24_Presentation_1.tex
 \end{frame}
 
 \begin{frame}{File Upload - Line Chart}
@@ -190,7 +184,6 @@ TODO: Explain what this is about and put a screenshot
 \includegraphics[scale=0.25]{linechart.png}
 \end{frame}
 
-\subsection{Arm Details}
 \begin{frame}{Arm Details}
 \begin{itemize}
 \item Ability to differentiate between time arm was active/unactive
@@ -198,7 +191,6 @@ TODO: Explain what this is about and put a screenshot
 \includegraphics[scale=0.25]{linechartactive.png}
 \end{frame}
 
-\subsection{Viewing Results by Time}
 \begin{frame}{Viewing Results by Time}
 \begin{itemize}
 \item For website optimization, traffic varies by time of day
@@ -207,7 +199,6 @@ TODO: Explain what this is about and put a screenshot
 \includegraphics[scale=0.25]{barcharttime.png}
 \end{frame}
 
-\subsection{Applying a Function}
 \begin{frame}{Applying a Function}
 \begin{itemize}
 \item Function is applied to the static data to generate a simulated line
@@ -218,7 +209,7 @@ TODO: Explain what this is about and put a screenshot
 
 \section{Future Plans}
 
-\subsection{Features }
+\subsection{Features to be added}
 \begin{frame}{Support for Live Data and Enhanced Interactivity}
 \begin{itemize}
 \item Next major goal is to add support for live data
@@ -231,16 +222,16 @@ TODO: Explain what this is about and put a screenshot
 
 \subsection{Timeline}
 \begin{frame}{Timeline}
-\textbf{DP1}:
+\textbf{DP1, Fall 2013}:
 \begin{itemize}
-\item Make sure file upload is solid - all features discussed during meeting are fully implemented and functional
-\item UI enhancements - filter and hover effects to name a few
-\item Start looking into live stream
+\item Make sure file upload is robust - all features discussed during meeting are fully implemented and functional
+\item UI enhancements - filter and hover effects
+\item Commence live stream implementation planning
 \end{itemize}
-\textbf{DP2}:
+\textbf{DP2, Winter 2014}:
 \begin{itemize}
-\item Implement live stream
-\item Add additional features as needed
+\item Complete live stream implementation
+\item Add additional features (as needed)
 \end{itemize}
 \end{frame}
 
@@ -250,11 +241,10 @@ TODO: Explain what this is about and put a screenshot
 \subsection{Communication}
 \begin{frame}{Communication}
 \begin{itemize}
-\item Primary forms of communication include: Email and Texts
-\item GitHub is used for source code and Dropbox is used for documents
-\item Tasks/Issues are created on GitHub so each member can easily pick a task and begin working on it
-\item This is our backlog and new tasks will be added during each milestone
-\item We aren't using any software process models like waterfall or agile
+\item Primary forms of communication: emails and text messages
+\item Source code repository: Github. Houses the backlog which consists of list of existing tasks and new tasks are added as progress is made
+\item Dropbox : documents (meeting notes, resources and submissions)
+\item Software process models like Waterfall or Agile are not used
 \end{itemize}
 \end{frame}
 
@@ -266,9 +256,15 @@ TODO: Explain what this is about and put a screenshot
 \subsection{Challenges}
 \begin{frame}{Challenges}
 \begin{itemize}
-\item Testing will be challenging: We're not used to writing tests for web applications
-\item Adding support for multiple clients and supporting live streaming is something that seems interesting as well as challenging
-\item Finding a common schedule to work together
+\item Higher learning curve in terms of development and testing with limited time resources
+\item Development:  Adding support for multiple clients and live streaming
+\item Testing: First time testing a web application 
+	\begin{itemize}
+		\item Familiarize with existing web testing tools
+		\item Building variety of web test cases
+		\item Detailed procedure covering functionality, usability, interface and compatibility, performance testing
+	\end{itemize}
+\item Successful implementation of dashboard along with robust testing
 \end{itemize}
 \end{frame}
 \end{document}

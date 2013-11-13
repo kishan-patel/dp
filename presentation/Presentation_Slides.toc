@@ -1,0 +1,17 @@
+\beamer@endinputifotherversion {3.26pt}
+\beamer@sectionintoc {1}{Overview}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Objective and Purpose}{3}{0}{1}
+\beamer@subsectionintoc {1}{2}{Terminology}{4}{0}{1}
+\beamer@subsectionintoc {1}{3}{MAB Problem and Algorithm}{5}{0}{1}
+\beamer@subsectionintoc {1}{4}{Website Optimization}{6}{0}{1}
+\beamer@sectionintoc {2}{Progress till date}{7}{0}{2}
+\beamer@subsectionintoc {2}{1}{Project Execution Overview}{7}{0}{2}
+\beamer@subsectionintoc {2}{2}{Charting Library Research}{8}{0}{2}
+\beamer@subsectionintoc {2}{3}{Implemented Graphs and Features}{12}{0}{2}
+\beamer@sectionintoc {3}{Future Plans}{18}{0}{3}
+\beamer@subsectionintoc {3}{1}{Features to be added}{18}{0}{3}
+\beamer@subsectionintoc {3}{2}{Timeline}{19}{0}{3}
+\beamer@sectionintoc {4}{Organization}{20}{0}{4}
+\beamer@subsectionintoc {4}{1}{Communication}{20}{0}{4}
+\beamer@subsectionintoc {4}{2}{Issue Tracker}{21}{0}{4}
+\beamer@subsectionintoc {4}{3}{Challenges}{22}{0}{4}
