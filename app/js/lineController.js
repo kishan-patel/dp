@@ -3,7 +3,7 @@
 /* Controllers */
 //!!!!!!!!!!THESE GLOBAL VARIABLES HAVE TO BE REMOVED!!!!!!!!!!!!!  
 var armToGraph = [];
-var fileData;
+var fileData; //Will hold the original data (i.e. as read from the file)
 var functionApplied;
 var armColor = [];
 
@@ -206,35 +206,55 @@ function LineFltrCtrl($scope){
         }
 
         if(functionToApply === "UCB 1"){
-          var armData = $.grep(fileData, function(e){
-                          return e.name == arm;
-                        })[0].data; 
-          var wins = 0;
-          var timesPlayed = 0; 
-          var score = 0;
-          var ucbData = [];
-          for(var i=0; i<armData.length; i++){
-              if(armData[i].played == true){
-                  timesPlayed++;
-                  if(armData[i].win == "1"){
-                      wins++;
-                  }
-              }
-              if(timesPlayed > 0){
-                score = wins/timesPlayed + Math.sqrt((2*Math.log(i+1))/timesPlayed);
-              }
-              ucbData.push({x:i, y:score});
-          }
           debugger;
+          var ucbSeries = applyUCB();
+
+          for(var i = 0; i<ucbSeries.length; i++){
+            newSeries.push(ucbSeries[i]);
+          }
+          
           active = graph.series.active
-          newSeries.push({color: '#6060c0', name:"UCB 1", data: ucbData});
           graph.series = newSeries;
           graph.series.active = active
-          functionApplied = true;
-        }else{
-          functionApplied = false;
         }
-
+        
         graph.render();
     }
+}
+
+function applyUCB(){
+  var series = [];
+  var data = [];
+  var ucbData = [];
+  var wins, timesPlayed, score, prevScore;
+
+  for(var i=0; i<fileData.length; i++){
+    data = fileData[i].data
+    score = 0;
+    prevScore = 0;
+    ucbData = [];
+    wins = 0;
+    timesPlayed = 0;
+    for(var j=0; j<data.length; j++){
+      if(data[j].played == true){
+        timesPlayed++;
+        if(data[j].win == "1"){
+          wins++;
+        }
+      }
+
+      if(data[j].played == true){
+        score = wins/timesPlayed + Math.sqrt((2*Math.log(j+1))/timesPlayed);
+        prevScore = score;
+      }else{
+        score = prevScore;
+      }
+      
+      ucbData.push({x:j, y:score});
+    }
+    
+    series.push({name:fileData[i].name+'-UCB', color: fileData[i].color, data: ucbData});
+  }
+
+  return series;
 }
