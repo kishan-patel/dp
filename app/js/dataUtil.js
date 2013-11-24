@@ -30,7 +30,7 @@
       arrayOfLines.shift();
       switch(type){
         case 'timestamp':
-          //data = getHourlyLineData(arrayOfLines);
+          data = getHourlyLineData(arrayOfLines);
           type = 'timestamp'
           break;
         case 'standard':
@@ -255,11 +255,12 @@
         dataPair.played = true;
         dataPair.timesPlayed++;
         dataPair.wins++;
-        dataPair.y = dataPair.wins / dataPair.timesPlayed;
+        //dataPair.y = dataPair.wins / dataPair.timesPlayed;
+        dataPair.y = dataPair.wins;
       }else{
         dataPair.played = true;
         dataPair.timesPlayed++;
-        dataPair.y = dataPair.wins / dataPair.timesPlayed;
+        //dataPair.y = dataPair.wins / dataPair.timesPlayed;
       }
     }
 

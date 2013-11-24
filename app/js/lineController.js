@@ -26,9 +26,9 @@ var lineControllers = angular.module('lineController', [])
           fileData = data;
           
           //!!!!!!!!! WE HAVE TO FIX THIS!!!!!!!!!!!!!
-          if(type == 'timestamp'){
+          /*if(type == 'timestamp'){
               return;
-          }
+          }*/
           var palette = new Rickshaw.Color.Palette();
           var singleArmData = [];
           var yAxisId, chartId, legendId, plotString, plotStringCompiled, graph, xAxis, yAxis, Hover, hover;
@@ -53,36 +53,8 @@ var lineControllers = angular.module('lineController', [])
             singleArmData.push(data[key]);
 
             //Dynamically add html code to the dom
-            plotString = 
-              '<br/><br/>'+
-              '<div id="panel_'+data[key].name+'"class=\"panel panel-default\">'+
-                '<div class=\"panel-heading\">Line Plot - Arm '+data[key].name+'</div>'+
-                /*'<table class=\"table\">'+
-                  '<tr>'+
-                    '<th>Filters: </th>'+
-                  '</tr>'+
-                  '<tr>'+
-                    '<td>'+
-                      '<div ng-controller="LineFltrCtrl">'+
-                      '<form role=\"form\" id="line-plot-arm-'+data[key].name+'">'+
-                        '<div class=\"checkbox\">'+
-                          '<label><input type=\"checkbox\" ng-model="activeOnly">show active</label>'+
-                        '</div>'+                                                
-                        '<div>'+
-                          '<select ng-model="functionToApply">'+
-                            '<option value="">Select function to apply</option>'+
-                            '<option value="UCB 1">UCB 1</option>'+
-                          '</select>'+
-                        '</div><br/>'+
-                        '<button type=\"submit\" class=\"btn btn-default btn-xs\"'+ 
-                             'ng-click="updateLine(activeOnly,'+data[key].name+', functionToApply)">Apply</button>'+
-                      '</form>'+
-                      '</div>'+
-                    '</td>'+
-                  '</tr>'+
-                '</table>'+*/
-                '<div class=\"panel-body\">'+
-                  '<div class="well well-sm">'+
+            var filterString = type == 'timestamp' ? '' :
+              '<div class="well well-sm">'+
                     '<div style="float:left"><b>Filters:</b>&nbsp&nbsp</div>'+
                     '<div>'+
                       'Show active&nbsp'+
@@ -96,7 +68,13 @@ var lineControllers = angular.module('lineController', [])
                           '<option value="UCB">UCB</option>'+
                       '</select>'+
                     '</div>'+
-                  '</div>'+
+                  '</div>'; 
+            plotString = 
+              '<br/><br/>'+
+              '<div id="panel_'+data[key].name+'"class=\"panel panel-default\">'+
+                '<div class=\"panel-heading\">Line Plot - Arm '+data[key].name+'</div>'+
+                '<div class=\"panel-body\">'+
+                  filterString + 
                   '<div><div id=\"'+yAxisId+'\"></div>' +
                   '<div id=\"'+chartId+'\"></div>' +
                   '<div id=\"'+legendId+'\"></div>'+
@@ -119,7 +97,7 @@ var lineControllers = angular.module('lineController', [])
             graph.render();
              
             //Graph extensions                                                       
-            if(data.type == 'timestamp'){
+            if(type == 'timestamp'){
               var xAxis = new Rickshaw.Graph.Axis.X({
                 graph: graph,
                 pixelsPerTick: 50,
