@@ -6,6 +6,7 @@ var armToGraph = [];
 var fileData; //Will hold the original data (i.e. as read from the file)
 var functionApplied;
 var armColor = [];
+var maxUCBScore = 0;
 
 var lineControllers = angular.module('lineController', [])
 .directive('fdLine', function ($compile) {
@@ -24,7 +25,8 @@ var lineControllers = angular.module('lineController', [])
           var data = dataObj.data;
           var type = dataObj.type;
           fileData = data;
-          
+          armToGraph = [];
+          armColor = [];
           //!!!!!!!!! WE HAVE TO FIX THIS!!!!!!!!!!!!!
           /*if(type == 'timestamp'){
               return;
@@ -58,11 +60,11 @@ var lineControllers = angular.module('lineController', [])
                     '<div style="float:left"><b>Filters:</b>&nbsp&nbsp</div>'+
                     '<div>'+
                       'Show active&nbsp'+
-                      '<input id="active-only" type="checkbox" ng-model="activeOnly"'+
+                      '<input id="active-only-'+data[key].name+'" type="checkbox" ng-model="activeOnly'+data[key].name+'"'+
                         'ng-click="updateLine('+data[key].name+')">&nbsp&nbsp'+
                       '</input>'+
                       'Simulator&nbsp'+
-                      '<select id="simulator" ng-model="functionToApply"'+
+                      '<select id="simulator-'+data[key].name+'" ng-model="functionToApply'+data[key].name+'"'+
                         'ng-change="updateLine('+data[key].name+')">'+
                           '<option vlaue=""></option>'+
                           '<option value="UCB">UCB</option>'+
@@ -86,8 +88,8 @@ var lineControllers = angular.module('lineController', [])
             //Intialise graph and render it                                          
             graph = new Rickshaw.Graph({                                         
               element: document.getElementById(chartId),                             
-              min: -0.1,                                                             
-              //max: 1.1,                                                              
+              max: type != "timestamp" ? 1.1 : 0,
+              min: type!= "timestamp" ? -0.1 : -0.0001,
               renderer: 'line',                                                      
               series: singleArmData,
               interpolation: 'linear' 
@@ -140,8 +142,8 @@ function LineFltrCtrl($scope){
     }
 
     $scope.updateLine = function(arm){
-        var activeOnly = document.getElementById('active-only').checked;
-        var simulatorSelect = document.getElementById('simulator');
+        var activeOnly = document.getElementById('active-only-'+arm).checked;
+        var simulatorSelect = document.getElementById('simulator-'+arm);
         var functionToApply = simulatorSelect[simulatorSelect.selectedIndex].text;
         var graph, series, data, newSeries=[], tmpData = [], prevPlayed, active; 
             
@@ -208,6 +210,7 @@ function LineFltrCtrl($scope){
             newSeries.push(ucbSeries[i]);
           }
           
+          graph.max = maxUCBScore+1;
           active = graph.series.active
           graph.series = newSeries;
           graph.series.active = active
@@ -223,6 +226,7 @@ function applyUCB(){
   var ucbData = [];
   var wins, timesPlayed, score, prevScore;
 
+  maxUCBScore = 0;
   for(var i=0; i<fileData.length; i++){
     data = fileData[i].data
     score = 0;
@@ -244,7 +248,10 @@ function applyUCB(){
       }else{
         score = prevScore;
       }
-      
+
+      if(score>maxUCBScore)
+          maxUCBScore = score;
+
       ucbData.push({x:j, y:score});
     }
     
