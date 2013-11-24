@@ -57,7 +57,7 @@ var lineControllers = angular.module('lineController', [])
               '<br/><br/>'+
               '<div id="panel_'+data[key].name+'"class=\"panel panel-default\">'+
                 '<div class=\"panel-heading\">Line Plot - Arm '+data[key].name+'</div>'+
-                '<table class=\"table\">'+
+                /*'<table class=\"table\">'+
                   '<tr>'+
                     '<th>Filters: </th>'+
                   '</tr>'+
@@ -80,8 +80,23 @@ var lineControllers = angular.module('lineController', [])
                       '</div>'+
                     '</td>'+
                   '</tr>'+
-                '</table>'+
+                '</table>'+*/
                 '<div class=\"panel-body\">'+
+                  '<div class="well well-sm">'+
+                    '<div style="float:left"><b>Filters:</b>&nbsp&nbsp</div>'+
+                    '<div>'+
+                      'Show active&nbsp'+
+                      '<input id="active-only" type="checkbox" ng-model="activeOnly"'+
+                        'ng-click="updateLine('+data[key].name+')">&nbsp&nbsp'+
+                      '</input>'+
+                      'Simulator&nbsp'+
+                      '<select id="simulator" ng-model="functionToApply"'+
+                        'ng-change="updateLine('+data[key].name+')">'+
+                          '<option vlaue=""></option>'+
+                          '<option value="UCB">UCB</option>'+
+                      '</select>'+
+                    '</div>'+
+                  '</div>'+
                   '<div><div id=\"'+yAxisId+'\"></div>' +
                   '<div id=\"'+chartId+'\"></div>' +
                   '<div id=\"'+legendId+'\"></div>'+
@@ -146,7 +161,10 @@ function LineFltrCtrl($scope){
       armToGraph.push({"arm":arm.arm, "graph":graph.graph});
     }
 
-    $scope.updateLine = function(activeOnly, arm, functionToApply){
+    $scope.updateLine = function(arm){
+        var activeOnly = document.getElementById('active-only').checked;
+        var simulatorSelect = document.getElementById('simulator');
+        var functionToApply = simulatorSelect[simulatorSelect.selectedIndex].text;
         var graph, series, data, newSeries=[], tmpData = [], prevPlayed, active; 
             
         graph = $.grep(armToGraph, function(e){
@@ -205,8 +223,7 @@ function LineFltrCtrl($scope){
          graph.series.active = active;
         }
 
-        if(functionToApply === "UCB 1"){
-          debugger;
+        if(functionToApply === "UCB"){
           var ucbSeries = applyUCB();
 
           for(var i = 0; i<ucbSeries.length; i++){
