@@ -7,6 +7,9 @@ var fileData; //Will hold the original data (i.e. as read from the file)
 var functionApplied;
 var armColor = [];
 var maxUCBScore = 0;
+var noArms = 0;
+var steps = 0;
+var palette = new Rickshaw.Color.Palette();
 
 var lineControllers = angular.module('lineController', [])
 .directive('fdLine', function ($compile) {
@@ -25,13 +28,14 @@ var lineControllers = angular.module('lineController', [])
           var data = dataObj.data;
           var type = dataObj.type;
           fileData = data;
+          noArms = dataObj.arms;
+          steps = dataObj.steps;
           armToGraph = [];
           armColor = [];
           //!!!!!!!!! WE HAVE TO FIX THIS!!!!!!!!!!!!!
           /*if(type == 'timestamp'){
               return;
           }*/
-          var palette = new Rickshaw.Color.Palette();
           var singleArmData = [];
           var yAxisId, chartId, legendId, plotString, plotStringCompiled, graph, xAxis, yAxis, Hover, hover;
 
@@ -63,7 +67,7 @@ var lineControllers = angular.module('lineController', [])
                       '<input id="active-only-'+data[key].name+'" type="checkbox" ng-model="activeOnly'+data[key].name+'"'+
                         'ng-click="updateLine('+data[key].name+')">&nbsp&nbsp'+
                       '</input>'+
-                      'Simulator&nbsp'+
+                      'Agent&nbsp'+
                       '<select id="simulator-'+data[key].name+'" ng-model="functionToApply'+data[key].name+'"'+
                         'ng-change="updateLine('+data[key].name+')">'+
                           '<option vlaue=""></option>'+
@@ -88,7 +92,7 @@ var lineControllers = angular.module('lineController', [])
             //Intialise graph and render it                                          
             graph = new Rickshaw.Graph({                                         
               element: document.getElementById(chartId),                             
-              max: type != "timestamp" ? 1.1 : 0,
+              max: type != "timestamp" ? 1.2 : 0,
               min: type!= "timestamp" ? -0.1 : -0.0001,
               renderer: 'line',                                                      
               series: singleArmData,
@@ -204,13 +208,16 @@ function LineFltrCtrl($scope){
         }
 
         if(functionToApply === "UCB"){
-          var ucbSeries = applyUCB();
+          var ucbSeries = UCB1();
 
           for(var i = 0; i<ucbSeries.length; i++){
             newSeries.push(ucbSeries[i]);
           }
+          for(var i=0; i<fileData.length; i++){
+            if(fileData[i].name != arm)
+              newSeries.push(fileData[i]); 
+          }
           
-          graph.max = maxUCBScore+1;
           active = graph.series.active
           graph.series = newSeries;
           graph.series.active = active
@@ -220,43 +227,52 @@ function LineFltrCtrl($scope){
     }
 }
 
-function applyUCB(){
-  var series = [];
-  var data = [];
-  var ucbData = [];
-  var wins, timesPlayed, score, prevScore;
+function UCB1(){
+  var ucbHistory = [];
+  var data;
+  var wins=0, timesPlayed=0, score=0;
+  var totals = [];
+  var played = [];
+  var p = 0;
+  var ucbData = [], series = [];
 
-  maxUCBScore = 0;
-  for(var i=0; i<fileData.length; i++){
-    data = fileData[i].data
-    score = 0;
-    prevScore = 0;
-    ucbData = [];
-    wins = 0;
-    timesPlayed = 0;
-    for(var j=0; j<data.length; j++){
-      if(data[j].played == true){
-        timesPlayed++;
-        if(data[j].win == "1"){
-          wins++;
+  for(var i=0; i<steps; i++){
+    timesPlayed++;
+    if(played.length<noArms){
+      p = i;
+      played[p] = 1;
+    }else{
+      var maxScore = 0;
+      var score = 0;
+      var xBar;
+      var bound;
+      for(var j=0; j<noArms; j++){
+        xBar  = totals[j]/played[j];
+        bound = Math.sqrt((2*Math.log(timesPlayed))/played[j]);
+        score = xBar + bound;
+        if(score > maxScore){
+          maxScore = score;
+          p = j
         }
       }
-
-      if(data[j].played == true){
-        score = wins/timesPlayed + Math.sqrt((2*Math.log(j+1))/timesPlayed);
-        prevScore = score;
-      }else{
-        score = prevScore;
-      }
-
-      if(score>maxUCBScore)
-          maxUCBScore = score;
-
-      ucbData.push({x:j, y:score});
+      played[p]++;
     }
-    
-    series.push({name:fileData[i].name+'-UCB', color: fileData[i].color, data: ucbData});
+
+    //Update the rewards for a particular arm
+    data = $.grep(fileData, function(e){ return e.name == p+1+""})[0].data;
+    if(data[i].win == "1"){
+      wins++;
+      totals[p]++;
+    }else{
+      if(i<noArms)
+        totals[p] = 0;
+    }
+
+    //Add the score for the current time step
+    ucbData.push({x:i,y:wins/timesPlayed});
   }
 
+  series.push({name:"UCB", color:palette.color(), data:ucbData});
   return series;
 }
+
