@@ -42,7 +42,11 @@
           break;
       }
 
-      return {"data": data, "type": type}
+      if(type == 'timestamp'){
+        return {'data': data,  'type': type};
+      }else if(type == 'standard'){
+        return {'data': data.series, 'type': type, 'arms': data.arms, 'steps': data.steps};
+      }
   }
 
   function getStandardBarData(arrayOfLines){
@@ -201,7 +205,7 @@
       }
     }
     
-    return series;
+    return {series:series, arms:uniqueArms.length, steps: arrayOfLines.length};
   }
 
   function getHourlyLineData(arrayOfLines){

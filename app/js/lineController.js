@@ -100,7 +100,7 @@ var lineControllers = angular.module('lineController', [])
             });                                                                      
             scope.addGraph({arm: data[key].name}, {graph: graph});
             scope.$apply();
-            graph.render();
+            //graph.render();
              
             //Graph extensions                                                       
             if(type == 'timestamp'){
@@ -121,10 +121,11 @@ var lineControllers = angular.module('lineController', [])
               graph: graph                                                           
             });                                                                      
             yAxis.render();                                                          
-            /*Hover =  GraphUtil.initialseHover(graph);                         
+            Hover =  GraphUtil.initialseHover(graph);                         
             hover = new Hover({                                               
               graph: graph                                                        
-            });*/
+            });
+            graph.render();
           }
         })
       });
