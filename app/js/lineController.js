@@ -71,7 +71,9 @@ var lineControllers = angular.module('lineController', [])
                       '<select id="simulator-'+data[key].name+'" ng-model="functionToApply'+data[key].name+'"'+
                         'ng-change="updateLine('+data[key].name+')">'+
                           '<option vlaue=""></option>'+
-                          '<option value="UCB">UCB</option>'+
+                          '<option value="UCB1">UCB1</option>'+
+                          '<option value="eGreedy">e-greedy</option>'+
+                          '<option value="random">random</option>'+
                       '</select>'+
                     '</div>'+
                   '</div>'; 
@@ -208,11 +210,11 @@ function LineFltrCtrl($scope){
          graph.series.active = active;
         }
 
-        if(functionToApply === "UCB"){
-          var ucbSeries = UCB1();
+        if(functionToApply === "UCB1" || functionToApply === "e-greedy" || functionToApply === "random"){
+          var simSeries = applyStrategy(functionToApply);
 
-          for(var i = 0; i<ucbSeries.length; i++){
-            newSeries.push(ucbSeries[i]);
+          for(var i = 0; i<simSeries.length; i++){
+            newSeries.push(simSeries[i]);
           }
           for(var i=0; i<fileData.length; i++){
             if(fileData[i].name != arm)
@@ -228,7 +230,7 @@ function LineFltrCtrl($scope){
     }
 }
 
-function UCB1(){
+function applyStrategy(strategy){
   var ucbHistory = [];
   var data;
   var wins=0, timesPlayed=0, score=0;
@@ -236,6 +238,9 @@ function UCB1(){
   var played = [];
   var p = 0;
   var ucbData = [], series = [];
+  var eGreedyConst = 0.1;
+  var noTimesBestPicked = 0;
+  var noTimesRandomPicked = 0;
 
   for(var i=0; i<steps; i++){
     timesPlayed++;
@@ -248,12 +253,26 @@ function UCB1(){
       var xBar;
       var bound;
       for(var j=0; j<noArms; j++){
-        xBar  = totals[j]/played[j];
-        bound = Math.sqrt((2*Math.log(timesPlayed))/played[j]);
-        score = xBar + bound;
-        if(score > maxScore){
-          maxScore = score;
-          p = j
+        if(strategy == "UCB1"){
+          xBar  = totals[j]/played[j];
+          bound = Math.sqrt((2*Math.log(timesPlayed))/played[j]);
+          score = xBar + bound;
+          if(score > maxScore){
+            maxScore = score;
+            p = j
+          }
+        }else if(strategy == "e-greedy"){
+          if(noTimesBestPicked/timesPlayed < eGreedyConst){
+              for(var k=0; k<noArms; k++){
+                if(totals[k] > score){
+                    p = k;
+                }
+              }
+          }else{
+              p = Math.floor(Math.random() * noArms);
+          }
+        }else if(strategy == "random"){
+          p = Math.floor(Math.random() * noArms);
         }
       }
       played[p]++;
@@ -273,7 +292,7 @@ function UCB1(){
     ucbData.push({x:i,y:wins/timesPlayed});
   }
 
-  series.push({name:"UCB", color:palette.color(), data:ucbData});
+  series.push({name:strategy, color:palette.color(), data:ucbData});
   return series;
 }
 
