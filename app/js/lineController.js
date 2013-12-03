@@ -9,7 +9,7 @@ var armColor = [];
 var maxUCBScore = 0;
 var noArms = 0;
 var steps = 0;
-var palette = new Rickshaw.Color.Palette();
+var palette; 
 
 var lineControllers = angular.module('lineController', [])
 .directive('fdLine', function ($compile) {
@@ -31,7 +31,8 @@ var lineControllers = angular.module('lineController', [])
           noArms = dataObj.arms;
           steps = dataObj.steps;
           armToGraph = [];
-          armColor = [];
+          armColor = []; 
+          palette = new Rickshaw.Color.Palette();
           //!!!!!!!!! WE HAVE TO FIX THIS!!!!!!!!!!!!!
           /*if(type == 'timestamp'){
               return;
