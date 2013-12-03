@@ -25,6 +25,7 @@ angular.module('barController', [])
               '<div class="panel-heading">Bar Plot - All Arms</div>'+
               '<div class="panel-body">'+
                 '<div id="bar_plot"></div>'+
+                '<div id="legend_bar"></div>'+
               '</div>'+
             '</div>').appendTo('#bar_plot_container');
 
@@ -61,10 +62,10 @@ angular.module('barController', [])
           }); 
           yAxis.render();
           
-          /*var Hover = GraphUtil.initialseHover(graph)
+          var Hover = GraphUtil.initialseHover(graph, "legend_bar")
           var hover = new Hover({
             graph: graph
-          });*/
+          });
           
         })
       });

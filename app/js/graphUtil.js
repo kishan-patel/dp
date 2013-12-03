@@ -1,12 +1,13 @@
 (function (GraphUtil, undefined) {                                              
                                                                                 
-  GraphUtil.initialseHover = function(graph){                                       
-    var Hover = Rickshaw.Class.create(Rickshaw.Graph.HoverDetail, {             
-      xFormatter: function (x) {                                                
+  GraphUtil.initialseHover = function(graph, legendId){                                       
+    var Hover = Rickshaw.Class.create(Rickshaw.Graph.HoverDetail, {           
+      legendId: legendId,
+      /*xFormatter: function (x) {                                                
         return x + "seconds"                                                    
-      },                                                                           
+      },*/                                                                           
       render: function (args) {                                                    
-        var legend = $("#legend_1")[0];//+args.detail[0].name)[0];
+        var legend = $('#'+this.legendId)[0];//+args.detail[0].name)[0];
         legend.innerHTML = args.domainX + " s";                                    
                                                                                    
         args.detail.sort(function (a, b) {                                         

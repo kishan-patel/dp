@@ -10,6 +10,8 @@ var maxUCBScore = 0;
 var noArms = 0;
 var steps = 0;
 var palette; 
+var prevActive = false;
+var simColor;
 
 var lineControllers = angular.module('lineController', [])
 .directive('fdLine', function ($compile) {
@@ -50,6 +52,7 @@ var lineControllers = angular.module('lineController', [])
             data[obj].color = palette.color();
             armColor.push({"arm": data[obj].name, "color": data[obj].color});
           }
+          simColor = palette.color();
 
           for(var key in data){
             //Each graph will have a an id based on it's name
@@ -124,7 +127,7 @@ var lineControllers = angular.module('lineController', [])
               graph: graph                                                           
             });                                                                      
             yAxis.render();                                                          
-            Hover =  GraphUtil.initialseHover(graph);                         
+            Hover =  GraphUtil.initialseHover(graph, legendId);                         
             hover = new Hover({                                               
               graph: graph                                                        
             });
@@ -211,7 +214,7 @@ function LineFltrCtrl($scope){
          graph.series.active = active;
         }
 
-        if(functionToApply === "UCB1" || functionToApply === "e-greedy" || functionToApply === "random"){
+        if((functionToApply === "UCB1" || functionToApply === "e-greedy" || functionToApply === "random") && prevActive == activeOnly){
           var simSeries = applyStrategy(functionToApply);
 
           for(var i = 0; i<simSeries.length; i++){
@@ -226,6 +229,8 @@ function LineFltrCtrl($scope){
           graph.series = newSeries;
           graph.series.active = active
         }
+ 
+ 	prevActive = activeOnly;
         
         graph.render();
     }
@@ -293,7 +298,7 @@ function applyStrategy(strategy){
     ucbData.push({x:i,y:wins/timesPlayed});
   }
 
-  series.push({name:strategy, color:palette.color(), data:ucbData});
+  series.push({name:strategy, color:simColor, data:ucbData});
   return series;
 }
 
