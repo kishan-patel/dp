@@ -1,0 +1,34 @@
+<% include index.html -%>
+<script src="js/live.js"></script>
+<div class="row">
+  <div class="col-md-3">
+    <div class="mab-filter">
+      <div class="panel panel-default" id="mab-panel-filter">
+        <div class="panel-heading">Filters</div>
+          <div class="panel-body">
+      <div>
+        <b>Type:</b><br/>
+        <input type="radio" name="fu-graph-type" value="line" class="fu-graph-type" checked>
+          Line graph<br/>
+        <input type="radio" name="fu-graph-type" value="bar" class="fu-graph-type">
+          Bar graph
+      </div><br/>
+      <div>
+        <b>Arms:</b><br/>
+        <div id="fu-arm-checkboxes-holder">No arms avail.</div>
+      </div><br/>
+      </div></div>
+    </div>
+  </div>
+  <div class="col-md-9">
+    <div class="mab-graph">
+      <div class="panel panel-default" id="mab-panel-graph">
+        <div class="panel-heading">File data</div>
+        <div class="panel-body">
+          <div id="live-graph"></div>
+          <div id="live-legend"></div> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

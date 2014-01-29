@@ -1,0 +1,64 @@
+<% include index.html -%>
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading">Simulator</div>
+    <div class="panel-body">
+      <div class="well well-sm">
+        <table id="sim-filter">
+          <tr>
+            <th class="arms">Arms:</th>
+            <th class="agents">Agents:</th>
+            <th class="steps">Steps:</th>
+            <th class="apply">Apply:</th>
+          </tr>
+          <tr>
+            <td class="arms">
+              1 -
+              <select>
+                <option value="Bernoulli" selected>Bernoulli</option>
+              </select>
+              <input type="text" value="0.1" size="1">
+            </td>
+            <td class="agents">
+              1 -
+                <select>
+                  <option value="UCB1" selected>UCB1</option>
+                  <option value="e-greedy">e-greedy</option>
+                  <option value="random">random</option>
+                </select>
+            </td>
+            <td class="steps"><input type="text" value="50" size="1" /></td>
+            <td class="apply" id="sim-run"><button type="button">Run</button></td>
+          </tr>
+          <tr>
+            <td class="arms">
+              2 -
+              <select>
+                <option value="Bernoulli" selected>Bernoulli</option>
+              </select>
+              <input type="text" value="0.5" size="1">
+            </td>
+            <td class="agents">
+              2 -
+              <select>
+                <option value="UCB1">UCB1</option>
+                <option value="e-greedy" selected>e-greedy</option>
+                <option value="random">random</option>
+              </select>
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="arms"><span class="add">Add+</span></td>
+            <td class="agents"><span class="add">Add+</span></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table> 
+      </div>
+      <div id="sim-graph"></div>
+      <div id="sim-legend"></div>
+    </div>
+  </div>
+</div>
