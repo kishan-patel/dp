@@ -1,0 +1,48 @@
+body { 
+  font-family: Arial, sans-serif 
+}
+
+
+.swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0 8px 0 0;
+}
+
+.label {
+  display: inline-block;
+  color: black;
+}
+
+.line {
+  display: inline-block;
+  margin: 0 0 0 30px;
+}
+
+#legend {
+ text-align: center;
+}
+
+.rickshaw_graph .detail {
+ background: none;
+}
+
+.mab-filter {
+  margin-top:auto;
+  margin-bottom:auto;
+  margin-left:10%;
+}
+
+.mab-graph {
+  width:95%;
+  margin-right:10%;
+}
+
+#mab-panel-filter {
+  height: 370px;
+}
+
+#mab-panel-graph {
+  height: 370px;
+}

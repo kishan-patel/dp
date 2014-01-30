@@ -33,4 +33,56 @@ app.get('/live', function(req, res){
   res.render('live.html', {});
 });
 
+app.get('/send', function(requ, res){
+  res.render('send.html', {});
+});
 
+
+//Handling connections from the data client (program that sends json data)
+//and the user's browser (where the graphs will be updated in realtime)
+var dataClients = [];
+var connectionsCounter = 0;
+
+io.sockets.on('connection', function(socket){
+
+  socket.on('data_client_connect', function(){
+    dataClients.push({"id":connectiosnCounter, "dataSocket":socket, "browserSockets":[]});
+    socket.emit('whats_my_id', id);
+    connectionsCounter++;
+  });
+
+  socket.on('browser_connect', function(id){
+    var found = false;
+
+    for(var i=0; i<dataClients.length; i++){
+      if(dataClients[i].id == id){
+        dataClients[i].browserSockets.push(socket);
+        found = true;
+        break;
+      }
+    }
+
+    if(!found){
+      alert("There is no data client connected with this id");
+    }
+  });
+
+  socket.on('live_data', function(dataObj){
+    //Update appropriate browsers when the come in
+    var browserSockets;
+
+    for(var i=0; i<dataClients.length; i++){
+      if(dataClients[i].id == dataObj.id){
+        browserSockets = dataClients[i].browserSockets;
+        for(var j=0; j<browserSockets.length; j++){
+          browserSockets[j].emit('update_graph', dataObj.data);
+        }
+        break;  
+      }
+    }
+  });
+
+  socket.on("close", function(){
+    //Remove the appropriate sockets
+  });
+});
