@@ -1,0 +1,58 @@
+<% include index.html -%>
+<script src="js/simulator.js"></script>
+<div class="row">
+  <div class="col-md-3">
+    <div class="mab-filter">
+      <div class="panel panel-default" id="mab-panel-filter">
+        <div class="panel-heading">Filters</div>
+        <div class="panel-body">
+          <div id="sim-arms">
+            <b>Arms:</b><br/>
+            1 - 
+            <select>
+              <option value="Bernoulli" selected>Bernoulli</option>
+            </select>
+            <input type="text" value="0.1" size="1"><br/>
+
+            2 -
+            <select>
+              <option value="Bernoulli" selected>Bernoulli</option>
+            </select>
+            <input type="text" value="0.9" size="1">
+          </div><br/>
+          <div id="sim-agents">
+            <b>Agents:</b><br/>
+            1 -
+            <select>
+              <option value="UCB1" selected>UCB1</option>
+              <option value="e-greedy">e-greedy</option>
+              <option value="random">random</option>
+            </select><br/>
+            2 - 
+            <select>
+              <option value="UCB1">UCB1</option>
+              <option value="e-greedy" selected>e-greedy</option>
+              <option value="random">random</option>
+            </select>
+          </div><br/>
+          <div>
+            <b>Steps:</b><br/>
+            <input id="sim-steps" type="text" value="500" size="1"/> 
+          </div><br/><br/><br/>
+          <button type="button" id="sim-run">Run</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9">
+    <div class="mab-graph">
+      <div class="panel panel-default" id="mab-panel-graph">
+        <div class="panel-heading">Simulator</div>
+        <div class="panel-body">
+          <div id="sim-graph"></div>
+          <div id="sim-legend"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
