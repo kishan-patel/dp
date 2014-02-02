@@ -1,0 +1,45 @@
+<% include index.html -%>
+<script src="js/live.js"></script>
+<script src="http://localhost:5000/socket.io/socket.io.js"></script>
+<div class="row">
+  <div class="col-md-3">
+    <div class="mab-filter">
+      <div class="panel panel-default" id="mab-panel-filter">
+        <div class="panel-heading">Filters</div>
+          <div class="panel-body">
+		<table class="table">
+			<tbody>
+  			<tr>
+				<td><b>Type</b></td>
+				<td><input type="radio" name="fu-graph-type" value="line" class="fu-graph-type" checked> Line<br/>
+       				    <input type="radio" name="fu-graph-type" value="bar" class="fu-graph-type"> Bar<br/>
+				</td>
+			</tr>
+			<tr>
+				<td><b>Arms</b></td>
+				<td><div id="fu-arm-checkboxes-holder">None</div>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	   </div>
+	</div>
+	</div>
+	</div>
+  <div class="col-md-9">
+    <div class="mab-graph">
+      <div class="panel panel-default" id="mab-panel-graph">
+        <div class="panel-heading">File data</div>
+        <div class="panel-body">
+          <b>ID</b>&nbsp<input type="text" id="live-id" size="1"/>
+          <button type="button" id="connect-button" class="btn btn-sm btn-primary">Connect</button>
+          <a href="/send" target="_blank">Data Client</a>
+          &nbsp(start the data client and enter its id here to see live stream)<br/>
+          <div id="live-graph"></div>
+          <div id="live-legend"></div> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
