@@ -96,7 +96,7 @@
        });
        xAxis.render();
      }else{
-       var xAxis = new Rickshaw.Graph.Axis.Time({
+       var xAxis = new Rickshaw.Graph.Axis.X({
          graph: graph,
        });
        xAxis.render();

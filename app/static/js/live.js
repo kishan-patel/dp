@@ -1,40 +1,48 @@
+var socket; 
+var dataClientId; 
+var graph; 
+var graphCreated = false; 
+var graphSeries = [];
 
-function connectionMngr(){
-  var connections = {};
-  var idCounter = 0;
+function initEvents(){
+  socket.on("connect", function(){
+    socket.emit("browser_connect", dataClientId);
+  });
 
-  function addConnection(id, socket){
-    connections[id] = socket;
-  }
-
-  function removeConnection(id){
-    delete connections[id];
-  }
-
-  this.connection = function(){
-    var socket;
-    var id;
-    var graph;
-
-    function updateGraph(){
+  socket.on('update_graph', function(series){
+    if(!graphCreated){
+      var palette = new Rickshaw.Color.Palette();
+      for(var i=0; i<series.length; i++){
+        graphSeries.push({"name":series[i].name, "color":palette.color(), "data":series[i].data});     
+      }
+      $("#live-graph").empty();
+      $("#live-legend").empty();
+      graph = GraphUtil.createGraph("line", graphSeries, "standard", "live-graph","live-legend");
+      graph.render();
+      graphCreated = true;
+    }else{
+      for(var i=0; i<series.length; i++){
+        for(var j=0; j<graphSeries.length; j++){
+          if(series[i].name == graphSeries[j].name){
+            graphSeries[j].data = series[i].data;
+            break;
+          }
+        }
+      }
+      graph.update();
     }
-
-    this.start = function(id){
-    }
-  }
-}
-
-function listen(io){
-
+  });
 }
 
 $(document).ready(function(){
-  var cMngr = new connectionMngr();
-  var graph = GraphUtil.createGraph("line", [{data:[{x:0, y:0}]}], "standard", "live-graph", "live-legend");
+  graph = GraphUtil.createGraph("line", [{data:[{x:0, y:0}]}], "standard", "live-graph", "live-legend");
   graph.render();
 
   $("#connect-button").click(function(evt){
-    debugger;
-    var id = $("#live-id")[0].value;
+    dataClientId = $("#live-id")[0].value;
+    if(dataClientId != ""){
+      socket = io.connect('http://localhost:5000');
+      initEvents();
+    }
   });
 });
