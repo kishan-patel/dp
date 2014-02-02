@@ -46,8 +46,9 @@ var connectionsCounter = 0;
 io.sockets.on('connection', function(socket){
 
   socket.on('data_client_connect', function(){
-    dataClients.push({"id":connectiosnCounter, "dataSocket":socket, "browserSockets":[]});
-    socket.emit('whats_my_id', id);
+    console.log("data client connected");
+    dataClients.push({"id":connectionsCounter, "dataSocket":socket, "browserSockets":[]});
+    socket.emit('whats_my_id', connectionsCounter);
     connectionsCounter++;
   });
 
@@ -67,15 +68,15 @@ io.sockets.on('connection', function(socket){
     }
   });
 
-  socket.on('live_data', function(dataObj){
+  socket.on('live_data', function(obj){
     //Update appropriate browsers when the come in
     var browserSockets;
-
+    
     for(var i=0; i<dataClients.length; i++){
-      if(dataClients[i].id == dataObj.id){
+      if(dataClients[i].id == obj.id){
         browserSockets = dataClients[i].browserSockets;
         for(var j=0; j<browserSockets.length; j++){
-          browserSockets[j].emit('update_graph', dataObj.data);
+          browserSockets[j].emit('update_graph', obj.series);
         }
         break;  
       }

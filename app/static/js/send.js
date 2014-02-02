@@ -1,40 +1,59 @@
+var series = [{"name":1, "data":[]}, {"name":2, "data":[]}, {"name":3, "data":[]}];
+var ARM_1_CONST = 0.9;
+var ARM_2_CONST = 0.5;
+var ARM_3_CONST = 0.3;
+var timeStep = 0;
 
-function connectionMngr(){
-  var connections = {};
-  var idCounter = 0;
+function randomProbBetweenRange(min, max){
+  var min2 = min*10;
+  var max2 = max*10;
 
-  function addConnection(id, socket){
-    connections[id] = socket;
-  }
-
-  function removeConnection(id){
-    delete connections[id];
-  }
-
-  this.connection = function(){
-    var socket;
-    var id;
-    var graph;
-
-    function updateGraph(){
-    }
-
-    this.start = function(id){
-    }
-  }
+  return (Math.random() * (max2 - min2) + min2)/10;
 }
 
-function listen(io){
-
+function initSeries(){
+  for(var i=0; i<100; i++){
+    timeStep++;
+    series[0]["data"].push({"x": i, "y": randomProbBetweenRange(0.8, 0.95)});
+    series[1]["data"].push({"x": i, "y": randomProbBetweenRange(0.75, 0.90)});
+    series[2]["data"].push({"x": i, "y": randomProbBetweenRange(0.65, 0.80)});
+  }
 }
 
 $(document).ready(function(){
-  var cMngr = new connectionMngr();
-  var graph = GraphUtil.createGraph("line", [{data:[{x:0, y:0}]}], "standard", "live-graph", "live-legend");
-  graph.render();
+  var socket = io.connect('http://localhost:5000');
+  var myId;
+  var dataUpdater;
 
-  $("#connect-button").click(function(evt){
-    debugger;
-    var id = $("#live-id")[0].value;
+  initSeries();
+  debugger;
+
+  socket.on("connect", function(){
+    socket.emit("data_client_connect");
+  });
+
+  socket.on("whats_my_id", function(id){
+    myId = id;
+    $("#my-id").append(id);
+  });
+
+  $("#start-send-btn").click(function(evt){
+    dataUpdater = setInterval(function(){
+      series[0]["data"].shift();
+      series[1]["data"].shift();
+      series[2]["data"].shift();
+
+      series[0]["data"].push({"x":timeStep, "y": randomProbBetweenRange(0.8, 0.95)});
+      series[1]["data"].push({"x":timeStep, "y": randomProbBetweenRange(0.75, 0.90)});
+      series[2]["data"].push({"x":timeStep, "y": randomProbBetweenRange(0.65, 0.80)});
+      socket.emit('live_data', {"id": myId, "series": series});
+      timeStep++;
+    }, 3000);
+  });
+
+  $("#stop-send-btn").click(function(evt){
+    if(dataUpdater){
+      clearInterval(dataUpdater);
+    }
   });
 });
