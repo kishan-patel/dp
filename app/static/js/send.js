@@ -48,7 +48,7 @@ $(document).ready(function(){
       series[2]["data"].push({"x":timeStep, "y": randomProbBetweenRange(0.65, 0.80)});
       socket.emit('live_data', {"id": myId, "series": series});
       timeStep++;
-    }, 3000);
+    }, 2000);
   });
 
   $("#stop-send-btn").click(function(evt){

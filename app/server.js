@@ -46,10 +46,9 @@ var connectionsCounter = 0;
 io.sockets.on('connection', function(socket){
 
   socket.on('data_client_connect', function(){
-    console.log("data client connected");
+    connectionsCounter++;
     dataClients.push({"id":connectionsCounter, "dataSocket":socket, "browserSockets":[]});
     socket.emit('whats_my_id', connectionsCounter);
-    connectionsCounter++;
   });
 
   socket.on('browser_connect', function(id){
