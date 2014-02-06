@@ -1,6 +1,6 @@
 {
   "main": "server.js",
-  "name": "MAB Dashboard",
+  "name": "MAB-Dashboard",
   "scripts": {
     "start": "node app/server.js"
   },
