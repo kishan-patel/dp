@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MAB Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+  <link type="text/css" rel="stylesheet" href="css/bootstrap-theme.min.css"/>
+  <link type="text/css" rel="stylesheet" href="css/graph.css"/>
+  <link type="text/css" rel="stylesheet" href="css/detail.css"/>
+  <link type="text/css" rel="stylesheet" href="css/legend.css"/>
+  <link type="text/css" rel="stylesheet" href="css/app.css"/>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/d3.v3.js"></script>
+  <script src="js/rickshaw.js"></script>
+  <script src="js/fileReader.js"></script>
+  <script src="js/graphUtil.js"></script>
+  <script src="js/dataUtil.js"></script>
+  <script src="js/agents.js"></script>
+  <script src="js/bandits.js"></script>
+</head>
+<body>
+  <div class="navbar navbar-inverse navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/file">MAB Plots</a>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="/file">File upload</a>
+        </li>
+        <li>
+          <a href="/simulator">Simulator</a>
+        </li>
+        <li>
+          <a href="/live">Live stream</a>
+        </li>
+        <li>
+          <a href="/api">API</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "main": "server.js",
+  "name": "MAB-Dashboard",
+  "engines": {
+    "node": ">= 0.6.0",
+    "npm": ">= 1.0.0"
+  },
+  "dependencies": {
+    "ejs-locals": "1.0.2",
+    "express": "3.4.7",
+    "express-partials": "0.1.1",
+    "socket.io": "0.9.16",
+    "mongojs": "0.10.0"
+  },
+  "devDependencies": {},
+  "bundleDependencies": [],
+  "private": true
+}
+

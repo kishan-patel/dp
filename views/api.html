@@ -1,0 +1,72 @@
+<% include index.html %>
+<div class="container">
+<div class="row">
+<div class="col-md-9">
+<h1>API</h1>
+
+<h3>Overview</h3>
+
+The live stream feature is implemented using websockets (uses Socket.io).
+
+
+<h3>Sender</h3>
+<h4>Establishing a connection and sending data</h4>
+
+The code show below demonstrates how a sender would connect to the application
+in order to send data. Upon establishing a connection, the sender is required to submit a
+sender event, which let's the application distinguish between sender and viewer
+connections.<br/> 
+
+<div class="panel panel-default">
+  <div class="panel-body">
+var socket = io.connect("http://dp-kpatel.rhcloud.com:8000");<br/><br/> 
+
+socket.on("connect", function(){<br/>
+  &nbspsocket.emit("sender");<br/>
+});<br/><br/>
+
+socket.emit("live_data", your_data);<br/>
+  </div>
+</div>
+
+
+<h3>Viewer</h3> 
+<h4>Viewing the sent data</h4> 
+
+Each sender will be assigned an id upon establishing a connection (i.e. once they emit the sender event). 
+As a viewer, in order to view the data associated with a particular sender, you need to enter the sender id <a href="/live">here</a>. 
+Once this action is completed, the graph will update automatically.
+
+
+
+<h3>Data format</h3>  
+The format of the data accepted from the sender is described below.<br/>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+&nbsp&nbsp{<br/>
+  &nbsp&nbsp&nbsp<b>"id"</b>: sender_id,<br/>
+  &nbsp&nbsp&nbsp<b>"data"</b>: [{<br/>
+  &nbsp&nbsp&nbsp&nbsp <b>"alternative"</b>: name of arm,<br/>
+  &nbsp&nbsp&nbsp&nbsp <b>"time"</b>: UTC time,<br/>
+  &nbsp&nbsp&nbsp&nbsp <b>"reward"</b>: number between [0,1]<br/>
+  &nbsp&nbsp&nbsp&nbsp}]<br/>
+&nbsp&nbsp}<br/>
+  </div>
+</div>
+
+<b>sender_id</b>: This is a value that will be assigned to the sender upon establishing a websocket connection.<br/>
+
+<b>data</b>: An array that contains objects which hold information about the rewards earned for a particular arm at a given timestep.<br/>
+
+<b>alternative</b>: The name of the arm to which the reward is associated.<br/>
+
+<b>time</b>: Describes the time when the given reward was observed.<br/> 
+
+<b>reward</b>: A number between [0,1] which represents the reward earned at a given time step.
+
+</div>
+</div>
+</div>
+
+
