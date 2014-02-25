@@ -82,7 +82,8 @@ function agents(){
         var xBar, bound;
 
         for(var j=0; j<noArms; j++){
-          xBar = totalWins/played[j];
+          //xBar = totalWins/played[j];
+          xBar = wins[j]/played[j];
           bound = Math.sqrt((2*Math.log(timesPlayed))/played[j]);
           score = xBar + bound
 

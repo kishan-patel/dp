@@ -70,7 +70,7 @@ function simulator(){
         if (arm == "overall_max_score")
           break;
         graphData.push({
-          name: arm+"-"+agentsInfo[i]["type"],
+          name: parseInt(arm)+1+"-"+agentsInfo[i]["type"],
           color: simColorPalette.color(),
           data: tmpData[arm]
         })
