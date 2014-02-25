@@ -6,26 +6,22 @@
 
 <h3>Overview</h3>
 
-The live stream feature is implemented using websockets (uses Socket.io).
+The sections below describe how you can send data to the MAB dashboard so that the 
+results will be visible on a graph.
 
 
 <h3>Sender</h3>
-<h4>Establishing a connection and sending data</h4>
+<h4>Sending a JSON object through a POST request</h4>
 
-The code show below demonstrates how a sender would connect to the application
-in order to send data. Upon establishing a connection, the sender is required to submit a
-sender event, which let's the application distinguish between sender and viewer
-connections.<br/> 
+Each sender is uniquely identified by an id. Thus, prior to sending data, 
+the sender must acquire an id from <a href="/get-id">here</a>. Once the id is received,
+the JSON object (the format is show below) can be submitted to: http://dp-kpatel.rhcloud.com/send. 
+The example show below uses the curl command to send the JSON object (which is stored in the file) to 
+the HTTP enpoint mentioned previously.
 
 <div class="panel panel-default">
   <div class="panel-body">
-var socket = io.connect("http://dp-kpatel.rhcloud.com:8000");<br/><br/> 
-
-socket.on("connect", function(){<br/>
-  &nbspsocket.emit("sender");<br/>
-});<br/><br/>
-
-socket.emit("live_data", your_data);<br/>
+    curl -H 'Content-Type: application/json' -d @data.json http://dp-kpatel.rhcloud.com/send
   </div>
 </div>
 
@@ -33,9 +29,8 @@ socket.emit("live_data", your_data);<br/>
 <h3>Viewer</h3> 
 <h4>Viewing the sent data</h4> 
 
-Each sender will be assigned an id upon establishing a connection (i.e. once they emit the sender event). 
 As a viewer, in order to view the data associated with a particular sender, you need to enter the sender id <a href="/live">here</a>. 
-Once this action is completed, the graph will update automatically.
+Once this action is completed, the graph will update automatically each time data comes in from this sender.
 
 
 

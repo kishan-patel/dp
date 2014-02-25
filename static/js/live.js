@@ -2,35 +2,26 @@ var socket;
 var dataClientId; 
 var graph; 
 var graphCreated = false; 
-var graphSeries = [];
+//var graphSeries = [];
 
 function initEvents(){
   socket.on("connect", function(){
-    socket.emit("browser_connect", dataClientId);
+    socket.emit("viewer_connect", dataClientId);
   });
 
   socket.on('update_graph', function(series){
-    if(!graphCreated){
-      var palette = new Rickshaw.Color.Palette();
-      for(var i=0; i<series.length; i++){
-        graphSeries.push({"name":series[i].name, "color":palette.color(), "data":series[i].data});     
-      }
-      $("#live-graph").empty();
-      $("#live-legend").empty();
-      graph = GraphUtil.createGraph("line", graphSeries, "standard", "live-graph","live-legend");
-      graph.render();
-      graphCreated = true;
-    }else{
-      for(var i=0; i<series.length; i++){
-        for(var j=0; j<graphSeries.length; j++){
-          if(series[i].name == graphSeries[j].name){
-            graphSeries[j].data = series[i].data;
-            break;
-          }
-        }
-      }
-      graph.update();
+    var palette = new Rickshaw.Color.Palette();
+    var names = Object.keys(series);
+    var graphSeries = [];
+    for(var arm in series){
+      if(arm != "times_played" && arm != "max_score")
+        graphSeries.push({"name":arm, "color":palette.color(), "data":series[arm]["data"]});
     }
+    $("#live-graph").empty();
+    $("#live-legend").empty();
+    graph = GraphUtil.createGraph("line", graphSeries, "standard", "live-graph","live-legend", series["max_score"]+0.5);
+    graph.render();
+    graphCreated = true;
   });
 }
 

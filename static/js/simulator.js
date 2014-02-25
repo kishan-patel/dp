@@ -42,6 +42,7 @@ function simulator(){
 
   this.runSimulation = function(){
     var graphData = [];
+    var banditData = [];
 
     var steps = getStepsInfo();
     
@@ -49,24 +50,38 @@ function simulator(){
     //E.g. Bernoulli 0.9 with 500 steps
     var armsInfo = getArmsInfo();
     for(var i=0; i<armsInfo.length; i++){
-      graphData.push(bndts.runSim(steps, armsInfo[i].type, armsInfo[i].prob, i+1, color));    
+      banditData.push(bndts.runSim(steps, armsInfo[i].type, armsInfo[i].prob, i+1, color));    
     }
     
     //For each agent, we run the simulation.
     //E.g. UCB1
     var agentsInfo = getAgentsInfo();
+    var simColorPalette = new Rickshaw.Color.Palette();
+    var tmpData = {}
+    var overallMaxScore = 0;
     var simColor;
     for(var i=0; i<agentsInfo.length; i++){
-      simColor = palette.color();
-      graphData.push(agnts.runSim(agentsInfo[i].type, steps, armsInfo.length, 
-                                     graphData, simColor));
+      tmpData = agnts.runSim(agentsInfo[i].type, steps, armsInfo.length, 
+                                     banditData, simColor);
+      if(overallMaxScore < tmpData["overall_max_score"]){
+        overallMaxScore = tmpData["overall_max_score"];
+      }
+      for(var arm in tmpData){
+        if (arm == "overall_max_score")
+          break;
+        graphData.push({
+          name: arm+"-"+agentsInfo[i]["type"],
+          color: simColorPalette.color(),
+          data: tmpData[arm]
+        })
+      }
     }
 
     //Create the graph representing the simulation
     $('#sim-graph').empty();
     $('#sim-legend').empty();
     graph = GraphUtil.createGraph("line", graphData, 
-                                         "standard", "sim-graph", "sim-legend");
+                                         "standard", "sim-graph", "sim-legend", overallMaxScore+0.5);
     graph.render();
     
   }

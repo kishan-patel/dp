@@ -77,10 +77,12 @@
      return map[n];
    } 
 
-   GraphUtil.createGraph = function(graphType, data, dataType, graphId, legendId){
+   GraphUtil.createGraph = function(graphType, data, dataType, graphId, legendId, max){
+     if(!max)
+       max = 1.2;
      var graph = new Rickshaw.Graph({
        element: document.getElementById(graphId),
-       max: dataType != "timestamp" ? 1.2 : 0,
+       max: dataType != "timestamp" ? max : 0,
        min: dataType != "timestamp" ? -0.1 : -0.0001,
        renderer: graphType,
        series: data,

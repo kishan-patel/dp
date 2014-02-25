@@ -1,0 +1,110 @@
+{
+    "sender_id": 1,
+    "data": [
+        {
+            "alternative": 1,
+            "time": 25022014700,
+            "rewards": 1
+        },
+        {
+            "alternative": 2,
+            "time": 25022014700,
+            "rewards": 0
+        },
+        {
+            "alternative": 2,
+            "time": 25022014700,
+            "rewards": 1
+        },
+        {
+            "alternative": 1,
+            "time": 25022014700,
+            "rewards": 1
+        },
+        {
+            "alternative": 1,
+            "time": 25022014700,
+            "rewards": 1
+        },
+        {
+            "alternative": 1,
+            "time": 25022014700,
+            "rewards": 0
+        },
+        {
+            "alternative": 1,
+            "time": 25022014700,
+            "rewards": 1
+        },
+        {
+            "alternative": 2,
+            "time": 25022014700,
+            "rewards": 1
+        },
+        {
+            "alternative": 2,
+            "time": 25022014700,
+            "rewards": 1
+        },
+        {
+            "alternative": 1,
+            "time": 25022014700,
+            "rewards": 1
+        },
+        {
+            "alternative": 1,
+            "time": 25022014700,
+            "rewards": 1
+        },
+        {
+            "alternative": 2,
+            "time": 25022014700,
+            "rewards": 1
+        },
+        {
+            "alternative": 2,
+            "time": 25022014700,
+            "rewards": 0
+        },
+        {
+            "alternative": 1,
+            "time": 25022014700,
+            "rewards": 1
+        },
+        {
+            "alternative": 2,
+            "time": 25022014700,
+            "rewards": 1
+        },
+        {
+            "alternative": 1,
+            "time": 25022014700,
+            "rewards": 1
+        },
+        {
+            "alternative": 1,
+            "time": 25022014700,
+            "rewards": 0
+        },
+        {
+            "alternative": 1,
+            "time": 25022014700,
+            "rewards": 1
+        },
+        {
+            "alternative": 2,
+            "time": 25022014700,
+            "rewards": 1
+        },
+        {
+            "alternative": 2,
+            "time": 25022014700,
+            "rewards": 0
+        },
+        {
+            "alternative": 2,
+            "time": 25022014700,
+            "rewards": 0
+        }
+    ]
+}
