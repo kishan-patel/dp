@@ -1,110 +1,110 @@
 {
-    "sender_id": 1,
+    "sender_id": "l1oFC61K9",
     "data": [
         {
             "alternative": 1,
             "time": 25022014700,
-            "rewards": 1
+            "reward": 1
         },
         {
             "alternative": 2,
             "time": 25022014700,
-            "rewards": 0
+            "reward": 0
         },
         {
             "alternative": 2,
             "time": 25022014700,
-            "rewards": 1
+            "reward": 1
         },
         {
             "alternative": 1,
             "time": 25022014700,
-            "rewards": 1
+            "reward": 1
         },
         {
             "alternative": 1,
             "time": 25022014700,
-            "rewards": 1
+            "reward": 1
         },
         {
             "alternative": 1,
             "time": 25022014700,
-            "rewards": 0
+            "reward": 0
         },
         {
             "alternative": 1,
             "time": 25022014700,
-            "rewards": 1
+            "reward": 1
         },
         {
             "alternative": 2,
             "time": 25022014700,
-            "rewards": 1
+            "reward": 1
         },
         {
             "alternative": 2,
             "time": 25022014700,
-            "rewards": 1
+            "reward": 1
         },
         {
             "alternative": 1,
             "time": 25022014700,
-            "rewards": 1
+            "reward": 1
         },
         {
             "alternative": 1,
             "time": 25022014700,
-            "rewards": 1
+            "reward": 1
         },
         {
             "alternative": 2,
             "time": 25022014700,
-            "rewards": 1
+            "reward": 1
         },
         {
             "alternative": 2,
             "time": 25022014700,
-            "rewards": 0
+            "reward": 0
         },
         {
             "alternative": 1,
             "time": 25022014700,
-            "rewards": 1
+            "reward": 1
         },
         {
             "alternative": 2,
             "time": 25022014700,
-            "rewards": 1
+            "reward": 1
         },
         {
             "alternative": 1,
             "time": 25022014700,
-            "rewards": 1
+            "reward": 1
         },
         {
             "alternative": 1,
             "time": 25022014700,
-            "rewards": 0
+            "reward": 0
         },
         {
             "alternative": 1,
             "time": 25022014700,
-            "rewards": 1
+            "reward": 1
         },
         {
             "alternative": 2,
             "time": 25022014700,
-            "rewards": 1
+            "reward": 1
         },
         {
             "alternative": 2,
             "time": 25022014700,
-            "rewards": 0
+            "reward": 0
         },
         {
             "alternative": 2,
             "time": 25022014700,
-            "rewards": 0
+            "reward": 0
         }
     ]
 }
