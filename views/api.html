@@ -11,11 +11,22 @@ results will be visible on a graph.
 
 
 <h3>Sender</h3>
+
+<h4>Obtaining a sender id</h4>
+
+Each sender is uniquely identified by an id. Later, when the viewer wants to see data
+for a particular sender, they can use this id as part of the url. In order to obtain an id,
+make a GET request to <b>http://dp-kpatel.rhcloud.com/get-id</b>.
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    curl http://dp-kpatel.rhcloud.com/get-id
+  </div>
+</div>
+
 <h4>Sending a JSON object through a POST request</h4>
 
-Each sender is uniquely identified by an id. Thus, prior to sending data, 
-the sender must acquire an id from <a href="/get-id">here</a>. Once the id is received,
-the JSON object (the format is show below) can be submitted to: http://dp-kpatel.rhcloud.com/send. 
+Once the id is received, the JSON object (the format is show below) can be submitted to: <b>http://dp-kpatel.rhcloud.com/send</b>. 
 The example show below uses the curl command to send the JSON object (which is stored in the file) to 
 the HTTP enpoint mentioned previously.
 
@@ -29,10 +40,8 @@ the HTTP enpoint mentioned previously.
 <h3>Viewer</h3> 
 <h4>Viewing the sent data</h4> 
 
-As a viewer, in order to view the data associated with a particular sender, you need to enter the sender id <a href="/live">here</a>. 
-Once this action is completed, the graph will update automatically each time data comes in from this sender.
-
-
+As a viewer, in order to view the data associated with a particular sender, you need need to submit the senders id as part 
+of a get parameter. So, to view data sent from a sender with <b>id = l1oFC61K9</b>, you'd go to <b>http://dp-kpatel.rhcloud.com/live?id=l1oFC61K9</b>. 
 
 <h3>Data format</h3>  
 The format of the data accepted from the sender is described below.<br/>
