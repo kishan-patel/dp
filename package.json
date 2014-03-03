@@ -10,7 +10,10 @@
     "express": "3.4.7",
     "express-partials": "0.1.1",
     "socket.io": "0.9.16",
-    "mongojs": "0.10.0"
+    "mongojs": "0.10.0",
+    "mongoose": "3.8.8",
+    "shortid": "2.0.0",
+    "url": "0.7.9"
   },
   "devDependencies": {},
   "bundleDependencies": [],

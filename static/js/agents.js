@@ -1,196 +1,175 @@
 function agents(){
-  this.runSim = function(type, steps, noArms, data, color){
-    switch(type){
+  this.runSim = function(agent, steps, bandits){
+    switch(agent){
       case "UCB1":
-        return this.UCB1(steps, noArms, data, color);
+        return getUCBSimScores(steps, bandits);
+        break;
       case "e-greedy":
-        return this.eGreedy(steps, noArms, data, color);
-      case "random":
-        return this.random(steps, noArms, data, color);
+        return getEGreedySimScores(steps, bandits);
+        break;
       default:
-        return;
+        return getUCBSimScores(steps, bandits);
+        break;
     }
   }
-  this.UCB1df = function(steps, data){
-    var arms = [];
-    for(var i=0; i<data.length; i++){
-      arms.push(i+1);
-    }
-    var ucbData = [], totalTimesPlayed=0, xBar, bound, score, maxScore, positionOfMaxScore, overallMaxScore=0;
 
-    for(var i=0; i<data.length; i++){
-      ucbData.push({"alternative":arms[i], "rewards":0, "times_played":0, "data":[]});
-    }
+  this.getUCBScores = function(newData, oldData){
+    var totalTimesPlayed = oldData.times_played;
+    var maxScore = oldData.max_score;
+    var alternatives = oldData.alternatives;
+    var armPlayedNew, armPlayedOld, result, ucbScore, meanScore;
 
-    for(var i=0; i<steps; i++){
-      totalTimesPlayed++;  
-      maxScore = 0;
-      score = 0;
-      positionOfMaxScore = 0;
-      
-      //Find the max ucb score, that's the arm we're going to pick.
-      for(var j=0; j<data.length; j++){
-        //ucbData[j]["rewards"] += data[j][i]["reward"];
-        xBar = (ucbData[j]["rewards"]+data[j][i]["reward"])/(ucbData[j]["times_played"]+1);
-        bound = 2*Math.sqrt(Math.log(totalTimesPlayed)/(ucbData[j]["times_played"]+1));
-        score = xBar + bound;
-        if(score > maxScore){
-          maxScore = score;
-          if(maxScore > overallMaxScore){
-            overallMaxScore = score;
-          }
-          positionOfMaxScore = j;
+    for(var i=0; i<newData.length; i++){
+      totalTimesPlayed++;        
+      armPlayedNew = newData[i].alternative;
+      result = newData[i].reward;
+
+      //Update the information for the alternative that was chosen at timestep i.
+      for(var j=0; j<alternatives.length; j++){
+        if(alternatives[j].alternative == armPlayedNew){
+          armPlayedOld = alternatives[j];
+          break;
         }
       }
+      armPlayedOld.times_played+=1
+      armPlayedOld.rewards+=result;
 
-      //Update the rewards of the arm that was picked.
-      ucbData[positionOfMaxScore]["rewards"] += data[positionOfMaxScore][i]["reward"];
-      ucbData[positionOfMaxScore]["times_played"]++;
-
-      //update the ucb score of all of the arms.
-      for(var j=0; j<data.length; j++){
-        xBar = ucbData[j]["rewards"]/(ucbData[j]["times_played"]+1);
-        bound = 2*Math.sqrt(Math.log(totalTimesPlayed)/(ucbData[j]["times_played"]+1));
-        score = xBar + bound;
-        ucbData[j]["data"].push({"x":i, "y":score});  
-      }
-    }
-
-    return {"data":ucbData, "overall_max_score":overallMaxScore};
-  },
-  this.UCB1= function(steps, noArms, series, color){
-    var currChoice = 0;
-    var timesPlayed = 0;
-    var totalWins = 0;
-    var played = [];
-    var wins = [];
-    var simData = {};
-    var data = [];
-    var overallMaxScore = 0;
-
-    for(var j=0; j<noArms; j++){
-      simData[j] = [];
-    }
-    for(var i=0; i<steps; i++){
-      timesPlayed++; 
-      if(played.length < noArms){
-        currChoice = i;
-        played[currChoice] = 1;
-      }else{
-        var score = 0;
-        var maxScore = 0;
-        var xBar, bound;
-
-        for(var j=0; j<noArms; j++){
-          //xBar = totalWins/played[j];
-          xBar = wins[j]/played[j];
-          bound = Math.sqrt((2*Math.log(timesPlayed))/played[j]);
-          score = xBar + bound
-
-          if(score > maxScore){
-            if(overallMaxScore < score){
-              overallMaxScore = score;
-            }
-            maxScore = score;
-            currChoice = j;
-          }
-
-          simData[j].push({x:i, y:score});
-        }
-      }
-
-      played[currChoice]++;
-      data = $.grep(series, function(e){ return e.name == currChoice+1+""})[0].data;
-      if(i<noArms){
-        wins[currChoice] = 0;
-        for(j=0; j<noArms.length; j++){
-          if(j=i){
-            simData[j].push({x:i, y:data[i].win});
-          }else{
-            simData[j].push({x:i, y:0});
-          }
-        }
-      }
-      if(data[i].win == "1"){
-        totalWins++;
-        wins[currChoice]++;
-      }
-      //simData.push({x:i, y:totalWins/timesPlayed});
-    }
-    simData["overall_max_score"]=overallMaxScore;
-    return simData;
-    //return {"name": "UCB1", "color":color, "data":simData};
-  }
-
-  this.eGreedy = function(steps, noArms, series, color){
-    var currChoice = "";
-    var timesPlayed = 0;
-    var totalWins = 0;
-    var noTimesBestPicked = 0;
-    var EG_CONST = 0.1;
-    var score = 0;
-    var played = [];
-    var wins = [];
-    var data = [];
-    var simData = [];  
-    var maxScore = 0;
-    var overallMaxScore = 0;
-
-    for(var j=0; j<noArms; j++){
-      simData[j] = [];
-    }
-
-    for(var i=0; i<steps; i++){
-      timesPlayed++;
-      if(played.length < noArms){
-        currChoice = i;
-        played[currChoice] = 1;
-      }else{
-        if(noTimesBestPicked/timesPlayed <  EG_CONST){
-          noTimesBestPicked++;
-          score = 0;
-          for(var j=0; j<noArms; j++){
-            if(wins[j] > score){
-              if(score > overallMaxScore){
-                overallMaxScore = score;
-              }
-              score[j] = wins[j];
-              currChoice = j;
-            }
-          }
+      //Update the UCB score of all other arms.
+      for(var j=0; j<alternatives.length; j++){
+        if(alternatives[j].times_played == 0){
+          ucbScore = 0;
+          meanScore = 0;
         }else{
-          currChoice = Math.floor(Math.random() * noArms);
+          ucbScore = alternatives[j].rewards/alternatives[j].times_played 
+                       + 2*Math.sqrt(Math.log(totalTimesPlayed)/alternatives[j].times_played);
+          meanScore = alternatives[j].rewards/alternatives[j].times_played;
         }
-        for(var j=0; j<noArms; j++){
-          simData[j].push({x:i, y:wins[currChoice]/played[currChoice]});
-        }
+        if(ucbScore > maxScore)
+            maxScore = ucbScore;
+        alternatives[j].ucb_scores.push({"x":totalTimesPlayed-1, "y":ucbScore, "utc_time":new Date()});
+        alternatives[j].mean_scores.push({"x":totalTimesPlayed-1, "y":meanScore, "utc_time":new Date()});
       }
-
-      played[currChoice]++;
-      data = $.grep(series, function(e){return e.name == currChoice+1+""})[0].data;
-      if(i<noArms){
-        wins[currChoice] = 0;
-        for(var j=0; j<noArms; j++){
-          if(j==i){
-            simData[j].push({x:i, y:data[i].win});
-          }else{
-            simData[j].push({x:i, y:0});
-          }
-        }
-      }
-      if(data[i].win == "1"){
-        totalWins++;
-        wins[currChoice]++;
-      }
-      //simData.push({x:i, y:totalWins/timesPlayed});
     }
 
-    simData["overall_max_score"]=overallMaxScore;
-    return simData;
-    //return {"name": "e-greedy", "color":color, "data":simData};
+    oldData.times_played = totalTimesPlayed;
+    oldData.max_score = maxScore;
+    //return {"times_played": timesPlayed, "max_score": maxScore, "data":old_data};
   }
 
-  this.random = function(steps, noArms, series, color){
+  function getMeanScores(newData, oldData){
+    var maxScore = oldData["max_score"];
+    var armPlayed, result, meanScore;
+
+    for(var i=0; i<newData.length; i++){
+      armPlayed = newData[i]["alternative"];
+      result = newData[i]["rewards"];
+
+      oldData[armPlayed]["times_played"]+=1;
+      oldData[armPlayed]["rewards"]+=result;
+
+      for(var arm in oldData){
+        if(arm == "times_played")
+          break;
+        if(oldData[arm]["times_played"] == 0)
+          meanScore = 0;
+        else
+          meanScore = oldData[arm]["rewards"]/oldData[arm]["times_played"]
+        if(meanScore > maxScore)
+          maxScore = meanScore
+        oldData[arm]["data"].push({"x":totalTimesPlayed-1, "y":meanScore});
+      }
+    }
+
+    return {"times_played": timesPlayed, "max_score": maxScore, "data":oldData};
+  }
+
+  function getUCBSimScores(steps, arms){
+    var played = [];
+    var wins = []
+    var ucbScores = {};
+    var rewards = [];
+    var ucbScore, maxScore=0, currentScore=0, bestChoice, totalTimesPlayed=0;
+
+    for(var i=0; i<arms.length; i++){
+      played[i] = 1;
+      rewards[i] = arms[i].getReward();
+      wins[i] = rewards[i];
+      ucbScores[i] = [];
+      played[i] = 1;
+    }
+
+    for(var i=0; i<steps; i++){
+      totalTimesPlayed++;
+
+      currentScore = 0;
+      bestChoice = 0;
+      for(var j=0; j<arms.length; j++){
+        ucbScore = rewards[j]/played[j] + Math.sqrt((2*Math.log(totalTimesPlayed))/played[j]);   
+        if(ucbScore > currentScore){
+          bestChoice = j;
+          currentScore = ucbScore;  
+          if(currentScore > maxScore){
+            maxScore = currentScore;  
+          }
+        }
+        ucbScores[j].push({x:i, y:ucbScore});
+
+      }
+
+     rewards[bestChoice]+=arms[bestChoice].getReward();
+     played[bestChoice]+=1;
+    }
+   
+    return {"max_score":maxScore, "all_scores":ucbScores};
+  }
+
+  function getEGreedySimScores(steps, arms){
+    var played = [];
+    var wins = [];
+    var eGreedyScores = {};
+    var rewards = [];
+    var ucbScore, maxScore=0, bestScore=0, bestChoice, totalTimesPlayed=0, noTimesBestPicked=0;
+    var EG_CONST = 0.9;
+
+    for(var i=0; i<arms.length; i++){
+      played[i] = 1;
+      rewards[i] = arms[i].getReward();
+      wins[i] = rewards[i];
+      eGreedyScores[i] = [];
+      played[1] = 1;
+    }
+
+    for(var i=0; i<steps; i++){
+      totalTimesPlayed++;
+
+      if(noTimesBestPicked/totalTimesPlayed < EG_CONST){
+        noTimesBestPicked++;
+        bestScore = 0;
+        for(var j=0; j<arms.length; j++){
+          eGreedyScore = rewards[j]/played[j];
+          if(eGreedyScore > bestScore){
+            bestChoice = j
+          }
+        }
+      }else{
+        bestChoice = Math.floor(Math.random()*arms.length);
+      }
+      
+      for(var j=0; j<arms.length; j++){
+        eGreedyScores[j].push({x:i, y:rewards[j]/played[j]});
+        if(rewards[j]/played[j] > maxScore){
+          maxScore = rewards[j]/played[j];
+        }
+      }
+
+      rewards[bestChoice]+=arms[bestChoice].getReward();
+      played[bestChoice]+=1;
+    }
+
+    return {"max_score":maxScore, "all_scores":eGreedyScores}
+  }
+
+  function getRandomSimScores(steps, noArms, series, color){
     var currChoice = "";
     var timesPlayed = 0;
     var totalWins = 0;
@@ -222,4 +201,9 @@ function agents(){
 
     return {"name": "random", "color":color, "data":simData};
   }
+}
+
+try{  
+  exports.agents = new agents(); 
+}catch(e){
 }

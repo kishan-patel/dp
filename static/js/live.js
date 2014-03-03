@@ -1,21 +1,27 @@
 var socket; 
-var dataClientId; 
+var senderId; 
 var graph; 
-var graphCreated = false; 
-//var graphSeries = [];
 
 function initEvents(){
   socket.on("connect", function(){
-    socket.emit("viewer_connect", dataClientId);
+    socket.emit("viewer_connect", senderId);
   });
 
   socket.on('update_graph', function(series){
     var palette = new Rickshaw.Color.Palette();
-    var names = Object.keys(series);
     var graphSeries = [];
-    for(var arm in series){
-      if(arm != "times_played" && arm != "max_score")
-        graphSeries.push({"name":arm, "color":palette.color(), "data":series[arm]["data"]});
+    var alternatives = series.alternatives
+    for(var i=0; i<alternatives.length; i++){
+      graphSeries.push({
+        "name": alternatives[i].alternative+" (UCB1)", 
+        "color": palette.color(), 
+        "data": alternatives[i].ucb_scores
+      });
+      graphSeries.push({
+        "name": alternatives[i].alternative+" (mean)",
+        "color": palette.color(),
+        "data": alternatives[i].mean_scores
+      });
     }
     $("#live-graph").empty();
     $("#live-legend").empty();
@@ -29,11 +35,7 @@ $(document).ready(function(){
   graph = GraphUtil.createGraph("line", [{data:[{x:0, y:0}]}], "standard", "live-graph", "live-legend");
   graph.render();
 
-  $("#connect-button").click(function(evt){
-    dataClientId = $("#live-id")[0].value;
-    if(dataClientId != ""){
-      socket = io.connect('https://dp-kpatel.rhcloud.com/');
-      initEvents();
-    }
-  });
+  senderId = $("#sender-id").text();
+  socket = io.connect('https://dp-kpatel.rhcloud.com/');
+  initEvents();
 });
