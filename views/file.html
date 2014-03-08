@@ -1,5 +1,10 @@
 <% include index.html -%>
-<script src="js/fileUpload.js"></script>
+<script>
+  $(document).ready(function(){
+    var fileInitializer = new initializer().fileInitialzer;
+    fileInitializer.init();
+  });
+</script>
 <div class="row">
   <div class="col-md-3">
     <div class="mab-filter">
@@ -14,8 +19,8 @@
                 </tr>
                 <tr>
 				  <td>  
-                    <input type="radio" name="fu-graph-type" value="line" class="fu-graph-type" checked>Line<br/>
-       				<input type="radio" name="fu-graph-type" value="bar" class="fu-graph-type">Bar<br/>
+                    <input type="radio" name="graph-type" value="line" class="graph-type" checked>Line<br/>
+       				<input type="radio" name="graph-type" value="bar" class="graph-type">Bar<br/>
 				  </td>
 			    </tr>
 			    <tr>
@@ -23,7 +28,7 @@
                 </tr>
                 <tr>
 				  <td>
-                    <div id="fu-arm-checkboxes-holder">None</div>
+                    <div id="arm-checkboxes-holder">None</div>
 				  </td>
 			    </tr>
 			    <tr>
@@ -31,7 +36,7 @@
                 </tr>
                 <tr>
 				  <td>
-			        <select id="fu-agent">
+			        <select id="agent">
           	     	  <option value="UCB1" selected>UCB1</option>
           			  <option value="e-greedy">e-greedy</option>
           			  <option value="random">Random</option>
@@ -43,15 +48,24 @@
                 </tr>
                 <tr>
 				  <td>
-                    <input id="fu-active-unactive" type="checkbox" name="active" value="active-unactive">Show
-        		    <select id="fu-arm-select-holder"></select>
+                    <input id="active-unactive" type="checkbox" name="active" value="active-unactive">Show
+        		    <select id="arm-select-holder"></select>
 				  </td>
 			    </tr>
+                <tr>
+                  <td><b>Graphs</b></td>
+                </tr>
+                <tr>
+                  <td>
+                    <input type="radio" name="number-graphs" value="single-graphs" class="number-graphs" checked>Single</br>
+                    <input type="radio" name="number-graphs" value="multiple-graphs" class="number-graphs">Multiple<br/>
+                  </td>
+                </tr>
 			  </tbody>
 		    </table>
 		  </div>
 		  <div class="pull-right pull-bottom"> 
-            <button type="button" id="fu-run" class="btn btn-primary">Apply</button></div>
+            <button type="button" id="apply-filters" class="btn btn-primary">Apply</button></div>
 	      </div>
         </div>    
       </div>
@@ -61,10 +75,10 @@
       <div class="panel panel-default" id="mab-panel-graph">
         <div class="panel-heading">File data</div>
         <div class="panel-body">
-          <input type="file" id="file-upload"/><br/>
-          <br/>
-          <div id="fu-graph"></div>
-          <div id="fu-legend"></div> 
+          <input type="file" id="file-upload"/>
+          <div id="graph-holder"></div>
+          <div id="legend-holder"></div><br/> 
+          <div id="range-holder"></div>
         </div>
       </div>
     </div>

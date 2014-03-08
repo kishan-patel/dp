@@ -77,7 +77,7 @@
      return map[n];
    } 
 
-   GraphUtil.createGraph = function(graphType, data, dataType, graphId, legendId, max){
+   GraphUtil.createGraph = function(graphType, data, dataType, graphId, legendId, rangeHolderId, max){
      if(!max)
        max = 1.2;
      var graph = new Rickshaw.Graph({
@@ -113,6 +113,15 @@
      hover = new Hover({
          graph: graph
      });
-     return graph;
+    
+     if(graphType == "line"){ 
+       debugger;
+       var preview = new Rickshaw.Graph.RangeSlider.Preview({
+         graph: graph,
+         element: document.getElementById(rangeHolderId)
+       });
+     }
+
+     graph.render();
    }
 }(window.GraphUtil = window.GraphUtil || {}));

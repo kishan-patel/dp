@@ -1,5 +1,10 @@
 <% include index.html -%>
-<script src="js/live.js"></script>
+<script>
+  $(document).ready(function(){
+    var liveInitializer = new initializer().liveInitializer;
+    liveInitializer.init();
+  });
+</script>
 <div class="row">
   <div class="col-md-3">
     <div class="mab-filter">
@@ -14,7 +19,7 @@
                 <tr>
 				  <td> 
                     <input type="radio" name="fu-graph-type" value="line" class="fu-graph-type" checked>Line<br/>
-       		        <input type="radio" name="fu-graph-type" value="bar" class="fu-graph-type"> Bar<br/>
+       		        <input type="radio" name="fu-graph-type" value="bar" class="fu-graph-type">Bar<br/>
 				  </td>
 			    </tr>
 			    <tr>
@@ -22,9 +27,18 @@
                 </tr>
                 <tr>
 				  <td>
-                    <div id="fu-arm-checkboxes-holder">None</div>
+                    <div id="arm-checkboxes-holder">None</div>
 				  </td>
 			    </tr>
+                <tr>
+                  <td><b>Graphs</b></td>
+                </tr>
+                <tr>
+                  <td>
+                    <input type="radio" name="number-graphs" value="single-graphs" class="number-graphs" checked>Single</br>
+                    <input type="radio" name="number-graphs" value="multiple-graphs" class="number-graphs">Multiple<br/>
+                  </td>
+                </tr>
 			  </tbody>
 		    </table>
 	      </div>
@@ -39,10 +53,10 @@
     <div class="mab-graph">
       <div class="panel panel-default" id="mab-panel-graph">
         <div class="panel-heading">Live data</div>
-        <div class="panel-body">
-          <br/><br/><br/>
-          <div id="live-graph"></div>
-          <div id="live-legend"></div> 
+        <div class="panel-body" id="graph-container">
+          <div id="graph-holder"></div>
+          <div id="legend-holder"></div><br/> 
+          <div id="range-holder"></div>
         </div>
       </div>
     </div>

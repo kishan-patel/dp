@@ -17,7 +17,9 @@ if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
   process.env.OPENSHIFT_APP_NAME;
 }
 
-mongoose.connect(connectionString);
+mongoose.connect(connectionString, function(err){
+  console.log(err);
+});
 
 var senderSchema = Schema({
   sender_id: {type: String, unique: true, index: true},

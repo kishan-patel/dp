@@ -1,5 +1,10 @@
 <% include index.html -%>
-<script src="js/simulator.js"></script>
+<script>
+  $(document).ready(function(){
+    var simInitializer = new initializer().simulatorInitializer;
+    simInitializer.init();
+  });
+</script>
 <div class="row">
   <div class="col-md-3">
     <div class="mab-filter">
@@ -14,7 +19,7 @@
                 </tr>
                 <tr>
 			      <td>
-                    <div id="sim-arms">
+                    <div id="arms">
                       Arm 1:&nbsp
 			          <select>
               	  	    <option value="Bernoulli" selected>Bernoulli</option>
@@ -33,7 +38,7 @@
                 </tr>
                 <tr>
 			      <td>
-                    <div id="sim-agents">
+                    <div id="agents">
                       Agent 1:&nbsp
 			          <select>
 			            <option value="UCB1" selected>UCB1</option>
@@ -54,14 +59,23 @@
                 </tr>
                 <tr>
            	      <td>
-                    <input id="sim-steps" type="text" value="500" size="1"/>
+                    <input id="steps" type="text" value="500" size="1"/>
                   </td>
 		        </tr>
+                <tr>
+                  <td><b>Graphs</b></td>
+                </tr>
+                <tr>
+                  <td>
+                    <input type="radio" name="number-graphs" value="single-graphs" class="number-graphs" checked>Single</br>
+                    <input type="radio" name="number-graphs" value="multiple-graphs" class="number-graphs">Multiple<br/>
+                  </td>
+                </tr>
 		      </tbody>
             </table>
           </div>
 	      <div class="pull-right pull-bottom">
-            <button type="button" class="btn btn-primary" id="sim-run">Apply</button>
+            <button type="button" class="btn btn-primary" id="apply-filters">Apply</button>
           </div>
 	    </div>
       </div>
@@ -72,9 +86,9 @@
       <div class="panel panel-default" id="mab-panel-graph">
         <div class="panel-heading">Simulator</div>
         <div class="panel-body">
-          <br/><br/><br/>
-          <div id="sim-graph"></div>
-          <div id="sim-legend"></div>
+          <div id="graph-holder"></div>
+          <div id="legend-holder"></div><br/>
+          <div id="range-holder"></div>
         </div>
       </div>
     </div>
