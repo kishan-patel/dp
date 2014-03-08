@@ -16,6 +16,14 @@ var viewers = {};
 var Sender = senderModel.Sender;
 var getUCBScores = agents.getUCBScores;
 
+//Load data for all senders.
+Sender.find(function(err, senderObjs){
+  for(var i=0; i<senderObjs.length; i++){
+    senders[senderObjs[i].sender_id] = {"viewers":[],"data":{}};
+    senders[senderObjs[i].sender_id]["data"] = senderObjs[i];
+  }
+});
+
 //App configurations
 app.set('views', __dirname +'/views');
 app.engine('.html', require('ejs-locals'));
@@ -59,18 +67,17 @@ app.get('/live', function(req, res){
 });
 
 app.post('/send', function(req, res){
-  debugger;
   var senderId = req.body["sender_id"];  
   var dataSent = req.body["data"];
   
   //Keeping track of which sender has connected.
   if(!senders[senderId]){
-    senders[senderId] = {"viewers":[]};
+    senders[senderId] = {"viewers":[], "data":{}};
   }
 
    //If this is the first time this data client is sending data, we 
   //initialise the information for each arm. 
-  if(!senders[senderId].data){
+  if(Object.keys(senders[senderId].data).length == 0){
     var distinctArms = [];
     var alternatives = [];
    
@@ -101,8 +108,12 @@ app.post('/send', function(req, res){
   //Run the ucb formula again on the new data.
   getUCBScores(dataSent, senders[senderId].data);
 
-  //TODO - save the sender information
-
+  //Save the data for the given sender.
+  senders[senderId].data.save(function (err, sender, count){
+    if(err){
+      console.log(err);
+    }
+  });
 
   //Broadcast the information to all of the viewers.
   var viewers = senders[senderId]["viewers"];
