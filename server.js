@@ -118,7 +118,7 @@ app.post('/send', function(req, res){
   //Broadcast the information to all of the viewers.
   var viewers = senders[senderId]["viewers"];
   for(var i=0; i<viewers.length; i++){
-    viewers[i].emit('update_graph', sender[senderId].data);
+    viewers[i].emit('update_graph', senders[senderId].data);
   }
 
   res.send(200);
