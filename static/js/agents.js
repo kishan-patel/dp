@@ -13,7 +13,22 @@ function agents(){
     }
   }
 
-  this.getUCBScores = function(newData, oldData){
+  this.getScores = function(agent, data){
+    switch(agent){
+      case "UCB":
+        return getUCBScores(data);
+        break;
+      case "e-greedy":
+        return getEGreedyScores(data);
+        break;
+      default:
+        return getUCBScores(data);
+        break;
+    }
+  }
+
+  this.getUCBLiveScores = function(newData, oldData){
+    debugger;
     var totalTimesPlayed = oldData.times_played;
     var maxScore = oldData.max_score;
     var alternatives = oldData.alternatives;
@@ -56,7 +71,7 @@ function agents(){
     //return {"times_played": timesPlayed, "max_score": maxScore, "data":old_data};
   }
 
-  function getMeanScores(newData, oldData){
+  function getMeanLiveScores(newData, oldData){
     var maxScore = oldData["max_score"];
     var armPlayed, result, meanScore;
 
@@ -81,6 +96,39 @@ function agents(){
     }
 
     return {"times_played": timesPlayed, "max_score": maxScore, "data":oldData};
+  }
+
+  /**
+    Description: Calculates the UCB scores for a particular arm given the results observed.
+    @method getUCBScores
+    @param data
+      -data is the results observed for an arm at each timestep
+      -the data object has the following key/value pairs:
+        played: 1 = played at time t, 0 = not played
+        win: the reward observed at time t if this arm was played 
+    @return {ucbScores, maxScore}
+      -the UCB scores calculated from the observed data
+      -the max score is returned to know what to set the height of the graph to
+  */
+  function getUCBScores(data){
+    var ucbScores = [];
+    var timesPlayed = 0;
+    var rewards = 0;
+    var score;
+
+    for(var i=0; i<data.length; i++){
+      timesPlayed += data[i].played;
+      rewards += data[i].reward;
+
+      if(timesPlayed > 0)
+        score = rewards/timesPlayed + Math.sqrt((2*Math.log(i+1)/timesPlayed));
+      else
+        score = 0;
+
+      ucbScores.push({"x":i, "y": score});
+    }
+
+    return ucbScores
   }
 
   function getUCBSimScores(steps, arms){

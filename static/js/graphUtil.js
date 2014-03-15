@@ -77,15 +77,30 @@
      return map[n];
    } 
 
-   GraphUtil.createGraph = function(graphType, data, dataType, graphId, legendId, rangeHolderId, max){
-     if(!max)
-       max = 1.2;
+   GraphUtil.createGraph = function(graphType, series, dataType, graphId, legendId, rangeHolderId,max){
+     //Determine what the max score is for the graph height.
+     var max = 1;
+     debugger;
+     for(var i=0; i<series.length; i++){
+       for(var j=0; j<series[i].data.length; j++){
+         if(series[i].data[j].y > max)
+           max = series[i].data[j].y; 
+       }
+     }
+
+     //Set the color for each arm
+     var palette = new Rickshaw.Color.Palette();
+     for(var i=0; i<series.length; i++){
+       series[i].color = palette.color();
+     }
+
+     //Create the graph
      var graph = new Rickshaw.Graph({
        element: document.getElementById(graphId),
-       max: dataType != "timestamp" ? max : 0,
-       min: dataType != "timestamp" ? -0.1 : -0.0001,
+       max: dataType != "timestamp" ? max+0.2: 0,
+       min: dataType != "timestamp" ? -0.001 : -0.0001,
        renderer: graphType,
-       series: data,
+       series: series,
        interpolation:'linear'
      });
      

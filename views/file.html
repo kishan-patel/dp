@@ -6,7 +6,7 @@
   });
 </script>
 <div class="row">
-  <div class="col-md-3">
+  <div class="col-md-4">
     <div class="mab-filter">
       <div class="panel panel-default" id="mab-panel-filter">
         <div class="panel-heading">Filters</div>
@@ -14,6 +14,12 @@
 		  <div class="table-responsive">
 		    <table class="table table-striped">
 			  <tbody>
+                <tr>
+                  <td><b>File</b></td>
+                </tr>
+                <tr>
+                  <td><input type="file" id="file-upload"></input></td>
+                </tr>
   			    <tr>
 				  <td><b>Type</b></td>
                 </tr>
@@ -37,9 +43,8 @@
                 <tr>
 				  <td>
 			        <select id="agent">
+                      <option vlaue="none">none</option>
           	     	  <option value="UCB1" selected>UCB1</option>
-          			  <option value="e-greedy">e-greedy</option>
-          			  <option value="random">Random</option>
         			</select>
 				  </td>
 			    </tr>
@@ -64,18 +69,15 @@
 			  </tbody>
 		    </table>
 		  </div>
-		  <div class="pull-right pull-bottom"> 
-            <button type="button" id="apply-filters" class="btn btn-primary">Apply</button></div>
-	      </div>
+          <center><button type="button" class="btn btn-primary" id="apply-filters">Apply</button></div></center>
         </div>    
       </div>
     </div>
-  <div class="col-md-9">
+  <div class="col-md-8">
     <div class="mab-graph">
       <div class="panel panel-default" id="mab-panel-graph">
         <div class="panel-heading">File data</div>
         <div class="panel-body">
-          <input type="file" id="file-upload"/><br/>
           <div id="graph-holder"></div><br/>
           <div id="range-holder"></div><br/>
           <div id="legend-holder"></div> 

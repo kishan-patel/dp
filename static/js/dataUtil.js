@@ -141,7 +141,7 @@
       history.push({
         "name": uniqueArms[i],
         "timesPlayed": 0,
-        "wins": 0
+        "rewards": 0
       });
       series.push({
         "name": uniqueArms[i],
@@ -167,7 +167,7 @@
         
       //Update the history
       if(tokens[1] == 1){
-        armRecord.wins++;
+        armRecord.rewards++;
         armRecord.timesPlayed++;
       }else{
         armRecord.timesPlayed++;
@@ -176,10 +176,10 @@
       //Add the current result to the series that will be returned
       data.push({
         x: i,
-        y: armRecord.wins / armRecord.timesPlayed,
+        y: armRecord.rewards / armRecord.timesPlayed,
         played: true,
-        win: tokens[1],
-        armPlayed: tokens[0]
+        reward: parseInt(tokens[1]),
+        armPlayed: parseInt(tokens[0])
       });
         
       //For all of the arms that are not played during the current
@@ -196,10 +196,10 @@
           data = result.data;
           data.push({
             x: i,
-            y: armRecord.timesPlayed == 0 ? 0 : armRecord.wins/armRecord.timesPlayed,
+            y: armRecord.timesPlayed == 0 ? 0 : armRecord.rewards/armRecord.timesPlayed,
             played: false,
-            win: 0,
-            armPlayed: tokens[0]
+            reward: 0,
+            armPlayed: parseInt(tokens[0])
           });
         }  
       }
@@ -218,30 +218,30 @@
       series.push({
         "name": uniqueArms[i],
         "data": [
-          {x:0000, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:0100, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:0200, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:0300, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:0400, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:0500, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:0600, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:0700, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:0800, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:0900, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:1000, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:1100, y:0, played: false, timesPlayed: 0, wins: 0},
-          {x:1200, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:1300, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:1400, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:1500, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:1600, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:1700, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:1800, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:1900, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:2000, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:2100, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:2200, y:0, played: false, timesPlayed: 0, wins: 0}, 
-          {x:2300, y:0, played: false, timesPlayed: 0, wins: 0}
+          {x:0000, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:0100, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:0200, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:0300, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:0400, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:0500, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:0600, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:0700, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:0800, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:0900, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:1000, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:1100, y:0, played: false, timesPlayed: 0, rewards: 0},
+          {x:1200, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:1300, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:1400, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:1500, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:1600, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:1700, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:1800, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:1900, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:2000, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:2100, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:2200, y:0, played: false, timesPlayed: 0, rewards: 0}, 
+          {x:2300, y:0, played: false, timesPlayed: 0, rewards: 0}
         ]
       });
     }
@@ -258,13 +258,13 @@
       if(tokens[1] == 1){
         dataPair.played = true;
         dataPair.timesPlayed++;
-        dataPair.wins++;
-        //dataPair.y = dataPair.wins / dataPair.timesPlayed;
-        dataPair.y = dataPair.wins;
+        dataPair.rewards++;
+        //dataPair.y = dataPair.rewards / dataPair.timesPlayed;
+        dataPair.y = dataPair.rewards;
       }else{
         dataPair.played = true;
         dataPair.timesPlayed++;
-        //dataPair.y = dataPair.wins / dataPair.timesPlayed;
+        //dataPair.y = dataPair.rewards / dataPair.timesPlayed;
       }
     }
 

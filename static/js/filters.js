@@ -4,7 +4,6 @@ function filters(){
     var panelString = "<div class='panel panel-default'>"+
                   "<div class='panel-heading'>Live data</div>"+
                   "<div class='panel-body'>"+
-                    "<br/><br/>"+
                     "<div id='graph-holder'></div><br/>"+
                     "<div id='range-holder'></div><br/>"+
                     "<div id='legend-holder'></div>"+
@@ -22,7 +21,6 @@ function filters(){
       panelString = "<div class='panel panel-default'>"+
                     "<div class='panel-heading'>Live data</div>"+
                     "<div class='panel-body'><br/>"+
-                      "<br/><br/>"+
                       "<div id='graph-holder-"+i+"'></div><br/>"+
                       "<div id='range-holder-"+i+"'></div><br/>"+
                       "<div id='legend-holder-"+i+"'></div>"+
@@ -76,6 +74,7 @@ function filters(){
     "displaySingleGraph": true,
     "displayLine": true,
     "armsToDisplay": [],
+    "agents": new agents(),
     "init": function(){
        var me = this;
        $("#apply-filters").click(function(){
@@ -84,6 +83,7 @@ function filters(){
      },
     "applyFilters": function(){
        var filteredSeries = [];
+
        //Bar or line chart
        var displayLineGraph = $(".graph-type")[0].checked;
        if(displayLineGraph){
@@ -104,6 +104,16 @@ function filters(){
        //How many graphs to display
        this.displaySingleGraph = $(".number-graphs")[0].checked;
        
+       //Which agent to applly
+       var agentType = "none";
+       var agents = $("#agent").children();
+       for(var i=0; i<agents.length; i++){
+         if(agents[i].selected){
+           agentType = agents[i].value;
+           break;
+         }
+       }
+
        //Apply the filters 
        var lineSeries = this.lineSeries;
        var barSeries = this.barSeries;
@@ -114,9 +124,23 @@ function filters(){
              if(!this.displaySingleGraph){
                tmp = [];
                tmp.push(lineSeries[i]);
+               if(agentType != "none"){
+                 var agentData = this.agents.getScores(agentType, lineSeries[i].data);
+                 tmp.push({
+                   name:  lineSeries[i].name + "-" + agentType,
+                   data: agentData
+                 })
+               }
                filteredSeries.push(tmp);
              }else{
                filteredSeries.push(lineSeries[i]);
+               if(agentType != "none"){
+                 var agentData = this.agents.getScores(agentType, lineSeries[i].data);
+                 filteredSeries.push({
+                   name: lineSeries[i].name + "-" + agentType,
+                   data: agentData
+                 });
+               }
              }
          }
          if(this.displaySingleGraph){

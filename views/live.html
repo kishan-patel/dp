@@ -6,7 +6,7 @@
   });
 </script>
 <div class="row">
-  <div class="col-md-3">
+  <div class="col-md-4">
     <div class="mab-filter">
       <div class="panel panel-default" id="mab-panel-filter">
         <div class="panel-heading">Filters</div>
@@ -42,19 +42,16 @@
 			  </tbody>
 		    </table>
 	      </div>
-          <div class="pull-right pull-bottom">
-            <button type="button" class="btn btn-primary" id="live-apply">Apply</button>
-          </div>
+          <center><button type="button" class="btn btn-primary" id="live-apply">Apply</button></center>
 	    </div>
 	  </div>
 	</div>
-  <div class="col-md-9">
+  <div class="col-md-8">
     <p hidden id="sender-id"><%=senderId%></p>
     <div class="mab-graph">
       <div class="panel panel-default" id="mab-panel-graph">
         <div class="panel-heading">Live data</div>
         <div class="panel-body" id="graph-container">
-          <br/><br/>
           <div id="graph-holder"></div><br/>
           <div id="range-holder"></div><br/>
           <div id="legend-holder"></div>
