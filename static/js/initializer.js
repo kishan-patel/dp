@@ -8,6 +8,7 @@ function initializer(){
       createEmptyGraph();
       this.fileFilter = new filters().fileFilter;
       this.fileFilter.init();
+      var fileFilter = this.fileFilter;
       $("#file-upload").change(function(evt){
         FR.readFile(evt, 'line', function(fileString){
           var lineInfo = DataUtil.getLineData(fileString);
@@ -24,7 +25,7 @@ function initializer(){
             armName = barInfo.data[i].name;
             barInfo.data[i]["color"] = colorOfArms[armName];
           }
-          this.fileFilter.setGraphSeries(lineInfo, barInfo);
+          fileFilter.setGraphSeries(lineInfo, barInfo);
         });
       });
     }
@@ -41,7 +42,7 @@ function initializer(){
     "liveFilter": {},
     "initSocketEvents": function(){
       var senderId = $("#sender-id").text();
-      var socket = io.connect('https://dp-kpatel.rhcloud.com/');
+      var socket = io.connect(CONFIG.ADDRESS);
       
       var armsAddedToFilter = false;
       var displayOneGraph = true;
@@ -87,7 +88,6 @@ function initializer(){
 
         //Add ability to show/side alternatives in filter panel.
         if(!armsAddedToFilter){
-          debugger;
           armsAddedToFilter = true;
           liveFilter.addArmsToFilter(alternativeNames, "#arm-checkboxes-holder");
         }
@@ -103,7 +103,6 @@ function initializer(){
       });
     },
     "init": function(){
-      debugger;
       createEmptyGraph();
       this.liveFilter = new filters().liveFilter;
       this.liveFilter.init();

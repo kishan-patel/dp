@@ -115,7 +115,6 @@
      });
     
      if(graphType == "line"){ 
-       debugger;
        var preview = new Rickshaw.Graph.RangeSlider.Preview({
          graph: graph,
          element: document.getElementById(rangeHolderId)

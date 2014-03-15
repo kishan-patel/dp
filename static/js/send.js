@@ -26,7 +26,6 @@ $(document).ready(function(){
   var dataUpdater;
 
   initSeries();
-  debugger;
 
   socket.on("connect", function(){
     socket.emit("data_client_connect");
