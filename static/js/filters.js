@@ -11,7 +11,6 @@ function filters(){
                   "</div>";
     $(".mab-graph").append(panelString);
     var graph = GraphUtil.createGraph(type, graphSeries, "standard", "graph-holder", "legend-holder", "range-holder", maxScore);
-    graph.render();
   }
 
   function createMultipleGraphs(graphSeries, maxScore){
@@ -29,7 +28,6 @@ function filters(){
                     "</div>";
       $(".mab-graph").append(panelString);
       var graph = GraphUtil.createGraph("line", graphSeries[i], "standard", "graph-holder-"+i, "legend-holder-"+i, "range-holder-"+i, maxScore);
-      graph.render();
     }
   }
 

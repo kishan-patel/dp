@@ -41,13 +41,14 @@ function initializer(){
     "liveFilter": {},
     "initSocketEvents": function(){
       var senderId = $("#sender-id").text();
-      var socket = io.connect('localhost');
+      var socket = io.connect('https://dp-kpatel.rhcloud.com/');
       
       var armsAddedToFilter = false;
       var displayOneGraph = true;
       var singleGraphSeries = [];
       var multipleGraphSeries = [];
-      
+      var liveFilter = this.liveFilter;
+
       socket.on("connect", function(){
         socket.emit("viewer_connect", senderId);
       });
@@ -102,6 +103,7 @@ function initializer(){
       });
     },
     "init": function(){
+      debugger;
       createEmptyGraph();
       this.liveFilter = new filters().liveFilter;
       this.liveFilter.init();
