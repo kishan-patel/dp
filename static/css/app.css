@@ -40,6 +40,7 @@ body {
 }
 
 #mab-panel-filter {
+  min-height: 420px;
 }
 
 #mab-panel-graph {
