@@ -1,0 +1,94 @@
+<% include index.html -%>
+<script>
+  $(document).ready(function(){
+    var simInitializer = new initializer().simulatorInitializer;
+    simInitializer.init();
+  });
+</script>
+<div class="row">
+  <div class="col-md-4">
+    <div class="mab-filter">
+      <div class="panel panel-default" id="mab-panel-filter">
+        <div class="panel-heading">Filters</div>
+        <div class="panel-body">
+	      <div class="table-responsive">
+	        <table class="table table-striped">
+		      <tbody>
+                <tr>
+			      <td><b>Arms</b></td>
+                </tr>
+                <tr>
+			      <td>
+                    <div id="arms">
+                      Arm 1:&nbsp
+			          <select>
+              	  	    <option value="Bernoulli" selected>Bernoulli</option>
+           		      </select>
+            	      <input type="text" value="0.1" size="1"><br/><br/>
+                      Arm 2:&nbsp
+                      <select>
+                        <option value="Bernoulli" selected>Bernoulli</option>
+                      </select>
+                      <input type="text" value="0.9" size="1">
+                    </div>
+			      </td>
+		        </tr>
+		        <tr>
+			      <td><b>Agents</b></td>
+                </tr>
+                <tr>
+			      <td>
+                    <div id="agents">
+                      Agent 1:&nbsp
+			          <select>
+			            <option value="UCB1" selected>UCB1</option>
+			            <option value="e-greedy">e-greedy</option>
+			            <option value="random">random</option>
+			          </select><br/><br/>
+                      Agent 2:&nbsp
+                      <select >
+                        <option value="UCB1">UCB1</option>
+                        <option value="e-greedy" selected>e-greedy</option>
+                        <option value="random">random</option>
+                      </select>
+                    </div>
+			      </td>
+		        </tr>
+		        <tr>
+			      <td><b>Steps</b></td>
+                </tr>
+                <tr>
+           	      <td>
+                    <input id="steps" type="text" value="500" size="1"/>
+                  </td>
+		        </tr>
+                <tr>
+                  <td><b>Graphs</b></td>
+                </tr>
+                <tr>
+                  <td>
+                    <input type="radio" name="number-graphs" value="single-graphs" class="number-graphs" checked>Single</br>
+                    <input type="radio" name="number-graphs" value="multiple-graphs" class="number-graphs">Multiple<br/>
+                  </td>
+                </tr>
+		      </tbody>
+            </table>
+          </div>
+          <center><button type="button" class="btn btn-primary" id="apply-filters">Apply</button></center>
+	    </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="mab-graph">
+      <div class="panel panel-default" id="mab-panel-graph">
+        <div class="panel-heading">Simulator</div>
+        <div class="panel-body">
+          <div id="graph-holder"></div><br/>
+          <div id="range-holder"></div><br/>
+          <div id="legend-holder"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

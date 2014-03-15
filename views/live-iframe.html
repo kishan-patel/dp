@@ -1,0 +1,64 @@
+<% include index.html -%>
+<script>
+  $(document).ready(function(){
+    var liveInitializer = new initializer().liveInitializer;
+    liveInitializer.init();
+  });
+</script>
+<div class="row">
+  <div class="col-md-4">
+    <div class="mab-filter">
+      <div class="panel panel-default" id="mab-panel-filter">
+        <div class="panel-heading">Filters</div>
+          <div class="panel-body">
+		    <table class="table table-striped">
+			  <tbody>
+  			    <tr>
+				  <td><b>Type</b></td>
+                </tr>
+                <tr>
+				  <td> 
+                    <input type="radio" name="fu-graph-type" value="line" class="fu-graph-type" checked> Line<br/>
+       		        <input type="radio" name="fu-graph-type" value="bar" class="fu-graph-type"> Bar<br/>
+				  </td>
+			    </tr>
+			    <tr>
+				  <td><b>Arms</b></td>
+                </tr>
+                <tr>
+				  <td>
+                    <div id="arm-checkboxes-holder">None</div>
+				  </td>
+			    </tr>
+                <tr>
+                  <td><b>Graphs</b></td>
+                </tr>
+                <tr>
+                  <td>
+                    <input type="radio" name="number-graphs" value="single-graphs" class="number-graphs" checked> Single</br>
+                    <input type="radio" name="number-graphs" value="multiple-graphs" class="number-graphs"> Multiple<br/>
+                  </td>
+                </tr>
+			  </tbody>
+		    </table>
+	      </div>
+          <br/>
+          <center><button type="button" class="btn btn-primary" id="live-apply">Apply</button></center>
+	    </div>
+	  </div>
+	</div>
+  <div class="col-md-8">
+    <p hidden id="sender-id"><%=senderId%></p>
+    <div class="mab-graph">
+      <div class="panel panel-default" id="mab-panel-graph">
+        <div class="panel-heading">Live data</div>
+        <div class="panel-body" id="graph-container">
+          <div id="graph-holder"></div><br/>
+          <div id="range-holder"></div><br/>
+          <div id="legend-holder"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

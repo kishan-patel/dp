@@ -6,8 +6,6 @@ var https = require('https')
   , shortId = require('shortid')
   , url = require('url')
 
-  //console.log(agent.UCB1());
-  
 var app = express();
 var httpServer = app.listen(process.env.OPENSHIFT_NODEJS_PORT || 8080, process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1");
 var io = require('socket.io').listen(httpServer);
@@ -43,8 +41,16 @@ app.get('/file', function(req, res){
   res.render('file.html', {});
 });
 
+app.get('/file-iframe', function(req, res){
+  res.render('file-iframe.html',{});
+});
+
 app.get('/simulator', function(req, res){
   res.render('simulator.html', {});
+});
+
+app.get('/simulator-iframe', function(req, res){
+  res.render('simulator-iframe.html', {});
 });
 
 app.get('/live', function(req, res){
@@ -52,18 +58,13 @@ app.get('/live', function(req, res){
   var query = urlParams.query;
   var senderId = query.id;
   res.render('live.html', {"senderId": senderId});
-  //When a viewr connects, add its socket to the list of listeners for a given 
-  //data source. 
-  console.log("about to create connection event");
-  io.sockets.on('connection', function(socket){
-    console.log("established socket connection");
-    socket.on('viewer_connect', function(id){
-      if(senders[id]){
-        senders[id]["viewers"].push(socket); 
-        socket.emit('update_graph',senders[id].data);
-      }
-    });
-  });
+});
+
+app.get('/live-iframe', function(req, res){
+  var urlParams = url.parse(req.url, true);
+  var query = urlParams.query;
+  var senderId = query.id;
+  res.render('live-iframe.html', {"senderId": senderId});
 });
 
 app.post('/send', function(req, res){
@@ -133,15 +134,14 @@ app.get('/api', function(req, res){
   res.render('api.html', {});
 });
 
-//Handling viewers here. Whenever data comes in from a particular data source, 
-//all viewers listenting to that data source should be updated automatically.
-function broadcastToAllViewers(id, data){
-  if(latestData[i]){
-    
-  }
-  for(var i=0; i<viewersSocks.length; i++){
-    console.log("emitting");
-    viewerSocks.emit('update_graph', {"id":id, "data":data});;
-  }
-}
-
+//When a viewr connects, add its socket to the list of listeners for a given 
+//data source. 
+io.sockets.on('connection', function(socket){
+  console.log("established socket connection");
+  socket.on('viewer_connect', function(id){
+    if(senders[id]){
+      senders[id]["viewers"].push(socket); 
+      socket.emit('update_graph',senders[id].data);
+    }
+  });
+});
