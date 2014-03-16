@@ -12,7 +12,7 @@ var io = require('socket.io').listen(httpServer);
 var senders = {};
 var viewers = {};
 var Sender = senderModel.Sender;
-var getUCBScores = agents.getUCBScores;
+var getUCBLiveScores = agents.getUCBLiveScores;
 
 //Load data for all senders.
 Sender.find(function(err, senderObjs){
@@ -107,7 +107,7 @@ app.post('/send', function(req, res){
   }
   
   //Run the ucb formula again on the new data.
-  getUCBScores(dataSent, senders[senderId].data);
+  getUCBLiveScores(dataSent, senders[senderId].data);
 
   //Save the data for the given sender.
   senders[senderId].data.save(function (err, sender, count){
