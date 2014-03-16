@@ -1,47 +1,4 @@
 function filters(){
-  function createSingleGraph(graphSeries, maxScore, type){
-    $(".mab-graph").empty();
-    var panelString = "<div class='panel panel-default'>"+
-                  "<div class='panel-heading'>Live data</div>"+
-                  "<div class='panel-body'>"+
-                    "<div id='graph-holder'></div><br/>"+
-                    "<div id='range-holder'></div><br/>"+
-                    "<div id='legend-holder'></div>"+
-                  "</div>"+
-                  "</div>";
-    $(".mab-graph").append(panelString);
-    var graph = GraphUtil.createGraph(type, graphSeries, "standard", "graph-holder", "legend-holder", "range-holder", maxScore);
-  }
-
-  function createMultipleGraphs(graphSeries, maxScore){
-    $(".mab-graph").empty();
-    var panelString = "";
-    for(var i=0; i<graphSeries.length; i++){
-      panelString = "";
-      panelString = "<div class='panel panel-default'>"+
-                    "<div class='panel-heading'>Live data</div>"+
-                    "<div class='panel-body'><br/>"+
-                      "<div id='graph-holder-"+i+"'></div><br/>"+
-                      "<div id='range-holder-"+i+"'></div><br/>"+
-                      "<div id='legend-holder-"+i+"'></div>"+
-                    "</div>"+
-                    "</div>";
-      $(".mab-graph").append(panelString);
-      var graph = GraphUtil.createGraph("line", graphSeries[i], "standard", "graph-holder-"+i, "legend-holder-"+i, "range-holder-"+i, maxScore);
-    }
-  }
-
-  function addArmsToFilter(alternatives, htmlId){
-      var armCheckboxes = "";
-      for(var i=0; i<alternatives.length; i++){
-         armCheckboxes += "<input checked type='checkbox' name='live-show-arms' value='"+alternatives[i]+"'>"+alternatives[i];   
-         if(i<(alternatives.length-1))
-           armCheckboxes += "<br/>";
-      }
-      $(htmlId).empty();
-      $(htmlId).append(armCheckboxes);
-  }
-
   this.fileFilter = {
     "createSingleGraph": createSingleGraph,
     "createMutlipleGraphs": createMultipleGraphs,
@@ -318,5 +275,48 @@ function filters(){
         this.createMultipleGraphs(this.multipleGraphSeries, this.maxScore);
       }
     }
+  }
+
+  function createSingleGraph(graphSeries, maxScore, type){
+    $(".mab-graph").empty();
+    var panelString = "<div class='panel panel-default'>"+
+                  "<div class='panel-heading'>Live data</div>"+
+                  "<div class='panel-body'>"+
+                    "<div id='graph-holder'></div><br/>"+
+                    "<div id='range-holder'></div><br/>"+
+                    "<div id='legend-holder'></div>"+
+                  "</div>"+
+                  "</div>";
+    $(".mab-graph").append(panelString);
+    var graph = GraphUtil.createGraph(type, graphSeries, "standard", "graph-holder", "legend-holder", "range-holder", maxScore);
+  }
+
+  function createMultipleGraphs(graphSeries, maxScore){
+    $(".mab-graph").empty();
+    var panelString = "";
+    for(var i=0; i<graphSeries.length; i++){
+      panelString = "";
+      panelString = "<div class='panel panel-default'>"+
+                    "<div class='panel-heading'>Live data</div>"+
+                    "<div class='panel-body'><br/>"+
+                      "<div id='graph-holder-"+i+"'></div><br/>"+
+                      "<div id='range-holder-"+i+"'></div><br/>"+
+                      "<div id='legend-holder-"+i+"'></div>"+
+                    "</div>"+
+                    "</div>";
+      $(".mab-graph").append(panelString);
+      var graph = GraphUtil.createGraph("line", graphSeries[i], "standard", "graph-holder-"+i, "legend-holder-"+i, "range-holder-"+i, maxScore);
+    }
+  }
+
+  function addArmsToFilter(alternatives, htmlId){
+      var armCheckboxes = "";
+      for(var i=0; i<alternatives.length; i++){
+         armCheckboxes += "<input checked type='checkbox' name='live-show-arms' value='"+alternatives[i]+"'>"+alternatives[i];   
+         if(i<(alternatives.length-1))
+           armCheckboxes += "<br/>";
+      }
+      $(htmlId).empty();
+      $(htmlId).append(armCheckboxes);
   }
 }

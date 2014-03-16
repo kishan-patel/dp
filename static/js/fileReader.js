@@ -1,5 +1,5 @@
-(function (FR, undefined) {
-  FR.readFile = function (evnt, type, func) {
+function fileReader(){
+  this.readFile = function (evnt, type, func) {
     var callback = func;
     var files = evnt.target.files;
     var file = files[0];
@@ -87,7 +87,7 @@
       }
     }
     return series;
-  };
+  }
 
   function getUniqueArms(arrayOfLines){
     var arms = [];
@@ -101,5 +101,7 @@
     }
     
     return arms;
-  };
-}(window.FR = window.FR || {}));
+  }
+}
+
+FR = new fileReader();

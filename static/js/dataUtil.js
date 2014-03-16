@@ -1,5 +1,5 @@
-(function (DataUtil, undefined) {                                              
-  DataUtil.getBarData = function(fileString){
+function dataUtil() {                                              
+  this.getBarData = function(fileString){
       var arrayOfLines = fileString.match(/[^\r\n]+/g);
       var type = getType(arrayOfLines[0]);
       var data, type;
@@ -22,7 +22,7 @@
       return {"data":data, "type":type}
   }
 
-  DataUtil.getLineData = function(fileString){
+  this.getLineData = function(fileString){
       var arrayOfLines = fileString.match(/[^\r\n]+/g);
       var type = getType(arrayOfLines[0]);
       var data, type;
@@ -300,4 +300,6 @@
      
     return type;
   }
-}(window.DataUtil = window.DataUtil || {}));
+}
+
+var DataUtil = new dataUtil();

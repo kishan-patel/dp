@@ -1,7 +1,4 @@
 function initializer(){
-  function createEmptyGraph(){
-    GraphUtil.createGraph("line", [{data:[{x:0, y:0}]}], "standard", "graph-holder", "legend-holder", "range-holder");
-  }
   this.fileInitialzer = {
     "fileFilter": {},
     "init": function(){
@@ -108,5 +105,9 @@ function initializer(){
       this.liveFilter.init();
       this.initSocketEvents();
     }
+  }
+
+  function createEmptyGraph(){
+    GraphUtil.createGraph("line", [{data:[{x:0, y:0}]}], "standard", "graph-holder", "legend-holder", "range-holder");
   }
 }

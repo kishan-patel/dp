@@ -1,6 +1,67 @@
-(function (GraphUtil, undefined) {                                              
-                                                                                
-  GraphUtil.initialiseHover = function(graph, legendId){                                       
+function graphUtil() {                                              
+   this.createGraph = function(graphType, series, dataType, graphId, legendId, rangeHolderId,max){
+     //Determine what the max score is for the graph height.
+     var max = 1;
+     debugger;
+     for(var i=0; i<series.length; i++){
+       for(var j=0; j<series[i].data.length; j++){
+         if(series[i].data[j].y > max)
+           max = series[i].data[j].y; 
+       }
+     }
+
+     //Set the color for each arm
+     var palette = new Rickshaw.Color.Palette();
+     for(var i=0; i<series.length; i++){
+       series[i].color = palette.color();
+     }
+
+     //Create the graph
+     var graph = new Rickshaw.Graph({
+       element: document.getElementById(graphId),
+       max: dataType != "timestamp" ? max+0.2: 0,
+       min: dataType != "timestamp" ? -0.001 : -0.0001,
+       renderer: graphType,
+       series: series,
+       interpolation:'linear'
+     });
+     
+     //Extensions of the graph
+     if(dataType == "timestamp"){
+       var xAxis = new Rickshaw.Graph.Axis.X({
+         graph: graph,
+         pixelsPerTick: 50,
+         tickFormat: formatTime
+       });
+       xAxis.render();
+     }else{
+       var xAxis = new Rickshaw.Graph.Axis.X({
+         graph: graph,
+       });
+       xAxis.render();
+     }
+
+     yAxis = new Rickshaw.Graph.Axis.Y({
+       graph: graph
+     });
+     yAxis.render();
+
+     Hover = initialiseHover(graph, legendId);
+     hover = new Hover({
+         graph: graph
+     });
+    
+     if(graphType == "line"){ 
+       var preview = new Rickshaw.Graph.RangeSlider.Preview({
+         graph: graph,
+         element: document.getElementById(rangeHolderId)
+       });
+     }
+
+     graph.render();
+   }
+
+   function initialiseHover (graph, legendId){                                       
     var Hover = Rickshaw.Class.create(Rickshaw.Graph.HoverDetail, {             
       legendId: legendId,
       /*xFormatter: function (x) {                                                
@@ -46,7 +107,7 @@
     return Hover;
   }                                                                                
 
-  GraphUtil.formatTime = function(n){
+  function formatTime(n){
     var map = {
       "000": "12 AM",
       "100": '1 AM',
@@ -76,66 +137,6 @@
 
      return map[n];
    } 
+}
 
-   GraphUtil.createGraph = function(graphType, series, dataType, graphId, legendId, rangeHolderId,max){
-     //Determine what the max score is for the graph height.
-     var max = 1;
-     debugger;
-     for(var i=0; i<series.length; i++){
-       for(var j=0; j<series[i].data.length; j++){
-         if(series[i].data[j].y > max)
-           max = series[i].data[j].y; 
-       }
-     }
-
-     //Set the color for each arm
-     var palette = new Rickshaw.Color.Palette();
-     for(var i=0; i<series.length; i++){
-       series[i].color = palette.color();
-     }
-
-     //Create the graph
-     var graph = new Rickshaw.Graph({
-       element: document.getElementById(graphId),
-       max: dataType != "timestamp" ? max+0.2: 0,
-       min: dataType != "timestamp" ? -0.001 : -0.0001,
-       renderer: graphType,
-       series: series,
-       interpolation:'linear'
-     });
-     
-     //Extensions of the graph
-     if(dataType == "timestamp"){
-       var xAxis = new Rickshaw.Graph.Axis.X({
-         graph: graph,
-         pixelsPerTick: 50,
-         tickFormat: GraphUtil.formatTime
-       });
-       xAxis.render();
-     }else{
-       var xAxis = new Rickshaw.Graph.Axis.X({
-         graph: graph,
-       });
-       xAxis.render();
-     }
-
-     yAxis = new Rickshaw.Graph.Axis.Y({
-       graph: graph
-     });
-     yAxis.render();
-
-     Hover = GraphUtil.initialiseHover(graph, legendId);
-     hover = new Hover({
-         graph: graph
-     });
-    
-     if(graphType == "line"){ 
-       var preview = new Rickshaw.Graph.RangeSlider.Preview({
-         graph: graph,
-         element: document.getElementById(rangeHolderId)
-       });
-     }
-
-     graph.render();
-   }
-}(window.GraphUtil = window.GraphUtil || {}));
+var GraphUtil = new graphUtil();
