@@ -16,17 +16,6 @@ function filters(){
 
       //Update the checkboxes of arms shown in the filter.
       addArmsToFilter(armsToAddToFilter, "#arm-checkboxes-holder"); 
-      if(this.displaySingleGraph){
-        if(this.displayLine)
-          createSingleGraph(this.lineSeries, 1.2, "line");    
-        else
-          createSingleGraph(this.barSeries, 1.2, "bar");
-      }else{
-        if(this.displayLine)
-          createMultipleGraphs(this.lineSeries, 1.2);
-        else
-          createSingleGraph(this.barSeries, 1.2, "bar");
-      }
     },
     "displaySingleGraph": true,
     "displayLine": true,
@@ -40,7 +29,6 @@ function filters(){
      },
     "applyFilters": function(){
        var filteredSeries = [];
-
        //Bar or line chart
        var displayLineGraph = $(".graph-type")[0].checked;
        if(displayLineGraph){
@@ -59,7 +47,7 @@ function filters(){
        this.armsToDisplay = armsToDisplay;
 
        //How many graphs to display
-       this.displaySingleGraph = $(".number-graphs")[0].checked;
+       this.displaySingleGraph = $(".number-graphs")[1].checked;
        
        //Which agent to applly
        var agentType = "none";
@@ -161,12 +149,11 @@ function filters(){
       });
     },
     "applyFilters": function(){
-      //Do we dispaly single graph or multiple
-      //How many graphs to display
-      this.displaySingleGraph = $(".number-graphs")[0].checked;
-
       this.singleGraphSeries = [];
-   
+
+      //How many graphs to display
+      this.displaySingleGraph = $(".number-graphs")[1].checked;
+
       //How many time steps we should run the simulation for
       var steps = this.getStepsInfo();
  
@@ -266,7 +253,7 @@ function filters(){
     "applyFilters": function(){
       this.armsToDisplay = this.getArmsToDisplay();
 
-      var displaySingleGraph = $(".number-graphs")[0].checked;  
+      var displaySingleGraph = $(".number-graphs")[1].checked;  
       if(displaySingleGraph){
         this.displaySingleGraph = true;
         this.createSingleGraph(this.singleGraphSeries, this.maxScore);
@@ -281,7 +268,7 @@ function filters(){
     $(".mab-graph").empty();
     var panelString = "<div class='panel panel-default'>"+
                   "<div class='panel-heading'>Live data</div>"+
-                  "<div class='panel-body'>"+
+                  "<div class='panel-body'><br/><br/>"+
                     "<div id='graph-holder'></div><br/>"+
                     "<div id='range-holder'></div><br/>"+
                     "<div id='legend-holder'></div>"+
@@ -298,7 +285,7 @@ function filters(){
       panelString = "";
       panelString = "<div class='panel panel-default'>"+
                     "<div class='panel-heading'>Live data</div>"+
-                    "<div class='panel-body'><br/>"+
+                    "<div class='panel-body'><br/><br/>"+
                       "<div id='graph-holder-"+i+"'></div><br/>"+
                       "<div id='range-holder-"+i+"'></div><br/>"+
                       "<div id='legend-holder-"+i+"'></div>"+

@@ -23,6 +23,7 @@ function initializer(){
             barInfo.data[i]["color"] = colorOfArms[armName];
           }
           fileFilter.setGraphSeries(lineInfo, barInfo);
+          fileFilter.applyFilters();
         });
       });
     }
@@ -42,7 +43,7 @@ function initializer(){
       var socket = io.connect(CONFIG.ADDRESS);
       
       var armsAddedToFilter = false;
-      var displayOneGraph = true;
+      var displayOneGraph = false;
       var singleGraphSeries = [];
       var multipleGraphSeries = [];
       var liveFilter = this.liveFilter;
@@ -83,7 +84,7 @@ function initializer(){
           alternativeNames.push(alternatives[i].alternative);
         }
 
-        //Add ability to show/side alternatives in filter panel.
+        //Add ability to show/side alternatives in the filter panel.
         if(!armsAddedToFilter){
           armsAddedToFilter = true;
           liveFilter.addArmsToFilter(alternativeNames, "#arm-checkboxes-holder");
@@ -92,11 +93,8 @@ function initializer(){
         //Update the series stored in the filter.
         liveFilter.setGraphSeries(singleGraphSeries, multipleGraphSeries, series["max_score"]+0.5);
 
-        //Nubmer of graphs to create.
-        if(displayOneGraph)
-          liveFilter.createSingleGraph(singleGraphSeries, series["max_score"]+0.5, "line");
-        else
-          liveFilter.createMultipleGraphs(multipleGraphSeries, series["max_score"]+0.5);
+        //Apply the filters which will then display the graph.
+        liveFilter.applyFilters();
       });
     },
     "init": function(){

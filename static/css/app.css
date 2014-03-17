@@ -40,11 +40,17 @@ body {
 }
 
 #mab-panel-filter {
+  height: 470px;
   min-height: 420px;
 }
 
+#mab-panel-filter-body {
+  height: 90%;
+  overflow: auto;
+}
+
 #mab-panel-graph {
-  height: 420px;
+  height: 470px;
 }
 
 div[id^="range-holder"] {
@@ -56,6 +62,6 @@ div[id^="range-holder"] {
 }
 
 .pull-bottom {
-  position:absolute;bottom:20px;right:18px;margin:0;padding:5px 3px;
+  position:absolute;bottom:30px;right:35px;margin:0;padding:5px 3px;
 }
 
