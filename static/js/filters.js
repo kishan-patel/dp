@@ -142,8 +142,31 @@ function filters(){
     "singleGraphSeries": [],
     "agents": new agents(),
     "bandits": new bandits(),
+    "armCounter": 2,
+    "agentCounter": 2,
+    "addArms": function(){
+      this.armCounter++;
+      var html = "Arm "+this.armCounter+":&nbsp&nbsp"+
+                 "<select>"+
+                   "<option value='Bernoulli' selected>Bernoulli</option>"+
+                 "</select>&nbsp"+
+                 "<input type='text' value='0.5' size='1'><br/>";
+      $("#add-arm").before(html);
+    },
+    "addAgents": function(){
+      this.agentCounter++;
+      var fun = $("#custom-function")[0].value;
+      var html = "Agent "+this.agentCounter+":&nbsp <p style='display:inline' id='"+this.agentCounter+"'>"+fun+"</p><br/>";
+      $("#custom-function").before(html);
+    },
     "init": function(){
       var me = this;
+      $("#add-arm").click(function(){
+        me.addArms();
+      });
+      $("#add-agent").click(function(){
+        me.addAgents();
+      });
       $("#apply-filters").click(function(){
         me.applyFilters();
       });

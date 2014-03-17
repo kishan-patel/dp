@@ -29,7 +29,8 @@
                       <select>
                         <option value="Bernoulli" selected>Bernoulli</option>
                       </select>
-                      <input type="text" value="0.9" size="1">
+                      <input type="text" value="0.9" size="1"><br/>
+                      <button type="button" class="btn btn-default btn-sm" id="add-arm">Add</button>
                     </div>
 			      </td>
 		        </tr>
@@ -50,7 +51,13 @@
                         <option value="UCB1">UCB1</option>
                         <option value="e-greedy" selected>e-greedy</option>
                         <option value="random">random</option>
-                      </select>
+                      </select><br/><br/>
+                      <input type="text" placeholder="Agent name..." size="45" id="agent-name"><br/><br/>
+                      <textarea class="form-control" id="custom-function" rows="3" cols="4">function functionName(steps, arms){
+  //Implementation goes here
+}
+                      </textarea>
+                      <button type="button" class="btn btn-default btn-sm" id="add-agent">Add</button>
                     </div>
 			      </td>
 		        </tr>

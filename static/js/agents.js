@@ -28,7 +28,6 @@ function agents(){
   }
 
   this.getUCBLiveScores = function(newData, oldData){
-    debugger;
     var totalTimesPlayed = oldData.times_played;
     var maxScore = oldData.max_score;
     var alternatives = oldData.alternatives;
