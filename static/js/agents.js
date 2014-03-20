@@ -1,5 +1,5 @@
 function agents(){
-  this.runSim = function(agent, steps, bandits){
+  this.runSim = function(agent, steps, bandits, customFn){
     switch(agent){
       case "UCB1":
         return getUCBSimScores(steps, bandits);
@@ -8,7 +8,7 @@ function agents(){
         return getEGreedySimScores(steps, bandits);
         break;
       default:
-        return getUCBSimScores(steps, bandits);
+        return customFn(steps, bandits);
         break;
     }
   }

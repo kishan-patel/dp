@@ -160,7 +160,7 @@ function filters(){
         options = agentsHtml[i].children;
         for (var j=0; j<options.length; j++){
           if(options[j].selected){
-            agents.push({"type": options[j].value});
+            agents.push({"type": options[j].value, "agent_fn":""});
           }
         }
       }
@@ -172,6 +172,7 @@ function filters(){
     "singleGraphSeries": [],
     "armCounter": 2,
     "agentCounter": 2,
+    "customAgents":{},
     "onArmsChange": function(){
       var me = this;
       $("#arms>select").on("change", function(e){
@@ -200,35 +201,58 @@ function filters(){
         me.applyFilters();
       });
     },
-    "addArms": function(){
-      this.armCounter++;
-      var html = "Arm "+this.armCounter+":&nbsp&nbsp"+
-                 "<select>"+
-                   "<option value='Bernoulli' selected>Bernoulli</option>"+
-                 "</select>&nbsp"+
-                 "<input type='text' value='0.5' size='1'><br/>";
-      $("#add-arm").before(html);
-      this.applyFilters();
+    "onAddArms": function(){
+      var me = this;
+      $("#add-arm").on('click', function(e){
+        me.armCounter++;  
+        var html = "<br/>Arm "+me.armCounter+":&nbsp&nbsp"+
+                     "<select>"+
+                       "<option value='Bernoulli' selected>Bernoulli</option>"+
+                     "</select>&nbsp"+
+                     "<input type='text' value='0.5' size='1'><br/>";
+        $("#add-arm").before(html);
+        me.applyFilters();
+      });
     },
-    "addAgents": function(){
-      this.agentCounter++;
-      var fun = $("#custom-function")[0].value;
-      var html = "Agent "+this.agentCounter+":&nbsp <p style='display:inline' id='"+this.agentCounter+"'>"+fun+"</p><br/>";
-      $("#custom-function").before(html);
-      this.applyFilters();
+    "onAddAgents": function(){
+      var me = this;
+      $("#add-agent").on('click', function(e){
+        var agentName = $("#agent-name").val();
+        var customFunction = $("#custom-function").val();
+        me.agentCounter++;
+        var html = "Agent "+me.agentCounter+":&nbsp <p style='display: inline' id='"+me.agentCounter+"'>"+agentName+"</p><br/><br/>";
+        $("#agent-name").before(html);
+
+        if(agentName==""){
+          alert("You must provide a name for the function!");
+        }
+        
+        if(customFunction == ""){
+          alert("You have to provide an implementation!");
+        }
+
+        if(agentName in me.customAgents){
+          alert("This name is already defined. Enter another one!");
+        }
+
+        try{
+          eval(customFunction);
+          me.customAgents[agentName] = eval(agentName); 
+          $("#agent-name").val("");
+          $("#custom-function").val("function functionName(arms, steps)\n  //Implementation goes here.\n}");
+          me.applyFilters();
+        }catch(e){
+          alert(e);
+        }
+      });
     },
     "init": function(){
-      var me = this;
       this.onArmsChange();
       this.onAgentsChange();
       this.onStepsChange();
       this.onNoGraphChange();
-      $("#add-arm").click(function(){
-        me.addArms();
-      });
-      $("#add-agent").click(function(){
-        me.addAgents();
-      });
+      this.onAddArms();
+      this.onAddAgents();
       this.applyFilters();
     },
     "applyFilters": function(){
@@ -253,8 +277,11 @@ function filters(){
       var tmpData = {};
       var overallMaxScore = 0;
       var simColor;
+      for(var agent in this.customAgents){
+        agentsInfo.push({"type":agent, "agent_fn": this.customAgents[agent]});
+      }
       for(var i=0; i<agentsInfo.length; i++){
-       tmpData = this.agents.runSim(agentsInfo[i].type, steps, bandits);
+       tmpData = this.agents.runSim(agentsInfo[i].type, steps, bandits, agentsInfo[i].agent_fn);
        if(overallMaxScore < tmpData["max_score"]){
          overallMaxScore = tmpData["max_score"];
        }
