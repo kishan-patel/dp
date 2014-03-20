@@ -160,7 +160,6 @@ function agents(){
           }
         }
         ucbScores[j].push({x:i, y:ucbScore});
-
       }
 
      rewards[bestChoice]+=arms[bestChoice].getReward();
@@ -189,9 +188,10 @@ function agents(){
     for(var i=0; i<steps; i++){
       totalTimesPlayed++;
 
-      if(noTimesBestPicked/totalTimesPlayed < EG_CONST){
+      if(noTimesBestPicked/totalTimesPlayed < (1-EG_CONST)){
         noTimesBestPicked++;
         bestScore = 0;
+        bestChoice = 0;
         for(var j=0; j<arms.length; j++){
           eGreedyScore = rewards[j]/played[j];
           if(eGreedyScore > bestScore){

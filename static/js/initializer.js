@@ -88,6 +88,7 @@ function initializer(){
         if(!armsAddedToFilter){
           armsAddedToFilter = true;
           liveFilter.addArmsToFilter(alternativeNames, "#arm-checkboxes-holder");
+          liveFilter.onArmsChange();
         }
         
         //Update the series stored in the filter.

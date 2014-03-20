@@ -1,34 +1,62 @@
 function filters(){
   this.fileFilter = {
     "createSingleGraph": createSingleGraph,
-    "createMutlipleGraphs": createMultipleGraphs,
+    "createMultipleGraphs": createMultipleGraphs,
     "addArmsToFilter": addArmsToFilter,
+    "agents": new agents(),
+    "displaySingleGraph": true,
+    "displayMultipleGraphs": true,
     "lineSeries": [],
     "barSeries": [],
     "setGraphSeries": function(lineSeries, barSeries){
-      this.barSeries = barSeries.data;
       this.lineSeries = lineSeries.data;
+      this.barSeries = barSeries.data;
       var armsToAddToFilter = [];
 
       for(var i=0; i<lineSeries.data.length; i++){
-        armsToAddToFilter.push(lineSeries.data[i].name);;
+        armsToAddToFilter.push(lineSeries.data[i].name);
       }
 
-      //Update the checkboxes of arms shown in the filter.
-      addArmsToFilter(armsToAddToFilter, "#arm-checkboxes-holder"); 
+      //Update the checboxes of arms shown in the filter.
+      addArmsToFilter(armsToAddToFilter, "#arm-checkboxes-holder");
+      this.onArmsChange();
     },
-    "displaySingleGraph": true,
-    "displayLine": true,
-    "armsToDisplay": [],
-    "agents": new agents(),
-    "init": function(){
-       var me = this;
-       $("#apply-filters").click(function(){
+    "onTypeChange": function(){
+      var me = this;
+      $(".graph-type").click(function(e){
         me.applyFilters();
-       });
+      });
+    },
+    "onArmsChange": function(){
+      var me = this;
+      $("#arm-checkboxes-holder").children().click(function(e){
+        me.applyFilters();
+      });
+    },
+    "onAgentsChange": function(){
+      var me = this;
+      $("#agent").change(function(e){
+        me.applyFilters();
+      });
+    },
+    "onActiveChange": function(){
+    },
+    "onNoGraphChange": function(){
+      var me = this;
+      $(".number-graphs").change(function(e){
+        me.applyFilters();
+      });
+    },
+    "init": function(){
+       this.onTypeChange();
+       this.onArmsChange();
+       this.onAgentsChange();
+       this.onActiveChange();
+       this.onNoGraphChange();
      },
     "applyFilters": function(){
        var filteredSeries = [];
+
        //Bar or line chart
        var displayLineGraph = $(".graph-type")[0].checked;
        if(displayLineGraph){
@@ -117,7 +145,7 @@ function filters(){
       for(var i=0; i<armsHtml.length; i+=2){
         armType = armsHtml[i].value;
         armProb = armsHtml[i+1].value;
-        arms.push({"type": armType, "prob":armProb});
+        arms.push({"type": armType, "prob":parseFloat(armProb)});
       }
 
       return arms; 
@@ -139,11 +167,39 @@ function filters(){
 
       return agents;
     },
-    "singleGraphSeries": [],
     "agents": new agents(),
     "bandits": new bandits(),
+    "singleGraphSeries": [],
     "armCounter": 2,
     "agentCounter": 2,
+    "onArmsChange": function(){
+      var me = this;
+      $("#arms>select").on("change", function(e){
+        me.applyFilters();  
+      });
+
+      $("#arms>input").on("change", function(e){
+        me.applyFilters();
+      });
+    },
+    "onAgentsChange": function(){
+      var me = this;
+      $("#agents>select").on("change", function(e){
+        me.applyFilters();
+      });
+    },
+    "onStepsChange": function(){
+      var me = this;
+      $("#steps").on("change", function(e){
+        me.applyFilters();
+      });
+    },
+    "onNoGraphChange": function(){
+      var me = this;
+      $(".number-graphs").on("click", function(e){
+        me.applyFilters();
+      });
+    },
     "addArms": function(){
       this.armCounter++;
       var html = "Arm "+this.armCounter+":&nbsp&nbsp"+
@@ -152,24 +208,28 @@ function filters(){
                  "</select>&nbsp"+
                  "<input type='text' value='0.5' size='1'><br/>";
       $("#add-arm").before(html);
+      this.applyFilters();
     },
     "addAgents": function(){
       this.agentCounter++;
       var fun = $("#custom-function")[0].value;
       var html = "Agent "+this.agentCounter+":&nbsp <p style='display:inline' id='"+this.agentCounter+"'>"+fun+"</p><br/>";
       $("#custom-function").before(html);
+      this.applyFilters();
     },
     "init": function(){
       var me = this;
+      this.onArmsChange();
+      this.onAgentsChange();
+      this.onStepsChange();
+      this.onNoGraphChange();
       $("#add-arm").click(function(){
         me.addArms();
       });
       $("#add-agent").click(function(){
         me.addAgents();
       });
-      $("#apply-filters").click(function(){
-        me.applyFilters();
-      });
+      this.applyFilters();
     },
     "applyFilters": function(){
       this.singleGraphSeries = [];
@@ -262,8 +322,22 @@ function filters(){
     "maxScore": 0,
     "armsToDisplay": [],
     "displaySingleGraph": true,
+    "onArmsChange": function(){
+      var me = this;
+      $("#arm-checkboxes-holder").children().on('click', function(e){
+        me.applyFilters();
+      })
+    },
+    "onNoGraphChange": function(){
+      var me = this;
+      $(".number-graphs").on('click', function(e){
+        me.applyFilters();
+      });
+    },
     "init": function(){
       var me = this;
+      this.onArmsChange();
+      this.onNoGraphChange();
       $("#live-apply").click(function(){
         me.applyFilters();
       });
@@ -322,7 +396,7 @@ function filters(){
   function addArmsToFilter(alternatives, htmlId){
       var armCheckboxes = "";
       for(var i=0; i<alternatives.length; i++){
-         armCheckboxes += "<input checked type='checkbox' name='live-show-arms' value='"+alternatives[i]+"'>"+alternatives[i];   
+         armCheckboxes += "<input checked type='checkbox' name='live-show-arms' class='arm-checkboxes' value='"+alternatives[i]+"'>"+alternatives[i];   
          if(i<(alternatives.length-1))
            armCheckboxes += "<br/>";
       }
