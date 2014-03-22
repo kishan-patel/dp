@@ -1,13 +1,12 @@
 function filters(){
   this.fileFilter = {
-    "createSingleGraph": createSingleGraph,
-    "createMultipleGraphs": createMultipleGraphs,
+    "createGraph": createGraph,
     "addArmsToFilter": addArmsToFilter,
     "agents": new agents(),
     "displaySingleGraph": true,
-    "displayMultipleGraphs": true,
     "lineSeries": [],
     "barSeries": [],
+    "graphSeries": [],
     "setGraphSeries": function(lineSeries, barSeries){
       this.lineSeries = lineSeries.data;
       this.barSeries = barSeries.data;
@@ -59,10 +58,13 @@ function filters(){
 
        //Bar or line chart
        var displayLineGraph = $(".graph-type")[0].checked;
+       var graphType;
        if(displayLineGraph){
          this.displayLine = true;
+         graphType = "line"
        }else{
          this.displayLine = false;
+         graphType ="bar";
        }
        
        //Which arms to display
@@ -77,7 +79,7 @@ function filters(){
        //How many graphs to display
        this.displaySingleGraph = $(".number-graphs")[1].checked;
        
-       //Which agent to applly
+       //Which agent to apply
        var agentType = "none";
        var agents = $("#agent").children();
        for(var i=0; i<agents.length; i++){
@@ -88,52 +90,57 @@ function filters(){
        }
 
        //Apply the filters 
-       var lineSeries = this.lineSeries;
-       var barSeries = this.barSeries;
-       var tmp = [];
+       var tmpSeries = {};
+       tmpSeries["all"] = [];
+       debugger;
        if(this.displayLine){
-         for(var i=0; i<lineSeries.length; i++){
-           if(armsToDisplay.indexOf(lineSeries[i].name) != -1)
-             if(!this.displaySingleGraph){
-               tmp = [];
-               tmp.push(lineSeries[i]);
-               if(agentType != "none"){
-                 var agentData = this.agents.getScores(agentType, lineSeries[i].data);
-                 tmp.push({
-                   name:  lineSeries[i].name + "-" + agentType,
-                   data: agentData
-                 })
-               }
-               filteredSeries.push(tmp);
-             }else{
-               filteredSeries.push(lineSeries[i]);
-               if(agentType != "none"){
-                 var agentData = this.agents.getScores(agentType, lineSeries[i].data);
-                 filteredSeries.push({
-                   name: lineSeries[i].name + "-" + agentType,
-                   data: agentData
-                 });
-               }
+         for(var i=0; i<this.lineSeries.length; i++){
+           if(armsToDisplay.indexOf(this.lineSeries[i].name) == -1)  
+             continue;
+
+           if(this.displaySingleGraph){
+             if(agentType != "none"){
+               var agentData = this.agents.getScores(agentType, this.lineSeries[i].data);
+               tmpSeries["all"].push({
+                 "name": this.lineSeries[i].name + "-" + agentType,
+                 "data": agentData
+               });
              }
-         }
-         if(this.displaySingleGraph){
-           createSingleGraph(filteredSeries, 1.2, "line");
-         }else{
-           createMultipleGraphs(filteredSeries, 1.2);
+           }else{
+             tmpSeries[i] = [];
+             tmpSeries[i].push(this.lineSeries[i]);
+             if(agentType != "none"){
+               var agentData = this.agents.getScores(agentType, this.lineSeries[i].data);  
+               tmpSeries[i].push({
+                 "name": this.lineSeries[i].name + "-" + agentType,
+                 "data": agentData
+               });
+             }
+           }
          }
        }else{
-         for(var i=0; i<barSeries.length; i++){
-           if(armsToDisplay.indexOf(barSeries[i].name) != -1)
-             filteredSeries.push(barSeries[i]);
+         for(var i=0; i<this.barSeries.length; i++){
+           if(armsToDisplay.indexOf(this.barSeries[i].name) == -1)
+             continue;
+           tmpSeries["all"].push(this.barSeries[i]);
          }
-         createSingleGraph(filteredSeries, 1.2, "bar");
        }
+
+       //Format the graph series before creating the graph
+       this.graphSeries = [];
+       for(var key in tmpSeries){
+         if(tmpSeries[key].length > 0)
+           this.graphSeries.push(tmpSeries[key]);
+       }
+       
+       //Create the graph
+       debugger;
+       this.createGraph(this.graphSeries, graphType);
     }
   }
 
   this.simulatorFilter = {
-    "createSingleGraph": createSingleGraph,
-    "createMultipleGraphs": createMultipleGraphs,
+    "createGraph": createGraph,
     "getStepsInfo": function(){
       return $("#steps")[0].value;
     },
@@ -169,7 +176,7 @@ function filters(){
     },
     "agents": new agents(),
     "bandits": new bandits(),
-    "singleGraphSeries": [],
+    "graphSeries": [],
     "armCounter": 2,
     "agentCounter": 2,
     "customAgents":{},
@@ -256,10 +263,7 @@ function filters(){
       this.applyFilters();
     },
     "applyFilters": function(){
-      this.singleGraphSeries = [];
-
-      //How many graphs to display
-      this.displaySingleGraph = $(".number-graphs")[1].checked;
+      this.graphSeries = [];
 
       //How many time steps we should run the simulation for
       var steps = this.getStepsInfo();
@@ -271,69 +275,44 @@ function filters(){
         bandits.push(this.bandits.getBandit(armsInfo[i].type, armsInfo[i].prob));
       }
       
-      //We run the simulation for each agent.
+      //Get the agents and run the simulation for each one
       var agentsInfo = this.getAgentsInfo();
-      var simColorPalette = new Rickshaw.Color.Palette();
-      var tmpData = {};
-      var overallMaxScore = 0;
-      var simColor;
       for(var agent in this.customAgents){
         agentsInfo.push({"type":agent, "agent_fn": this.customAgents[agent]});
       }
+
+      //Run the simulation for each agent
+      var simSeries = {};
+      var simData = {};
       for(var i=0; i<agentsInfo.length; i++){
-       tmpData = this.agents.runSim(agentsInfo[i].type, steps, bandits, agentsInfo[i].agent_fn);
-       if(overallMaxScore < tmpData["max_score"]){
-         overallMaxScore = tmpData["max_score"];
-       }
-       
-       var tmp = [];
-       for(var arm in tmpData["all_scores"]){
-         tmp = [];
-         if(!this.displaySingleGraph){
-           tmp.push({
-             name: "Arm "+(parseInt(arm)+1)+"("+agentsInfo[i].type+")",
-             color: simColorPalette.color(),
-             data: tmpData["all_scores"][arm]
-           });
-           this.singleGraphSeries.push(tmp);
-         }else{
-           this.singleGraphSeries.push({
-             name: "Arm "+(parseInt(arm)+1)+"("+agentsInfo[i].type+")",
-             color: simColorPalette.color(),
-             data: tmpData["all_scores"][arm]
-           });  
-         }
-       }
+        simData = this.agents.runSim(agentsInfo[i].type, steps, bandits, agentsInfo[i].agent_fn);
+        for(var arm in simData){
+          if(!(arm in simSeries))
+            simSeries[arm] = [];
+          simSeries[arm].push({
+            "name":"Arm "+(parseInt(arm)+1)+" ("+agentsInfo[i].type+")",
+            "data":simData[arm]
+          });
+        }
       }
 
-      if(this.displaySingleGraph)
-        createSingleGraph(this.singleGraphSeries, overallMaxScore, "line");
-      else
-        createMultipleGraphs(this.singleGraphSeries, overallMaxScore, "line");
+      //Combine the data for each arm
+      for(var arm in simSeries){
+        this.graphSeries.push(simSeries[arm]);
+      }
+
+      //Create the graph
+      this.createGraph(this.graphSeries, "line");
     }
   }
 
   this.liveFilter = {
-    "createSingleGraph": function(singleGraphSeries, maxScore, type){
-      this.armsToDisplay = this.getArmsToDisplay();
-      var tmpSeries = [];
-      for(var i=0; i<singleGraphSeries.length; i++){
-        if(this.armsToDisplay.indexOf(singleGraphSeries[i].name.split(" ")[0])!=-1)
-          tmpSeries.push(singleGraphSeries[i]);          
-      }
-      createSingleGraph(tmpSeries, maxScore, "line")
-    },
-    "createMultipleGraphs": function(multiGraphSeries, maxScore, type){
-      this.armsToDisplay = this.getArmsToDisplay();
-      var tmpSeries = [];
-      for(var i=0; i<multiGraphSeries.length; i++){
-        if(this.armsToDisplay.indexOf(multiGraphSeries[i][0].name.split(" ")[0])!=-1){
-          tmpSeries.push(multiGraphSeries[i]);
-        }
-      }
-      createMultipleGraphs(tmpSeries, maxScore);
-    },
+    "createGraph": createGraph,
     "addArmsToFilter": addArmsToFilter,
+    "setGraphSeries": function(singleGraphSeries, multipleGraphSeries){
+      this.singleGraphSeries = singleGraphSeries;
+      this.multipleGraphSeries = multipleGraphSeries;
+    },
     "getArmsToDisplay": function(){
       var armCheckboxes = $("#arm-checkboxes-holder").children();
       var armsToDisplay = [];
@@ -346,9 +325,8 @@ function filters(){
     },
     "singleGraphSeries": [],
     "multipleGraphSeries": [],
-    "maxScore": 0,
+    "graphSeries": [],
     "armsToDisplay": [],
-    "displaySingleGraph": true,
     "onArmsChange": function(){
       var me = this;
       $("#arm-checkboxes-holder").children().on('click', function(e){
@@ -369,40 +347,31 @@ function filters(){
         me.applyFilters();
       });
     },
-    "setGraphSeries": function(singleGraphSeries, multipleGraphSeries, maxScore){
-      this.singleGraphSeries = singleGraphSeries;
-      this.multipleGraphSeries = multipleGraphSeries;
-      this.maxScore = maxScore;
-    },
     "applyFilters": function(){
       this.armsToDisplay = this.getArmsToDisplay();
-
       var displaySingleGraph = $(".number-graphs")[1].checked;  
+      this.graphSeries = [];
+      var tmpSeries = [];
       if(displaySingleGraph){
-        this.displaySingleGraph = true;
-        this.createSingleGraph(this.singleGraphSeries, this.maxScore);
+        for(var i=0; i<this.singleGraphSeries.length; i++){
+          if(this.armsToDisplay.indexOf(this.singleGraphSeries[i].name.split(" ")[0]) == -1)
+            continue;
+          tmpSeries.push(this.singleGraphSeries[i]);
+        }
+        this.graphSeries.push(tmpSeries);
       }else{
-        this.displaySingleGraph = false;
-        this.createMultipleGraphs(this.multipleGraphSeries, this.maxScore);
+        for(var i=0; i<this.multipleGraphSeries.length; i++){
+          if(this.armsToDisplay.indexOf(this.multipleGraphSeries[i][0].name.split(" ")[0]) == -1)
+            continue;
+          this.graphSeries.push(this.multipleGraphSeries[i]);
+        }
       }
+
+      this.createGraph(this.graphSeries, "line");
     }
   }
 
-  function createSingleGraph(graphSeries, maxScore, type){
-    $(".mab-graph").empty();
-    var panelString = "<div class='panel panel-default'>"+
-                  "<div class='panel-heading'>Live data</div>"+
-                  "<div class='panel-body'><br/><br/>"+
-                    "<div id='graph-holder'></div><br/>"+
-                    "<div id='range-holder'></div><br/>"+
-                    "<div id='legend-holder'></div>"+
-                  "</div>"+
-                  "</div>";
-    $(".mab-graph").append(panelString);
-    var graph = GraphUtil.createGraph(type, graphSeries, "standard", "graph-holder", "legend-holder", "range-holder", maxScore);
-  }
-
-  function createMultipleGraphs(graphSeries, maxScore){
+  function createGraph(graphSeries, type){
     $(".mab-graph").empty();
     var panelString = "";
     for(var i=0; i<graphSeries.length; i++){
@@ -416,7 +385,7 @@ function filters(){
                     "</div>"+
                     "</div>";
       $(".mab-graph").append(panelString);
-      var graph = GraphUtil.createGraph("line", graphSeries[i], "standard", "graph-holder-"+i, "legend-holder-"+i, "range-holder-"+i, maxScore);
+      var graph = GraphUtil.createGraph(type, graphSeries[i], "standard", "graph-holder-"+i, "legend-holder-"+i, "range-holder-"+i);
     }
   }
 

@@ -76,7 +76,6 @@ function initializer(){
             "data": alternatives[i].mean_scores
           };
           singleGraphSeries.push(ucbObj);
-          singleGraphSeries.push(meanObj);
           tmp = [];
           tmp.push(ucbObj);
           tmp.push(meanObj);
@@ -92,7 +91,7 @@ function initializer(){
         }
         
         //Update the series stored in the filter.
-        liveFilter.setGraphSeries(singleGraphSeries, multipleGraphSeries, series["max_score"]+0.5);
+        liveFilter.setGraphSeries(singleGraphSeries, multipleGraphSeries);
 
         //Apply the filters which will then display the graph.
         liveFilter.applyFilters();

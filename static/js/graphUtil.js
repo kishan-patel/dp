@@ -1,5 +1,5 @@
 function graphUtil() {                                              
-   this.createGraph = function(graphType, series, dataType, graphId, legendId, rangeHolderId,max){
+   this.createGraph = function(graphType, series, dataType, graphId, legendId, rangeHolderId){
      //Determine what the max score is for the graph height.
      var max = 1;
      for(var i=0; i<series.length; i++){

@@ -135,8 +135,9 @@ function agents(){
     var wins = []
     var ucbScores = {};
     var rewards = [];
-    var ucbScore, maxScore=0, currentScore=0, bestChoice, totalTimesPlayed=0;
+    var ucbScore, currentScore=0, bestChoice, totalTimesPlayed=0;
 
+    //Initially, all of the arms are played at least once.
     for(var i=0; i<arms.length; i++){
       played[i] = 1;
       rewards[i] = arms[i].getReward();
@@ -155,9 +156,6 @@ function agents(){
         if(ucbScore > currentScore){
           bestChoice = j;
           currentScore = ucbScore;  
-          if(currentScore > maxScore){
-            maxScore = currentScore;  
-          }
         }
         ucbScores[j].push({x:i, y:ucbScore});
       }
@@ -166,7 +164,7 @@ function agents(){
      played[bestChoice]+=1;
     }
    
-    return {"max_score":maxScore, "all_scores":ucbScores};
+    return ucbScores;
   }
 
   function getEGreedySimScores(steps, arms){
@@ -174,7 +172,7 @@ function agents(){
     var wins = [];
     var eGreedyScores = {};
     var rewards = [];
-    var ucbScore, maxScore=0, bestScore=0, bestChoice, totalTimesPlayed=0, noTimesBestPicked=0;
+    var ucbScore, bestScore=0, bestChoice, totalTimesPlayed=0, noTimesBestPicked=0;
     var EG_CONST = 0.9;
 
     for(var i=0; i<arms.length; i++){
@@ -204,16 +202,13 @@ function agents(){
       
       for(var j=0; j<arms.length; j++){
         eGreedyScores[j].push({x:i, y:rewards[j]/played[j]});
-        if(rewards[j]/played[j] > maxScore){
-          maxScore = rewards[j]/played[j];
-        }
       }
 
       rewards[bestChoice]+=arms[bestChoice].getReward();
       played[bestChoice]+=1;
     }
 
-    return {"max_score":maxScore, "all_scores":eGreedyScores}
+    return eGreedyScores;
   }
 
   function getRandomSimScores(steps, noArms, series, color){
