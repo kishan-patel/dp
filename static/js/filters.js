@@ -374,6 +374,7 @@ function filters(){
   function createGraph(graphSeries, type){
     $(".mab-graph").empty();
     var panelString = "";
+    GraphUtil.initColorPalette();
     for(var i=0; i<graphSeries.length; i++){
       panelString = "";
       panelString = "<div class='panel panel-default'>"+

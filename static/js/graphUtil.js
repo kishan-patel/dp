@@ -10,7 +10,6 @@ function graphUtil() {
      }
 
      //Set the color for each arm
-     var palette = new Rickshaw.Color.Palette();
      for(var i=0; i<series.length; i++){
        series[i].color = palette.color();
      }
@@ -58,6 +57,10 @@ function graphUtil() {
      }
 
      graph.render();
+   }
+
+   this.initColorPalette = function(){
+     palette = new Rickshaw.Color.Palette({"scheme": scheme});
    }
 
    function initialiseHover (graph, legendId){                                       
@@ -136,6 +139,9 @@ function graphUtil() {
 
      return map[n];
    } 
+
+   var palette = new Rickshaw.Color.Palette({"scheme":"colorwheel"});
+   var scheme = "colorwheel";
 }
 
 var GraphUtil = new graphUtil();
