@@ -39,14 +39,26 @@ function agents(){
       result = newData[i].reward;
 
       //Update the information for the alternative that was chosen at timestep i.
+      var found = false;
       for(var j=0; j<alternatives.length; j++){
         if(alternatives[j].alternative == armPlayedNew){
           armPlayedOld = alternatives[j];
+          found = true;
           break;
         }
       }
+      if(!found){
+        alternatives.push({
+          alternative: armPlayedNew,
+          times_played: 1,
+          rewards: parseFloat(result),
+          mean_scores: [],
+          ucb_scores: [],
+        });
+        armPlayedOld = alternatives[alternatives.length-1];
+      }
       armPlayedOld.times_played+=1
-      armPlayedOld.rewards+=result;
+      armPlayedOld.rewards+=parseFloat(result);
 
       //Update the UCB score of all other arms.
       for(var j=0; j<alternatives.length; j++){

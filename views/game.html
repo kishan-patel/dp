@@ -1,0 +1,168 @@
+<% include header.html %>
+  <style>
+  #rewards span {
+    height:120px; float:left; margin:15px
+  }
+  </style>
+  <script>
+  $(function() {
+    //Establish a socket connection 
+    /*var socket = io.connect(CONFIG.ADDRESS);
+    socket.on("connect", function(){
+      socket.emit("viewer_connect", "game-client");
+    });*/
+
+    var noArms = 0;
+    var rewards = {};
+
+    // Set up number of arms
+    $( "#arms" ).slider({
+      value: 0,
+      orientation: "horizontal",
+      range: "min",
+      min: 0,
+      max: 5,
+      animate: true,
+      slide: function(event, ui) {
+        $( "#arm-num" ).val( ui.value );
+      },
+      stop: function(event, ui) {
+          $( "#rewards > span" ).each(function() {
+            var id = ($(this).attr('id'));
+            if(id <= ui.value){
+              $( this ).slider('enable');
+            } else {
+              $( this ).slider('disable');
+            }
+          });
+        noArms = $("#arms").slider("value");
+
+        //Add arm if it does not exist. 
+        for(var i=0; i<noArms; i++){
+          if(!(i+1 in rewards))
+            rewards[i+1] = parseFloat($("#arm-"+(i+1)).attr("placeholder"));
+        }
+  
+        //Remove rewards when the number of arms has been reduced.
+        for(key in rewards){
+          if(parseInt(key) > noArms){
+            delete rewards[key];
+          }
+        }
+      }
+      });
+
+    var val = $( "#arms" ).slider( "value" );
+    $( "#arm-num" ).val(val);
+    $( "#rewards > span" ).each(function(index) {
+      // read initial values from markup and remove that
+      var value = parseInt( $( this ).text(), 10 );
+      $( this ).empty().slider({
+        value: value,
+        range: "min",
+        min: 0,
+        max: 10,
+        step: 1, //Need to divide the reward value by 10
+        animate: true,
+        disabled: true,
+        orientation: "vertical",
+        slide: function(event, ui) {
+          $("#arm-"+(index+1)).val(ui.value/10);
+        },
+        stop: function(event, ui){
+          rewards[index+1] = ui.value/10;
+        }
+      });
+    });
+    
+    var dataUpdater = setInterval(function(){
+      var numberOfArms = noArms;
+      var rewardForEachArm = rewards;
+      var armSelected, rewardForArm, data = [];
+
+      for(var i=0; i<100; i++){
+        armSelected = Math.floor(Math.random() * noArms) + 1
+        rewardForArm = (1 && (Math.random() < rewards[armSelected]) || 0) ? 1 : 0;
+        data.push({
+          "alternative": armSelected,
+          "time": new Date().getTime(),
+          "reward":rewardForArm
+        })
+      }
+      debugger;
+      if(numberOfArms > 0){
+        var debug = JSON.stringify({id:"game-client", data: data});
+        debugger;
+        $.ajax({
+          type: "POST",
+          url: "send",
+          data: {"id":"game-client", "data": data, "is_game_client":true}, 
+          success: function(a, b, c){
+          },
+          error: function(a, b, c){
+          }
+        });
+      }
+    }, 2000)
+  });
+  </script>
+  <div class="page-header">
+    <h1>MAB Game Page</h1>
+  </div>
+</head>
+<body>
+  <div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Filters</h3>
+      </div>
+      <div class="panel-body">
+        <ul class="list-group">
+           <li class="list-group-item">
+              To play the 'MAB' game, do the following steps:<br>
+              Using the sliders provided,<br>
+              1. Choose the number of arms you wish to play with<br>
+              2. Select a reward (between 0 and 1) for each arm <br>
+              3. Press <button class="btn btn-default btn-small active">Play</button> when done<br>
+              4. Go to the following url to see the results <p style="inline" id="url"></p>
+          </li>
+        </ul>
+        <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Arms</h3>
+        </div>
+        <div class="panel-body">
+          Number of arms: <input id="arm-num" style="border:0" type="text" readonly="readonly" placeholder="0">
+          <div id="arms" style="width:200px; margin:15px;"></div>
+        </div>
+        </div>
+        <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Rewards</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            Arms:
+            <div class="col-md-1"><input id="arm-1" style="border:0" type="text" readonly="readonly" placeholder="0.2"><b>I</b></div>
+            <div class="col-md-1"><input id="arm-2" style="border:0" type="text" readonly="readonly" placeholder="0.4"><b>II</b></div>
+            <div class="col-md-1"><input id="arm-3" style="border:0" type="text" readonly="readonly" placeholder="0.6"><b>III</b></div>
+            <div class="col-md-1"><input id="arm-4" style="border:0" type="text" readonly="readonly" placeholder="0.8"><b>IV</b></div>
+            <div class="col-md-1"><input id="arm-5" style="border:0" type="text" readonly="readonly" placeholder="1"><b>V</b></div>
+          </div>
+          <div id="rewards">
+            <span id="1">2</span>
+            <span id="2">4</span>
+            <span id="3">6</span>
+            <span id="4">8</span>
+            <span id="5">10</span>
+          </div>
+        </div>
+        </div>
+           <button class="btn btn-default btn-lg btn-block" id="play">Play</button>
+      </div>
+      </div>
+    </div>
+  </div>
+ </div>

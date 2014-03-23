@@ -68,9 +68,16 @@ app.get('/live-iframe', function(req, res){
 });
 
 app.post('/send', function(req, res){
-  var senderId = req.body["sender_id"];  
+  var senderId = req.body["id"];  
   var dataSent = req.body["data"];
-  
+  var isGameClient = false;
+
+  try{
+    isGameClient = req.body["is_game_client"];
+  }catch(err){
+    isGameClient = false;
+  }
+
   //Keeping track of which sender has connected.
   if(!senders[senderId]){
     senders[senderId] = {"viewers":[], "data":{}};
@@ -100,21 +107,23 @@ app.post('/send', function(req, res){
       "sender_id": senderId,
       "times_played": 0,
       "max_score": 0,
-      "alternatives": alternatives
+      "alternatives": alternatives,
     });
 
     senders[senderId].data = senderData;
   }
-  
+
   //Run the ucb formula again on the new data.
   getUCBLiveScores(dataSent, senders[senderId].data);
 
   //Save the data for the given sender.
-  senders[senderId].data.save(function (err, sender, count){
-    if(err){
-      console.log(err);
-    }
-  });
+  if(!isGameClient){
+    senders[senderId].data.save(function (err, sender, count){
+      if(err){
+        console.log(err);
+      }
+    });
+  }
 
   //Broadcast the information to all of the viewers.
   var viewers = senders[senderId]["viewers"];
@@ -128,6 +137,10 @@ app.post('/send', function(req, res){
 app.get('/get-id', function(req, res){
   //res.render('id.html', {"id": shortId.generate());
   res.send(shortId.generate());
+});
+
+app.get('/game', function(req, res){
+  res.render('game.html', {});
 });
 
 app.get('/api', function(req, res){
@@ -144,4 +157,9 @@ io.sockets.on('connection', function(socket){
       socket.emit('update_graph',senders[id].data);
     }
   });
+});
+
+io.configure(function(){
+  io.set('close timeout', 60*60);
+  io.set('hearbeat timeout', 60*60);
 });
