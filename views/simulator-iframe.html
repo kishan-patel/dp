@@ -12,73 +12,65 @@
         <div class="panel-heading">Filters</div>
         <div class="panel-body" id="mab-panel-filter-body">
 	      <div class="table-responsive">
-	        <table class="table table-striped table-condensed">
-		      <tbody>
-                <tr>
-			      <td><b>Arms</b></td>
-                </tr>
-                <tr>
-			      <td>
-                    <div id="arms">
-                      Arm 1:&nbsp
-			          <select>
-              	  	    <option value="Bernoulli" selected>Bernoulli</option>
-           		      </select>
-            	      <input type="text" value="0.1" size="1"><br/><br/>
-                      Arm 2:&nbsp
-                      <select>
-                        <option value="Bernoulli" selected>Bernoulli</option>
-                      </select>
-                      <input type="text" value="0.9" size="1"><br/>
-                      <button type="button" class="btn btn-default btn-sm" id="add-arm">Add</button>
-                    </div>
-			      </td>
-		        </tr>
-		        <tr>
-			      <td><b>Agents</b></td>
-                </tr>
-                <tr>
-			      <td>
-                    <div id="agents">
-                      Agent 1:&nbsp
-			          <select>
-			            <option value="UCB1" selected>UCB1</option>
-			            <option value="e-greedy">e-greedy</option>
-			            <option value="random">random</option>
-			          </select><br/><br/>
-                      Agent 2:&nbsp
-                      <select >
-                        <option value="UCB1">UCB1</option>
-                        <option value="e-greedy" selected>e-greedy</option>
-                        <option value="random">random</option>
-                      </select><br/><br/>
-                      <input type="text" placeholder="Agent name..." size="45" id="agent-name"><br/><br/>
-                      <textarea class="form-control" id="custom-function" rows="3" cols="4">function functionName(steps, arms){
-  //Implementation goes here
+          
+            <div class="panel panel-default"> 
+              <div class="panel-heading"><b>Arms</b></div>
+              <div class="panel-body">
+                <div id="arms">
+                  Arm 1:&nbsp
+                  <select>
+                    <option value="Bernoulli" selected>Bernoulli</option>
+                  </select>
+                  <input type="text" value="0.1" size="1"><br/><br/>
+                  Arm 2:&nbsp
+                  <select>
+                    <option value="Bernoulli" selected>Bernoulli</option>
+                  </select>
+                  <input type="text" value="0.9" size="1"><br/>
+                  <button type="button" class="btn btn-default btn-sm" id="add-arm">Add</button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="panel panel-default">
+              <div class="panel-heading"><b>Agents</b></div>
+              <div class="panel-body">
+                <div id="agents">
+                  Agent 1:&nbsp
+                  <select>
+                    <option value="UCB1" selected>UCB1</option>
+                    <option value="e-greedy">e-greedy</option>
+                    <option value="random">random</option>
+                  </select><br/><br/>
+                  Agent 2:&nbsp
+                  <select >
+                    <option value="UCB1">UCB1</option>
+                    <option value="e-greedy" selected>e-greedy</option>
+                    <option value="random">random</option>
+                  </select><br/><br/>
+                  <input type="text" placeholder="Agent name..." size="45" id="agent-name"><br/><br/>
+                  <textarea class="form-control" id="custom-function" rows="3" cols="4">function functionName(steps, arms){
+//Implementation goes here
 }
-                      </textarea>
-                      <button type="button" class="btn btn-default btn-sm" id="add-agent">Add</button>
-                    </div>
-			      </td>
-		        </tr>
-		        <tr>
-			      <td><b>Steps</b></td>
-                </tr>
-                <tr>
-           	      <td>
-                    <input id="steps" type="text" value="500" size="1"/>
-                  </td>
-		        </tr>
-                <tr>
-                  <td><b>Graphs</b></td>
-                </tr>
-                <tr>
-                  <td>
-                    <input type="radio" name="number-graphs" value="multiple-graphs" class="number-graphs" checked>&nbspMultiple<br/>
-                  </td>
-                </tr>
-		      </tbody>
-            </table>
+                  </textarea>
+                  <button type="button" class="btn btn-default btn-sm" id="add-agent">Add</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel panel-default">
+              <div class="panel-heading"><b>Steps</b></div>
+              <div class="panel-body">
+                <input id="steps" type="text" value="500" size="1"/>
+              </div>
+            </div>
+
+            <div class="panel panel-default">
+              <div class="panel-heading"><b>Graphs</b></div>
+              <div class="panel-body">
+                <input type="radio" name="number-graphs" value="multiple-graphs" class="number-graphs" checked>&nbspMultiple<br/>
+             </div>
+           </div>
           </div>
 	    </div>
       </div>

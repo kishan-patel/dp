@@ -2,7 +2,6 @@ body {
   font-family: Arial, sans-serif 
 }
 
-
 .swatch {
   display: inline-block;
   width: 10px;
@@ -40,13 +39,13 @@ body {
 }
 
 #mab-panel-filter {
-  height: 470px;
+  #height: 470px;
   min-height: 470px;
 }
 
 #mab-panel-filter-body {
-  height: 90%;
-  overflow: auto;
+  #height: 90%;
+  #overflow: auto;
 }
 
 #mab-panel-graph {

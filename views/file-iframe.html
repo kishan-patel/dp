@@ -11,63 +11,52 @@
       <div class="panel panel-default" id="mab-panel-filter">
         <div class="panel-heading">Filters</div>
         <div class="panel-body" id="mab-panel-filter-body">
-		  <div class="table-responsive">
-		    <table class="table table-striped table-condensed">
-			  <tbody>
-                <tr>
-                  <td><b>File</b></td>
-                </tr>
-                <tr>
-                  <td><input type="file" id="file-upload"></input></td>
-                </tr>
-  			    <tr>
-				  <td><b>Type</b></td>
-                </tr>
-                <tr>
-				  <td>  
-                    <input type="radio" name="graph-type" value="line" class="graph-type" checked>&nbspLine<br/>
-       				<input type="radio" name="graph-type" value="bar" class="graph-type">&nbspBar<br/>
-				  </td>
-			    </tr>
-			    <tr>
-				  <td><b>Arms</b></td>
-                </tr>
-                <tr>
-				  <td>
-                    <div id="arm-checkboxes-holder">None</div>
-				  </td>
-			    </tr>
-			    <tr>
-				  <td><b>Agents</b></td>
-                </tr>
-                <tr>
-				  <td>
-			        <select id="agent">
-                      <option vlaue="none">none</option>
-          	     	  <option value="UCB1" selected>UCB1</option>
-        			</select>
-				  </td>
-			    </tr>
-			    <tr>
-				  <td><b>Active / Inactive</b></td>
-                </tr>
-                <tr>
-				  <td>
-                    <input id="active-unactive" type="checkbox" name="active" value="active-unactive">&nbspShow
-        		    <select id="arm-select-holder"></select>
-				  </td>
-			    </tr>
-                <tr>
-                  <td><b>Graphs</b></td>
-                </tr>
-                <tr>
-                  <td>
-                    <input type="radio" name="number-graphs" value="multiple-graphs" class="number-graphs" checked>&nbspMultiple<br/>
-                    <input type="radio" name="number-graphs" value="single-graphs" class="number-graphs">&nbspSingle</br>
-                  </td>
-                </tr>
-			  </tbody>
-		    </table>
+          <div class="panel panel-default">
+            <div class="panel-heading">File</div>
+            <div class="panel-body">
+              <input type="file" id="file-upload"></input>
+            </div>
+          </div>
+
+          <div class="panel panel-default">
+            <div class="panel-heading"><b>Type</b></div>
+            <div class="panel-body">
+              <input type="radio" name="graph-type" value="line" class="graph-type" checked>&nbspLine<br/>
+       	      <input type="radio" name="graph-type" value="bar" class="graph-type">&nbspBar<br/>
+            </div>
+          </div>
+          
+          <div class="panel panel-default">
+	        <div class="panel-heading"><b>Arms</b></div>
+            <div class="panel-body">
+              <div id="arm-checkboxes-holder">None</div>
+            </div>
+          </div>
+ 
+          <div class="panel panel-default">
+            <div class="panel-heading"><b>Agents</b></div>
+            <div class="panel-body">
+			  <select id="agent">
+                <option vlaue="none">none</option>
+          	    <option value="UCB1" selected>UCB1</option>
+        	  </select>
+            </div>
+          </div>
+  
+          <div class="panel panel-default">
+            <div class="panel-heading"><b>Active / Inactive</b></div>
+            <div class="panel-body">
+              <input id="active-unactive" type="checkbox" name="active" value="active-unactive">&nbspShow
+        	  <select id="arm-select-holder"></select>
+            </div>
+          </div>
+ 
+          <div class="panel panel-default">
+            <div class="panel-heading"><b>Graphs</b></div>
+            <div class="panel-body">
+              <input type="radio" name="number-graphs" value="multiple-graphs" class="number-graphs" checked>&nbspMultiple<br/>
+              <input type="radio" name="number-graphs" value="single-graphs" class="number-graphs">&nbspSingle</br>
+            </div>
           </div>
         </div>
         </div>    
