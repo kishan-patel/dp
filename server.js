@@ -21,6 +21,7 @@ Sender.find(function(err, senderObjs){
     senders[senderObjs[i].sender_id]["data"] = senderObjs[i];
   }
 });
+senders["game-client"]={"viewers":[], "data":{}};
 
 //App configurations
 app.set('views', __dirname +'/views');

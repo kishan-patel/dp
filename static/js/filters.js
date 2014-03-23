@@ -307,7 +307,23 @@ function filters(){
   }
 
   this.liveFilter = {
-    "createGraph": createGraph,
+    "createGraph": function(graphSeries, type){
+      if(this.graphs.length > 0){
+        for(var i=0; i<graphSeries.length; i++){
+          //active = this.graphs[i].series.active;
+          //this.graphs[i].series = graphSeries[i];
+          this.graphs[i].series.length =  0;
+          for(var j=0; j<graphSeries[i].length; j++){
+            this.graphs[i].series.push(graphSeries[i][j]);
+          }
+          //this.graphs[i].active = active;
+          //this.graphs[i].validateSeries(this.graphs[i].series);
+          this.graphs[i].update();
+        }
+      }else{
+        this.graphs = createGraph(graphSeries, type)
+      }
+    },
     "addArmsToFilter": addArmsToFilter,
     "setGraphSeries": function(singleGraphSeries, multipleGraphSeries){
       this.singleGraphSeries = singleGraphSeries;
@@ -326,16 +342,19 @@ function filters(){
     "singleGraphSeries": [],
     "multipleGraphSeries": [],
     "graphSeries": [],
+    "graphs": [],
     "armsToDisplay": [],
     "onArmsChange": function(){
       var me = this;
       $("#arm-checkboxes-holder").children().on('click', function(e){
+        me.graphs = [];
         me.applyFilters();
       })
     },
     "onNoGraphChange": function(){
       var me = this;
       $(".number-graphs").on('click', function(e){
+        me.graphs = [];
         me.applyFilters();
       });
     },
@@ -350,8 +369,9 @@ function filters(){
     "applyFilters": function(){
       this.armsToDisplay = this.getArmsToDisplay();
       var displaySingleGraph = $(".number-graphs")[1].checked;  
-      this.graphSeries = [];
       var tmpSeries = [];
+      this.graphSeries = [];
+
       if(displaySingleGraph){
         for(var i=0; i<this.singleGraphSeries.length; i++){
           if(this.armsToDisplay.indexOf(this.singleGraphSeries[i].name.split(" ")[0]) == -1)
@@ -375,6 +395,7 @@ function filters(){
     $(".mab-graph").empty();
     var panelString = "";
     GraphUtil.initColorPalette();
+    var graph, graphs=[];
     for(var i=0; i<graphSeries.length; i++){
       panelString = "";
       panelString = "<div class='panel panel-default'>"+
@@ -386,8 +407,10 @@ function filters(){
                     "</div>"+
                     "</div>";
       $(".mab-graph").append(panelString);
-      var graph = GraphUtil.createGraph(type, graphSeries[i], "standard", "graph-holder-"+i, "legend-holder-"+i, "range-holder-"+i);
+      graph = GraphUtil.createGraph(type, graphSeries[i], "standard", "graph-holder-"+i, "legend-holder-"+i, "range-holder-"+i);
+      graphs.push(graph);
     }
+    return graphs;
   }
 
   function addArmsToFilter(alternatives, htmlId){

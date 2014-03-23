@@ -57,6 +57,8 @@ function graphUtil() {
      }
 
      graph.render();
+     
+     return graph;
    }
 
    this.initColorPalette = function(){

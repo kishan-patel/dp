@@ -80,7 +80,7 @@
       var rewardForEachArm = rewards;
       var armSelected, rewardForArm, data = [];
 
-      for(var i=0; i<100; i++){
+      for(var i=0; i<3; i++){
         armSelected = Math.floor(Math.random() * noArms) + 1
         rewardForArm = (1 && (Math.random() < rewards[armSelected]) || 0) ? 1 : 0;
         data.push({
@@ -125,8 +125,7 @@
               Using the sliders provided,<br>
               1. Choose the number of arms you wish to play with<br>
               2. Select a reward (between 0 and 1) for each arm <br>
-              3. Press <button class="btn btn-default btn-small active">Play</button> when done<br>
-              4. Go to the following url to see the results <p style="inline" id="url"></p>
+              4. Go to the following url to see the results: <a href="/live?id=game-client" target="_blank">Game results</a>
           </li>
         </ul>
         <div class="panel panel-default">
@@ -160,7 +159,6 @@
           </div>
         </div>
         </div>
-           <button class="btn btn-default btn-lg btn-block" id="play">Play</button>
       </div>
       </div>
     </div>
