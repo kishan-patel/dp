@@ -8,11 +8,9 @@
 <div class="row">
   <div class="col-md-4">
     <div class="mab-filter">
-      <div class="panel panel-default" id="mab-panel-filter">
-        <div class="panel-heading">Filters</div>
-        <div class="panel-body" id="mab-panel-filter-body">
-	      <div class="table-responsive">
-          
+      <div id="mab-panel-filter">
+       <!-- <div class="panel-heading">Filters</div> -->
+        <div id="mab-panel-filter-body">
             <div class="panel panel-default"> 
               <div class="panel-heading"><b>Arms</b></div>
               <div class="panel-body">
@@ -26,7 +24,7 @@
                   <select>
                     <option value="Bernoulli" selected>Bernoulli</option>
                   </select>
-                  <input type="text" value="0.9" size="1"><br/>
+                  <input type="text" value="0.9" size="1"><br/><br/>
                   <button type="button" class="btn btn-default btn-sm" id="add-arm">Add</button>
                 </div>
               </div>
@@ -48,11 +46,11 @@
                     <option value="e-greedy" selected>e-greedy</option>
                     <option value="random">random</option>
                   </select><br/><br/>
-                  <input type="text" placeholder="Agent name..." size="45" id="agent-name"><br/><br/>
-                  <textarea class="form-control" id="custom-function" rows="3" cols="4">function functionName(steps, arms){
+                  <input type="text" placeholder="Agent name..." size="48" id="agent-name"><br/><br/>
+                  <textarea class="form-control" id="custom-function" rows="10" cols="4">function functionName(steps, arms){
 //Implementation goes here
 }
-                  </textarea>
+                  </textarea><br/>
                   <button type="button" class="btn btn-default btn-sm" id="add-agent">Add</button>
                 </div>
               </div>
@@ -71,7 +69,6 @@
                 <input type="radio" name="number-graphs" value="multiple-graphs" class="number-graphs" checked>&nbspMultiple<br/>
              </div>
            </div>
-          </div>
 	    </div>
       </div>
     </div>
