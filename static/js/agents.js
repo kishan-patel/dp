@@ -4,6 +4,9 @@ function agents(){
       case "UCB1":
         return getUCBSimScores(steps, bandits);
         break;
+      case "Exp3":
+        return getEXP3SimScores(steps, bandits);
+        break;
       case "e-greedy":
         return getEGreedySimScores(steps, bandits);
         break;
@@ -82,33 +85,6 @@ function agents(){
     //return {"times_played": timesPlayed, "max_score": maxScore, "data":old_data};
   }
 
-  function getMeanLiveScores(newData, oldData){
-    var maxScore = oldData["max_score"];
-    var armPlayed, result, meanScore;
-
-    for(var i=0; i<newData.length; i++){
-      armPlayed = newData[i]["alternative"];
-      result = newData[i]["rewards"];
-
-      oldData[armPlayed]["times_played"]+=1;
-      oldData[armPlayed]["rewards"]+=result;
-
-      for(var arm in oldData){
-        if(arm == "times_played")
-          break;
-        if(oldData[arm]["times_played"] == 0)
-          meanScore = 0;
-        else
-          meanScore = oldData[arm]["rewards"]/oldData[arm]["times_played"]
-        if(meanScore > maxScore)
-          maxScore = meanScore
-        oldData[arm]["data"].push({"x":totalTimesPlayed-1, "y":meanScore});
-      }
-    }
-
-    return {"times_played": timesPlayed, "max_score": maxScore, "data":oldData};
-  }
-
   /**
     Description: Calculates the UCB scores for a particular arm given the results observed.
     @method getUCBScores
@@ -149,18 +125,22 @@ function agents(){
     var rewards = [];
     var ucbScore, currentScore=0, bestChoice, totalTimesPlayed=0;
 
-    //Initially, all of the arms are played at least once.
+    //Initially play each arm once
     for(var i=0; i<arms.length; i++){
       played[i] = 1;
       rewards[i] = arms[i].getReward();
       wins[i] = rewards[i];
       ucbScores[i] = [];
-      played[i] = 1;
+      for(var j=0; j<arms.length && j<steps; j++){
+        ucbScores[i].push({x:j, y:rewards[i]/played[i]});
+      }
+      totalTimesPlayed++;
     }
 
-    for(var i=0; i<steps; i++){
+    for(var i=totalTimesPlayed; i<steps; i++){
       totalTimesPlayed++;
 
+      //Apply the UCB1 policy to choose an arm 
       currentScore = 0;
       bestChoice = 0;
       for(var j=0; j<arms.length; j++){
@@ -169,11 +149,16 @@ function agents(){
           bestChoice = j;
           currentScore = ucbScore;  
         }
-        ucbScores[j].push({x:i, y:ucbScore});
       }
-
-     rewards[bestChoice]+=arms[bestChoice].getReward();
-     played[bestChoice]+=1;
+      
+      //Update reward for arm chosen during current timestep
+      rewards[bestChoice]+=arms[bestChoice].getReward();
+      played[bestChoice]+=1;
+      
+      //Store the scores at each timestep for each arm
+      for(var j=0; j<arms.length; j++){
+       ucbScores[j].push({x:i, y:rewards[j]/played[j]});
+      }
     }
    
     return ucbScores;
@@ -184,20 +169,26 @@ function agents(){
     var wins = [];
     var eGreedyScores = {};
     var rewards = [];
-    var ucbScore, bestScore=0, bestChoice, totalTimesPlayed=0, noTimesBestPicked=0;
+    var bestScore=0, bestChoice, totalTimesPlayed=0, noTimesBestPicked=0;
     var EG_CONST = 0.9;
 
+    //Initially play each arm once
     for(var i=0; i<arms.length; i++){
       played[i] = 1;
       rewards[i] = arms[i].getReward();
       wins[i] = rewards[i];
       eGreedyScores[i] = [];
-      played[1] = 1;
+      for(var j=0; j<arms.length && j<steps; j++){
+        eGreedyScores[i].push({x:j, y:rewards[i]/played[i]});
+      }
+      totalTimesPlayed++;
     }
 
-    for(var i=0; i<steps; i++){
+    //At each timestep pick an arm based on the e-greedy policy
+    for(var i=totalTimesPlayed; i<steps; i++){
       totalTimesPlayed++;
 
+      //Application of the e-greedy policy
       if(noTimesBestPicked/totalTimesPlayed < (1-EG_CONST)){
         noTimesBestPicked++;
         bestScore = 0;
@@ -205,55 +196,59 @@ function agents(){
         for(var j=0; j<arms.length; j++){
           eGreedyScore = rewards[j]/played[j];
           if(eGreedyScore > bestScore){
-            bestChoice = j
+            bestChoice = j;
           }
         }
       }else{
         bestChoice = Math.floor(Math.random()*arms.length);
       }
-      
+
+      //Update the rewards for the arm that was picked
+      rewards[bestChoice] += arms[bestChoice].getReward();
+      played[bestChoice] += 1;
+
+      //Update the scores for each arm at each timestep
       for(var j=0; j<arms.length; j++){
         eGreedyScores[j].push({x:i, y:rewards[j]/played[j]});
       }
-
-      rewards[bestChoice]+=arms[bestChoice].getReward();
-      played[bestChoice]+=1;
     }
 
     return eGreedyScores;
   }
 
   function getRandomSimScores(steps, noArms, series, color){
-    var currChoice = "";
-    var timesPlayed = 0;
-    var totalWins = 0;
     var played = [];
     var wins = [];
-    var data = [];
-    var simData = [];
+    var randomScores = {};
+    var rewards = [];
+    var randomChoice, totalTimesPlayed=0;
 
-    for(var i=0; i<steps; i++){
-      timesPlayed++;
-      if(played.length < noArms){
-        currChoice = i
-        played[currChoice] = 1;
-      }else{
-        currChoice = Math.floor(Math.random()*noArms);
+    //Initially play each arm once
+    for(var i=0; i<arms.length; i++){
+      played[i] = 1;
+      rewards[i] = arms[i].getReward();
+      wins[i] = rewards[i];
+      randomScores[i] = [];
+      for(var j=0; j<arms.length && j<steps; j++){
+        randomScores[i].push({x:j, y:rewards[i]/played[i]});
       }
-
-      played[currChoice]++;
-      data = $.grep(series, function(e){return e.name == currChoice+1+""})[0].data;
-      if(i<noArms){
-        wins[currChoice] = 0;
-      }
-      if(data[i].win == "1"){
-        totalWins++;
-        wins[currChoice]++;  
-      }
-      simData.push({x:i, y:totalWins/timesPlayed});
+      totalTimesPlayed++;
     }
 
-    return {"name": "random", "color":color, "data":simData};
+    //At each timestep randomly pick a arm
+    for(var i=totaltimesPlayed; i<steps; i++){
+      totalTimesPlayed++;
+      randomChoice = Math.floor(Math.random()*arms.length());
+      rewards[randomChoice] += arms[randomChoice].getReward();
+      played[randomChoice] += 1
+      
+      //Update the random scores at each step for each arm
+      for(var j=0; j<arms.length; j++){
+        randomScores[j].push({x:i, y:rewards[j]/played[j]});  
+      }
+    }
+
+    return randomScores;
   }
 }
 
