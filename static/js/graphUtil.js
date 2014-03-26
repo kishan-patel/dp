@@ -24,7 +24,7 @@ function graphUtil() {
        interpolation:'linear'
      });
      
-     //Extensions of the graph
+     //Format the x & y axes
      if(dataType == "timestamp"){
        var xAxis = new Rickshaw.Graph.Axis.X({
          graph: graph,
@@ -38,17 +38,15 @@ function graphUtil() {
        });
        xAxis.render();
      }
-
      yAxis = new Rickshaw.Graph.Axis.Y({
        graph: graph
      });
      yAxis.render();
 
-     Hover = initialiseHover(graph, legendId);
-     hover = new Hover({
-         graph: graph
-     });
+     //Add hover details to the graph
+     addDetailedHover(graph);
     
+    //Add a range slider to the graph
      if(graphType == "line"){ 
        var preview = new Rickshaw.Graph.RangeSlider.Preview({
          graph: graph,
@@ -63,6 +61,22 @@ function graphUtil() {
 
    this.initColorPalette = function(){
      palette = new Rickshaw.Color.Palette({"scheme": scheme});
+   }
+
+   function addDetailedHover(graph){
+     new Rickshaw.Graph.HoverDetail({
+       graph: graph,
+       formatter: function(series, x, y){
+         var allSeries = this.graph.series;
+         var swatch, content = "";
+         for(var i=0; i<allSeries.length; i++){
+           swatch = "<span class='detail_swatch' style='background-color: " + allSeries[i].color + "'></span>";
+           content += swatch + allSeries[i].name + ": (x,y) = ("+allSeries[i].data[x].x+","+parseFloat(allSeries[i].data[x].y).toFixed(2)+")<br/>";
+         }
+
+         return content;
+       }
+     });
    }
 
    function initialiseHover (graph, legendId){                                       

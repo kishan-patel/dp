@@ -400,7 +400,7 @@ function filters(){
       panelString = "";
       panelString = "<div class='panel panel-default'>"+
                     "<div class='panel-heading'>Live data</div>"+
-                    "<div class='panel-body'><br/><br/>"+
+                    "<div class='panel-body'>"+
                       "<div id='graph-holder-"+i+"'></div><br/>"+
                       "<div id='range-holder-"+i+"'></div><br/>"+
                       "<div id='legend-holder-"+i+"'></div>"+

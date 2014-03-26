@@ -2,22 +2,15 @@ body {
   font-family: Arial, sans-serif 
 }
 
-.swatch {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin: 0 8px 0 0;
-}
 
-.label {
-  display: inline-block;
-  color: black;
-}
+.rickshaw_graph .detail .x_label { display: none }
 
-.line {
-  display: inline-block;
-  margin: 0 0 0 30px;
-}
+
+.rickshaw_graph .detail .item { line-height: 1.4; padding: 0.5em; width:230px;}
+
+.detail_swatch { float: right; display: inline-block; width: 10px; height: 10px; margin: 0px 0px 0 0 }
+
+.rickshaw_graph .detail .date { color: #a0a0a0 }
 
 #legend {
  text-align: center;
