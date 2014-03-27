@@ -148,7 +148,8 @@ app.get('/game', function(req, res){
 });
 
 app.get('/reset-game-data', function(req, res){
-  senders["game-client"]["data"] = [];
+  senders["game-client"]["data"] = {};
+  res.send(200);
 });
 
 app.get('/api', function(req, res){

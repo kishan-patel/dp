@@ -83,12 +83,13 @@
         }
 
         dataUpdater = setInterval(function(){
-          var numberOfArms = noArms;
+            debugger;
+          var numberOfArms = $("#arms").slider("value");;
           var rewardForEachArm = rewards;
           var armSelected, rewardForArm, data = [];
 
           for(var i=0; i<10; i++){
-            armSelected = Math.floor(Math.random() * noArms) + 1
+            armSelected = Math.floor(Math.random() * numberOfArms) + 1
             rewardForArm = (1 && (Math.random() < rewards[armSelected]) || 0) ? 1 : 0;
             data.push({
               "alternative": armSelected,
@@ -122,8 +123,10 @@
           type: "GET",
           url: "reset-game-data",
           success: function(a, b, c){
+              debugger;
           },
           error: function(a, b, c){
+              debugger;
           }
         });
 
