@@ -2,7 +2,6 @@ body {
   font-family: Arial, sans-serif 
 }
 
-
 .rickshaw_graph .detail .x_label { display: none }
 
 
@@ -20,6 +19,9 @@ body {
  background: none;
 }
 
+.tooltip-inner{
+  max-width: 500px;
+}
 .mab-filter {
   margin-top:auto;
   margin-bottom:auto;
@@ -42,7 +44,7 @@ body {
 }
 
 #mab-panel-graph {
-  height: 470px;
+  #height: 470px;
 }
 
 div[id^="range-holder"] {

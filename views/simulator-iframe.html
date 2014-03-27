@@ -19,12 +19,12 @@
                   <select>
                     <option value="Bernoulli" selected>Bernoulli</option>
                   </select>
-                  <input type="text" value="0.1" size="1"><br/><br/>
+                  p=<input type="text" value="0.4" size="1"><br/><br/>
                   Arm 2:&nbsp
                   <select>
                     <option value="Bernoulli" selected>Bernoulli</option>
                   </select>
-                  <input type="text" value="0.9" size="1"><br/><br/>
+                  p=<input type="text" value="0.9" size="1"><br/><br/>
                   <button type="button" class="btn btn-default btn-sm" id="add-arm">Add</button>
                 </div>
               </div>
@@ -51,7 +51,8 @@
 //Implementation goes here
 }
                   </textarea><br/>
-                  <button type="button" class="btn btn-default btn-sm" id="add-agent">Add</button>
+                  <button type="button" class="btn btn-default btn-sm" id="add-agent">Add</button>&nbsp
+                  <a href="/custom-function-example" target="_blank"><button type="button" class="btn btn-default btn-sm" id="custom-example">Example</button></a>
                 </div>
               </div>
             </div>
@@ -79,8 +80,7 @@
         <div class="panel-heading">Simulator</div>
         <div class="panel-body">
           <div id="graph-holder"></div><br/>
-          <div id="range-holder"></div><br/>
-          <div id="legend-holder"></div>
+          <div id="range-holder"></div>
         </div>
       </div>
     </div>

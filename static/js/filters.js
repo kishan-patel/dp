@@ -1,6 +1,6 @@
 function filters(){
   this.fileFilter = {
-    "createGraph": createGraph,
+    "updateGraph": updateGraph,
     "addArmsToFilter": addArmsToFilter,
     "agents": new agents(),
     "displaySingleGraph": true,
@@ -55,7 +55,7 @@ function filters(){
      },
     "applyFilters": function(){
        var filteredSeries = [];
-
+       debugger;
        //Bar or line chart
        var displayLineGraph = $(".graph-type")[0].checked;
        var graphType;
@@ -134,13 +134,16 @@ function filters(){
        }
        
        //Create the graph
-       debugger;
-       this.createGraph(this.graphSeries, graphType);
+       this.updateGraph(this.graphSeries, graphType);
+
+      //Update the tooltips
+       var tooltipInfo = this.displaySingleGraph ? info.tooltipInfo["mean_ucb1"] : info.tooltipInfo["ucb1"];
+       tooltip.initTooltip(".graph-info", tooltipInfo);
     }
   }
 
   this.simulatorFilter = {
-    "createGraph": createGraph,
+    "updateGraph": updateGraph,
     "getStepsInfo": function(){
       return $("#steps")[0].value;
     },
@@ -207,16 +210,16 @@ function filters(){
       $(".number-graphs").on("click", function(e){
         me.applyFilters();
       });
-    },
+    },                                                    
     "onAddArms": function(){
       var me = this;
       $("#add-arm").on('click', function(e){
         me.armCounter++;  
-        var html = "<br/>Arm "+me.armCounter+":&nbsp&nbsp"+
+        var html = "Arm "+me.armCounter+":&nbsp&nbsp"+
                      "<select>"+
                        "<option value='Bernoulli' selected>Bernoulli</option>"+
                      "</select>&nbsp"+
-                     "<input type='text' value='0.5' size='1'><br/>";
+                     "p=<input type='text' value='0.5' size='1'><br/><br/>";
         $("#add-arm").before(html);
         me.applyFilters();
       });
@@ -302,26 +305,26 @@ function filters(){
       }
 
       //Create the graph
-      this.createGraph(this.graphSeries, "line");
+      this.updateGraph(this.graphSeries, "line");
+
+      //Update the tooltips
+      var tooltipInfo = info.tooltipInfo["sim"]  
+      info.initTooltip(".graph-info", tooltipInfo); 
     }
   }
 
   this.liveFilter = {
-    "createGraph": function(graphSeries, type){
+    "updateGraph": function(graphSeries, type){
       if(this.graphs.length > 0){
         for(var i=0; i<graphSeries.length; i++){
-          //active = this.graphs[i].series.active;
-          //this.graphs[i].series = graphSeries[i];
           this.graphs[i].series.length =  0;
           for(var j=0; j<graphSeries[i].length; j++){
             this.graphs[i].series.push(graphSeries[i][j]);
           }
-          //this.graphs[i].active = active;
-          //this.graphs[i].validateSeries(this.graphs[i].series);
           this.graphs[i].update();
         }
       }else{
-        this.graphs = createGraph(graphSeries, type)
+        this.graphs = updateGraph(graphSeries, type)
       }
     },
     "addArmsToFilter": addArmsToFilter,
@@ -372,6 +375,7 @@ function filters(){
       var tmpSeries = [];
       this.graphSeries = [];
 
+
       if(displaySingleGraph){
         for(var i=0; i<this.singleGraphSeries.length; i++){
           if(this.armsToDisplay.indexOf(this.singleGraphSeries[i].name.split(" ")[0]) == -1)
@@ -387,11 +391,17 @@ function filters(){
         }
       }
 
-      this.createGraph(this.graphSeries, "line");
+      this.updateGraph(this.graphSeries, "line");
+
+      //Update the tooltips
+      var tooltipInfo = displaySingleGraph ? info.tooltipInfo["ucb1"] : info.tooltipInfo["mean_ucb1"]; 
+      info.initTooltip(".graph-info", tooltipInfo); 
     }
   }
 
-  function createGraph(graphSeries, type){
+  var info = new Info();
+
+  function updateGraph(graphSeries, type, panelHeading){
     $(".mab-graph").empty();
     var panelString = "";
     GraphUtil.initColorPalette();
@@ -399,7 +409,7 @@ function filters(){
     for(var i=0; i<graphSeries.length; i++){
       panelString = "";
       panelString = "<div class='panel panel-default'>"+
-                    "<div class='panel-heading'>Live data</div>"+
+                    "<div class='panel-heading'>"+panelHeading+"<span class='glyphicon glyphicon-info-sign graph-info' style='float:right;'></span></div>"+
                     "<div class='panel-body'>"+
                       "<div id='graph-holder-"+i+"'></div><br/>"+
                       "<div id='range-holder-"+i+"'></div><br/>"+

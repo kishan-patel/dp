@@ -54,6 +54,10 @@ app.get('/simulator-iframe', function(req, res){
   res.render('simulator-iframe.html', {});
 });
 
+app.get('/custom-function-example', function(req, res){
+  res.render('custom-function-example.html', {});
+});
+
 app.get('/live', function(req, res){
   var urlParams = url.parse(req.url, true);
   var query = urlParams.query;
