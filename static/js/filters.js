@@ -341,6 +341,7 @@ function filters(){
       addArmsToMultiSelect(alternatives, "multi-select-au-holder", "multi-select-au", "");
       $("#multi-select-arms").multiselect();
       $("#multi-select-au").multiselect();
+      this.graphs = [];
       this.onArmsChange();
       this.onActiveChange();
     },

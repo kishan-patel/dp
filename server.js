@@ -160,13 +160,12 @@ app.get('/api', function(req, res){
 io.sockets.on('connection', function(socket){
   console.log("established socket connection");
   socket.on('viewer_connect', function(id){
-    if(senders[id] == "game-client"){
-      senders["game-client"]={"viewers":[], "data":{}};
-    }
-
     if(senders[id]){
       senders[id]["viewers"].push(socket); 
       socket.emit('update_graph',senders[id].data);
+    }else{
+      senders[id] = {"viewers":[], "data":{}};
+      senders[id]["viewers"].push(socket);
     }
   });
 });
