@@ -21,7 +21,6 @@ Sender.find(function(err, senderObjs){
     senders[senderObjs[i].sender_id]["data"] = senderObjs[i];
   }
 });
-senders["game-client"]={"viewers":[], "data":{}};
 
 //App configurations
 app.set('views', __dirname +'/views');
@@ -148,15 +147,23 @@ app.get('/game', function(req, res){
   res.render('game.html', {});
 });
 
+app.get('/reset-game-data', function(req, res){
+  senders["game-client"]["data"] = [];
+});
+
 app.get('/api', function(req, res){
   res.render('api.html', {});
 });
 
-//When a viewr connects, add its socket to the list of listeners for a given 
+//When a viewer connects, add its socket to the list of listeners for a given 
 //data source. 
 io.sockets.on('connection', function(socket){
   console.log("established socket connection");
   socket.on('viewer_connect', function(id){
+    if(senders[id] == "game-client"){
+      senders["game-client"]={"viewers":[], "data":{}};
+    }
+
     if(senders[id]){
       senders[id]["viewers"].push(socket); 
       socket.emit('update_graph',senders[id].data);

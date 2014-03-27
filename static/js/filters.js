@@ -16,33 +16,42 @@ function filters(){
         armsToAddToFilter.push(lineSeries.data[i].name);
       }
 
-      //Update the checboxes of arms shown in the filter.
-      addArmsToFilter(armsToAddToFilter, "#arm-checkboxes-holder");
+      //Add arms to select boxes in filter
+      //addArmsToFilter(armsToAddToFilter, "#arm-checkboxes-holder");
+      addArmsToMultiSelect(armsToAddToFilter, "multi-select-arms-holder", "multi-select-arms", "selected");
+      addArmsToMultiSelect(armsToAddToFilter, "multi-select-au-holder", "multi-select-au", "");
+      $("#multi-select-arms").multiselect();
+      $("#multi-select-au").multiselect();
       this.onArmsChange();
+      this.onActiveChange();
     },
     "onTypeChange": function(){
       var me = this;
-      $(".graph-type").click(function(e){
+      $(".graph-type").on('click', function(e){
         me.applyFilters();
       });
     },
     "onArmsChange": function(){
       var me = this;
-      $("#arm-checkboxes-holder").children().click(function(e){
+      $("#multi-select-arms").on('change', function(e){
         me.applyFilters();
-      });
+       });
     },
     "onAgentsChange": function(){
       var me = this;
-      $("#agent").change(function(e){
+      $("#agent").on('change', function(e){
         me.applyFilters();
       });
     },
     "onActiveChange": function(){
+      var me = this;
+      $("#multi-select-au").on('change', function(e){
+        info.addAlert("danger", "alert-container", "This feature is temporarily broken. It will be fixed soon.");  
+      });
     },
     "onNoGraphChange": function(){
       var me = this;
-      $(".number-graphs").change(function(e){
+      $(".number-graphs").on('change', function(e){
         me.applyFilters();
       });
     },
@@ -55,7 +64,6 @@ function filters(){
      },
     "applyFilters": function(){
        var filteredSeries = [];
-       debugger;
        //Bar or line chart
        var displayLineGraph = $(".graph-type")[0].checked;
        var graphType;
@@ -68,11 +76,12 @@ function filters(){
        }
        
        //Which arms to display
-       var armCheckboxes = $("#arm-checkboxes-holder").children();
        var armsToDisplay = [];
-       for(var i=0; i<armCheckboxes.length; i++){
-         if(armCheckboxes[i].checked)
-           armsToDisplay.push(armCheckboxes[i].value);
+       var armsSelected = $("#multi-select-arms").children();
+       for(var i=0; i<armsSelected.length; i++){
+         if(armsSelected[i].selected){
+           armsToDisplay.push(armsSelected[i].value);
+         }
        }
        this.armsToDisplay = armsToDisplay;
 
@@ -92,7 +101,6 @@ function filters(){
        //Apply the filters 
        var tmpSeries = {};
        tmpSeries["all"] = [];
-       debugger;
        if(this.displayLine){
          for(var i=0; i<this.lineSeries.length; i++){
            if(armsToDisplay.indexOf(this.lineSeries[i].name) == -1)  
@@ -137,8 +145,8 @@ function filters(){
        this.updateGraph(this.graphSeries, graphType);
 
       //Update the tooltips
-       var tooltipInfo = this.displaySingleGraph ? info.tooltipInfo["mean_ucb1"] : info.tooltipInfo["ucb1"];
-       tooltip.initTooltip(".graph-info", tooltipInfo);
+       var tooltipInfo = this.displaySingleGraph ? info.tooltipInfo["ucb1"] : info.tooltipInfo["mean_ucb1"];
+       info.initTooltip(".graph-info", tooltipInfo);
     }
   }
 
@@ -148,7 +156,7 @@ function filters(){
       return $("#steps")[0].value;
     },
     "getArmsInfo": function(){
-      var armsHtml = $("#arms select, #arms input");
+      var armsHtml = $("#arms selected, #arms input");
       var armType, armProb;
       var arms=[];
 
@@ -216,11 +224,12 @@ function filters(){
       $("#add-arm").on('click', function(e){
         me.armCounter++;  
         var html = "Arm "+me.armCounter+":&nbsp&nbsp"+
-                     "<select>"+
+                     "<select class='multi-select-arms'>"+
                        "<option value='Bernoulli' selected>Bernoulli</option>"+
                      "</select>&nbsp"+
                      "p=<input type='text' value='0.5' size='1'><br/><br/>";
         $("#add-arm").before(html);
+        $(".multi-select-arms").multiselect();
         me.applyFilters();
       });
     },
@@ -327,20 +336,27 @@ function filters(){
         this.graphs = updateGraph(graphSeries, type)
       }
     },
-    "addArmsToFilter": addArmsToFilter,
+    "addArmsToFilter": function(alternatives, htmlId){
+      addArmsToMultiSelect(alternatives, "multi-select-arms-holder", "multi-select-arms", "selected");
+      addArmsToMultiSelect(alternatives, "multi-select-au-holder", "multi-select-au", "");
+      $("#multi-select-arms").multiselect();
+      $("#multi-select-au").multiselect();
+      this.onArmsChange();
+      this.onActiveChange();
+    },
     "setGraphSeries": function(singleGraphSeries, multipleGraphSeries){
       this.singleGraphSeries = singleGraphSeries;
       this.multipleGraphSeries = multipleGraphSeries;
     },
     "getArmsToDisplay": function(){
-      var armCheckboxes = $("#arm-checkboxes-holder").children();
-      var armsToDisplay = [];
-      for(var i=0; i<armCheckboxes.length; i++){
-        if(armCheckboxes[i].checked){
-          armsToDisplay.push(armCheckboxes[i].value);
-        }
-      }   
-      return armsToDisplay;
+       var armsToDisplay = [];
+       var armsSelected = $("#multi-select-arms").children();
+       for(var i=0; i<armsSelected.length; i++){
+         if(armsSelected[i].selected){
+           armsToDisplay.push(armsSelected[i].value);
+         }
+       }
+       return armsToDisplay;
     },
     "singleGraphSeries": [],
     "multipleGraphSeries": [],
@@ -349,10 +365,16 @@ function filters(){
     "armsToDisplay": [],
     "onArmsChange": function(){
       var me = this;
-      $("#arm-checkboxes-holder").children().on('click', function(e){
-        me.graphs = [];
+      $("#multi-select-arms").on('change', function(e){
+        me.graphs = []; //We need to recreate the graphs rather than just update them.
         me.applyFilters();
-      })
+      });
+    },
+    "onActiveChange": function(){
+      var me = this;
+      $("#multi-select-au").on('change', function(e){
+        info.addAlert("danger", "alert-container", "This feature is temporarily broken. It will be fixed soon.");  
+      });
     },
     "onNoGraphChange": function(){
       var me = this;
@@ -378,15 +400,17 @@ function filters(){
 
       if(displaySingleGraph){
         for(var i=0; i<this.singleGraphSeries.length; i++){
-          if(this.armsToDisplay.indexOf(this.singleGraphSeries[i].name.split(" ")[0]) == -1)
+          if(this.armsToDisplay.indexOf(this.singleGraphSeries[i].name.split(" ")[0]) == -1){
             continue;
+          }
           tmpSeries.push(this.singleGraphSeries[i]);
         }
         this.graphSeries.push(tmpSeries);
       }else{
         for(var i=0; i<this.multipleGraphSeries.length; i++){
-          if(this.armsToDisplay.indexOf(this.multipleGraphSeries[i][0].name.split(" ")[0]) == -1)
+          if(this.armsToDisplay.indexOf(this.multipleGraphSeries[i][0].name.split(" ")[0]) == -1){
             continue;
+          }
           this.graphSeries.push(this.multipleGraphSeries[i]);
         }
       }
@@ -401,7 +425,7 @@ function filters(){
 
   var info = new Info();
 
-  function updateGraph(graphSeries, type, panelHeading){
+  function updateGraph(graphSeries, type){
     $(".mab-graph").empty();
     var panelString = "";
     GraphUtil.initColorPalette();
@@ -409,7 +433,7 @@ function filters(){
     for(var i=0; i<graphSeries.length; i++){
       panelString = "";
       panelString = "<div class='panel panel-default'>"+
-                    "<div class='panel-heading'>"+panelHeading+"<span class='glyphicon glyphicon-info-sign graph-info' style='float:right;'></span></div>"+
+                    "<div class='panel-heading'>MAB Plots<span class='glyphicon glyphicon-info-sign graph-info' style='float:right;'></span></div>"+
                     "<div class='panel-body'>"+
                       "<div id='graph-holder-"+i+"'></div><br/>"+
                       "<div id='range-holder-"+i+"'></div><br/>"+
@@ -421,6 +445,17 @@ function filters(){
       graphs.push(graph);
     }
     return graphs;
+  }
+   
+  function addArmsToMultiSelect(alternatives, containerId, selectId, selected){
+    var select = "<select id='"+selectId+"' multiple='multiple'>"
+    for(var i=0; i<alternatives.length; i++){
+      select += "<option value='"+alternatives[i]+"'"+selected+">"+alternatives[i]+"</option>";    
+    }
+    select += "</select>"
+
+    $("#"+containerId).empty();
+    $("#"+containerId).append(select);
   }
 
   function addArmsToFilter(alternatives, htmlId){

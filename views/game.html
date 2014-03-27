@@ -27,6 +27,7 @@
         $( "#arm-num" ).val( ui.value );
       },
       stop: function(event, ui) {
+          $(this).slider("option", "disabled", true);
           $( "#rewards > span" ).each(function() {
             var id = ($(this).attr('id'));
             if(id <= ui.value){
@@ -74,60 +75,82 @@
         }
       });
     });
-    
-    var dataUpdater = setInterval(function(){
-      var numberOfArms = noArms;
-      var rewardForEachArm = rewards;
-      var armSelected, rewardForArm, data = [];
 
-      for(var i=0; i<3; i++){
-        armSelected = Math.floor(Math.random() * noArms) + 1
-        rewardForArm = (1 && (Math.random() < rewards[armSelected]) || 0) ? 1 : 0;
-        data.push({
-          "alternative": armSelected,
-          "time": new Date().getTime(),
-          "reward":rewardForArm
-        })
-      }
-      debugger;
-      if(numberOfArms > 0){
-        var debug = JSON.stringify({id:"game-client", data: data});
-        debugger;
+      var dataUpdater = null;
+      $("#play").on('click', function(e){
+        if(dataUpdater != null){
+          return;
+        }
+
+        dataUpdater = setInterval(function(){
+          var numberOfArms = noArms;
+          var rewardForEachArm = rewards;
+          var armSelected, rewardForArm, data = [];
+
+          for(var i=0; i<3; i++){
+            armSelected = Math.floor(Math.random() * noArms) + 1
+            rewardForArm = (1 && (Math.random() < rewards[armSelected]) || 0) ? 1 : 0;
+            data.push({
+              "alternative": armSelected,
+              "time": new Date().getTime(),
+              "reward":rewardForArm
+            })
+          }
+
+          if(numberOfArms > 0){
+            var debug = JSON.stringify({id:"game-client", data: data});
+            $.ajax({
+              type: "POST",
+              url: "send",
+              data: {"id":"game-client", "data": data, "is_game_client":true}, 
+              success: function(a, b, c){
+              },
+              error: function(a, b, c){
+              }
+            });
+          }
+        }, 2000)
+      });
+
+      $("#reset").on('click', function(e){
+        //Stop the timer
+        clearInterval(dataUpdater);
+        dataUpdater = null;
+
+        //Send a request to the server to reset the game client data.
         $.ajax({
-          type: "POST",
-          url: "send",
-          data: {"id":"game-client", "data": data, "is_game_client":true}, 
+          type: "GET",
+          url: "reset-game-data",
           success: function(a, b, c){
           },
           error: function(a, b, c){
           }
         });
-      }
-    }, 2000)
+
+        //Make the arms draggable again.
+        $("#arms").slider("values", 0);
+        $("#arms").slider("enable");
+      });
   });
+
   </script>
-  <div class="page-header">
-    <h1>MAB Game Page</h1>
-  </div>
 </head>
 <body>
   <div class="container-fluid">
   <div class="row">
-    <div class="col-md-6">
-      <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Filters</h3>
-      </div>
-      <div class="panel-body">
-        <ul class="list-group">
-           <li class="list-group-item">
+    <div class="col-md-6 col-md-offset-3">
+      <div>
+      <div>
+        <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">Instructions</h3></div>
+        <div class="panel-body">
               To play the 'MAB' game, do the following steps:<br>
-              Using the sliders provided,<br>
               1. Choose the number of arms you wish to play with<br>
               2. Select a reward (between 0 and 1) for each arm <br>
-              4. Go to the following url to see the results: <a href="/live?id=game-client" target="_blank">Game results</a>
-          </li>
-        </ul>
+              3. Go to the following url to see the results: <a href="/live?id=game-client" target="_blank">Game results</a><br/>
+              4. Hit rest to start over.
+        </div>
+        </div>
         <div class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">Arms</h3>
@@ -135,6 +158,8 @@
         <div class="panel-body">
           Number of arms: <input id="arm-num" style="border:0" type="text" readonly="readonly" placeholder="0">
           <div id="arms" style="width:200px; margin:15px;"></div>
+          <button type="button" class="btn btn-default btn-lg" id="play">Play</button>
+          <button type="button" class="btn btn-default btn-lg" id="reset">Reset</button>
         </div>
         </div>
         <div class="panel panel-default">
@@ -164,3 +189,4 @@
     </div>
   </div>
  </div>
+ </body>

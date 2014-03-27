@@ -16,12 +16,12 @@
               <div class="panel-body">
                 <div id="arms">
                   Arm 1:&nbsp
-                  <select>
+                  <select class="multi-select-arms">
                     <option value="Bernoulli" selected>Bernoulli</option>
                   </select>
                   p=<input type="text" value="0.4" size="1"><br/><br/>
                   Arm 2:&nbsp
-                  <select>
+                  <select class="multi-select-arms">
                     <option value="Bernoulli" selected>Bernoulli</option>
                   </select>
                   p=<input type="text" value="0.9" size="1"><br/><br/>
@@ -35,20 +35,28 @@
               <div class="panel-body">
                 <div id="agents">
                   Agent 1:&nbsp
-                  <select>
+                  <select class="multi-select-agents">
                     <option value="UCB1" selected>UCB1</option>
                     <option value="e-greedy">e-greedy</option>
                     <option value="random">random</option>
                   </select><br/><br/>
                   Agent 2:&nbsp
-                  <select >
+                  <select class="multi-select-agents">
                     <option value="UCB1">UCB1</option>
                     <option value="e-greedy" selected>e-greedy</option>
                     <option value="random">random</option>
                   </select><br/><br/>
-                  <input type="text" placeholder="Agent name..." size="48" id="agent-name"><br/><br/>
-                  <textarea class="form-control" id="custom-function" rows="10" cols="4">function functionName(steps, arms){
-//Implementation goes here
+                  <input type="text" placeholder="Agent name (same as function name)..." size="48" id="agent-name"><br/><br/>
+                  <textarea class="form-control" id="custom-function" rows="22" cols="4">
+/**
+@param steps:int - The number of timesteps involved in the simulation
+
+@param arms:[] - An array of agents involved in the simulation. To get a reward for a particular agent at a given timestep, call arms[i].getReward().
+
+@return scores:[] - An array of scores at each timestep for each alternative. For example, score[n] = [{x:time_step, y:mean_of_rewards}...], where n is the nth alterative.
+*/
+function functionName(steps, arms){
+  //Implementation goes here
 }
                   </textarea><br/>
                   <button type="button" class="btn btn-default btn-sm" id="add-agent">Add</button>&nbsp
@@ -77,7 +85,7 @@
   <div class="col-md-8">
     <div class="mab-graph">
       <div class="panel panel-default" id="mab-panel-graph">
-        <div class="panel-heading">Simulator</div>
+        <div class="panel-heading">MAB Plot</div>
         <div class="panel-body">
           <div id="graph-holder"></div><br/>
           <div id="range-holder"></div>

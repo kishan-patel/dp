@@ -27,15 +27,14 @@
           <div class="panel panel-default">
 	        <div class="panel-heading"><b>Arms</b></div>
             <div class="panel-body">
-              <div id="arm-checkboxes-holder">None</div>
+              <div id="multi-select-arms-holder">No arms available</div>
             </div>
           </div>
  
           <div class="panel panel-default">
             <div class="panel-heading"><b>Agents</b></div>
             <div class="panel-body">
-			  <select id="agent">
-                <option vlaue="none">none</option>
+			  <select id="agent" multiple="multiple">
           	    <option value="UCB1" selected>UCB1</option>
         	  </select>
             </div>
@@ -44,8 +43,7 @@
           <div class="panel panel-default">
             <div class="panel-heading"><b>Active / Inactive</b></div>
             <div class="panel-body">
-              <input id="active-unactive" type="checkbox" name="active" value="active-unactive">&nbspShow
-        	  <select id="arm-select-holder"></select>
+              <div id="multi-select-au-holder">No arms available</div>
             </div>
           </div>
  
@@ -62,7 +60,7 @@
   <div class="col-md-8">
     <div class="mab-graph">
       <div class="panel panel-default" id="mab-panel-graph">
-        <div class="panel-heading">File data</div>
+        <div class="panel-heading">MAB Plot</div>
         <div class="panel-body">
           <div id="graph-holder"></div><br/>
           <div id="range-holder"></div>

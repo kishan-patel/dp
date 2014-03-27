@@ -2,6 +2,7 @@ function initializer(){
   this.fileInitialzer = {
     "fileFilter": {},
     "init": function(){
+      $("#agent").multiselect();
       createEmptyGraph();
       this.fileFilter = new filters().fileFilter;
       this.fileFilter.init();
@@ -31,6 +32,8 @@ function initializer(){
   this.simulatorInitializer = {
     "simFilter": {},
     "init": function(){
+      $(".multi-select-arms").multiselect();
+      $(".multi-select-agents").multiselect();
       createEmptyGraph();
       this.simFilter = new filters().simulatorFilter;
       this.simFilter.init();
@@ -47,6 +50,7 @@ function initializer(){
       var singleGraphSeries = [];
       var multipleGraphSeries = [];
       var liveFilter = this.liveFilter;
+      var alternativeNames=[], newArmPresent = false;
 
       socket.on("connect", function(){
         socket.emit("viewer_connect", senderId);
@@ -58,13 +62,21 @@ function initializer(){
         var alternatives = series.alternatives
         var ucbObj = {};
         var meanObj = {};
-        var alternativeNames = [];
         var tmp = [];
 
         singleGraphSeries = [];
         multipleGraphSeries = [];
 
+        if(alternativeNames.length != alternatives.length){
+          alternativeNames = []; 
+        }
+
         for(var i=0; i<alternatives.length; i++){
+          if(alternativeNames.indexOf(alternatives[i].alternative) == -1){
+            alternativeNames.push(alternatives[i].alternative);
+            newArmPresent = true;
+          }
+
           ucbObj = {
             "name": alternatives[i].alternative+" (UCB1)",
             "color": palette.color(),
@@ -80,14 +92,12 @@ function initializer(){
           tmp.push(ucbObj);
           tmp.push(meanObj);
           multipleGraphSeries.push(tmp);
-          alternativeNames.push(alternatives[i].alternative);
         }
 
         //Add ability to show/side alternatives in the filter panel.
-        if(!armsAddedToFilter){
-          armsAddedToFilter = true;
+        if(newArmPresent){
+          newArmPresent = false;
           liveFilter.addArmsToFilter(alternativeNames, "#arm-checkboxes-holder");
-          liveFilter.onArmsChange();
         }
         
         //Update the series stored in the filter.
@@ -99,6 +109,8 @@ function initializer(){
     },
     "init": function(){
       createEmptyGraph();
+      var info = new Info();
+      info.addAlert("info", "alert-container", info.alertMessages["live_socket_connection"]);
       this.liveFilter = new filters().liveFilter;
       this.liveFilter.init();
       this.initSocketEvents();

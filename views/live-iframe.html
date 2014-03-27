@@ -10,17 +10,16 @@
     <div class="mab-filter">
       <div  id="mab-panel-filter">
             <div class="panel panel-default">
-              <div class="panel-heading"><b>Type</b></div>
-              <div class="panel-body">
-                <input type="radio" name="fu-graph-type" value="line" class="fu-graph-type" checked> Line<br/>
-       		    <input type="radio" name="fu-graph-type" value="bar" class="fu-graph-type"> Bar<br/>
-              </div>
-            </div>
- 
-            <div class="panel panel-default">
               <div class="panel-heading"><b>Arms</b></div>
               <div class="panel-body">
-                <div id="arm-checkboxes-holder">None</div>
+                <div id="multi-select-arms-holder">No arms available</div>
+              </div>
+            </div>
+
+            <div class="panel panel-default">
+              <div class="panel-heading"><b>Active / Inactive</b></div>
+              <div class="panel-body">
+                <div id="multi-select-au-holder">No arms available</div>
               </div>
             </div>
 
@@ -38,7 +37,7 @@
     <p hidden id="sender-id"><%=senderId%></p>
     <div class="mab-graph">
       <div class="panel panel-default" id="mab-panel-graph">
-        <div class="panel-heading">Live data</div>
+        <div class="panel-heading">MAB Plot</div>
         <div class="panel-body" id="graph-container">
           <div id="graph-holder"></div><br/>
           <div id="range-holder"></div>

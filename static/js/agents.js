@@ -4,12 +4,11 @@ function agents(){
       case "UCB1":
         return getUCBSimScores(steps, bandits);
         break;
-      case "Exp3":
-        return getEXP3SimScores(steps, bandits);
-        break;
       case "e-greedy":
         return getEGreedySimScores(steps, bandits);
         break;
+      case "random":
+         return getRandomSimScores(steps, bandits);
       default:
         return customFn(steps, bandits);
         break;
@@ -20,9 +19,6 @@ function agents(){
     switch(agent){
       case "UCB":
         return getUCBScores(data);
-        break;
-      case "e-greedy":
-        return getEGreedyScores(data);
         break;
       default:
         return getUCBScores(data);
@@ -216,7 +212,7 @@ function agents(){
     return eGreedyScores;
   }
 
-  function getRandomSimScores(steps, noArms, series, color){
+  function getRandomSimScores(steps, arms){
     var played = [];
     var wins = [];
     var randomScores = {};
@@ -236,9 +232,9 @@ function agents(){
     }
 
     //At each timestep randomly pick a arm
-    for(var i=totaltimesPlayed; i<steps; i++){
+    for(var i=totalTimesPlayed; i<steps; i++){
       totalTimesPlayed++;
-      randomChoice = Math.floor(Math.random()*arms.length());
+      randomChoice = Math.floor(Math.random()*arms.length);
       rewards[randomChoice] += arms[randomChoice].getReward();
       played[randomChoice] += 1
       
