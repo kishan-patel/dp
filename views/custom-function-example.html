@@ -1,0 +1,56 @@
+<% include index.html -%>
+<% include header.html -%>
+<div class="container">
+<div class="row">
+<div class="col-md-9">
+<h1>UCB1 Simulation Function Example</h1>
+<div class="panel panel-default">
+  <div class="panel-body">
+    function getUCBSimScores(steps, arms){<br/>
+    &nbsp&nbspvar played = [];<br/>
+    &nbsp&nbspvar wins = [];<br/>
+    &nbsp&nbspvar ucbScores = {};<br/>
+    &nbsp&nbspvar rewards = [];<br/>
+    &nbsp&nbspvar ucbScore, currentScore=0, bestChoice, totalTimesPlayed=0;<br/><br/>
+
+    &nbsp&nbsp//Initially play each arm once<br/>
+    &nbsp&nbspfor(var i=0; i<arms.length; i++){<brp&nbsp>
+      &nbsp&nbsp&nbsp&nbspplayed[i] = 1;<br/>
+      &nbsp&nbsp&nbsp&nbsprewards[i] = arms[i].getReward();<br/>
+      &nbsp&nbsp&nbsp&nbspwins[i] = rewards[i];<br/>
+      &nbsp&nbsp&nbsp&nbspucbScores[i] = [];<br/>
+      &nbsp&nbsp&nbsp&nbspfor(var j=0; j&lt;arms.length && j&lt;steps; j++){<br/>
+        &nbsp&nbsp&nbsp&nbsp&nbsp&nbspucbScores[i].push({x:j, y:rewards[i]/played[i]});<br/>
+      &nbsp&nbsp&nbsp&nbsp}<br/>
+      &nbsp&nbsp&nbsp&nbsptotalTimesPlayed++;<br/>
+    &nbsp&nbsp}<br/><br/>
+
+    &nbsp&nbspfor(var i=totalTimesPlayed; i&lt;steps; i++){<br/>
+      &nbsp&nbsp&nbsp&nbsptotalTimesPlayed++;<br/><br/>
+
+      &nbsp&nbsp&nbsp&nbsp//Apply the UCB1 policy to choose an arm<br/>
+      &nbsp&nbsp&nbsp&nbspcurrentScore = 0;<br/>
+      &nbsp&nbsp&nbsp&nbspbestChoice = 0;<br/>
+      &nbsp&nbsp&nbsp&nbspfor(var j=0; j&lt;arms.length; j++){<br/>
+        &nbsp&nbsp&nbsp&nbsp&nbsp&nbspucbScore = rewards[j]/played[j] + Math.sqrt((2*Math.log(totalTimesPlayed))/played[j]);<br/>
+        &nbsp&nbsp&nbsp&nbsp&nbsp&nbspif(ucbScore > currentScore){<br/>
+          &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspbestChoice = j;<br/>
+          &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspcurrentScore = ucbScore;<br/>
+        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp}<br/>
+      &nbsp&nbsp&nbsp&nbsp}<br/><br/>
+
+      &nbsp&nbsp&nbsp&nbsp//Update reward for arm chosen during current timestep<br/>
+      &nbsp&nbsp&nbsp&nbsprewards[bestChoice]+=arms[bestChoice].getReward();<br/>
+      &nbsp&nbsp&nbsp&nbspplayed[bestChoice]+=1;<br/><br/>
+
+      &nbsp&nbsp&nbsp&nbsp//Store the scores at each timestep for each arm<br/>
+     &nbsp&nbsp&nbsp&nbspfor(var j=0; j&lt;arms.length; j++){<br/>
+       &nbsp&nbsp&nbsp&nbsp&nbsp&nbspucbScores[j].push({x:i, y:rewards[j]/played[j]});<br/>
+      &nbsp&nbsp&nbsp&nbsp}<br/>
+    &nbsp&nbsp}<br/><br/>
+    &nbsp&nbspreturn ucbScores;<br/>
+  }
+  </div>
+</div>
+
+
