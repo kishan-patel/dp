@@ -22,6 +22,6 @@ function Info(){
   }
 
   this.alertMessages = {
-    "live_socket_connection": "Establishing the initial socket connection can take a few seconds"
+    "live_socket_connection": "Establishing the initial socket connection may take a few seconds."
   }
 }
