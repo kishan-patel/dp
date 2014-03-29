@@ -3,6 +3,7 @@ function initializer(){
     "fileFilter": {},
     "init": function(){
       $("#agent").multiselect();
+      $("#graph-type").multiselect();
       createEmptyGraph();
       this.fileFilter = new filters().fileFilter;
       this.fileFilter.init();
@@ -87,7 +88,7 @@ function initializer(){
             "color": palette.color(),
             "data": alternatives[i].mean_scores
           };
-          singleGraphSeries.push(ucbObj);
+          singleGraphSeries.push(meanObj);
           tmp = [];
           tmp.push(ucbObj);
           tmp.push(meanObj);
@@ -108,6 +109,7 @@ function initializer(){
       });
     },
     "init": function(){
+      $("#agent").multiselect();
       createEmptyGraph();
       var info = new Info();
       info.addAlert("info", "alert-container", info.alertMessages["live_socket_connection"]);

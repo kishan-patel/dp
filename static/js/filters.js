@@ -86,7 +86,7 @@ function filters(){
        this.armsToDisplay = armsToDisplay;
 
        //How many graphs to display
-       this.displaySingleGraph = $(".number-graphs")[1].checked;
+       //this.displaySingleGraph = $(".number-graphs")[1].checked;
        
        //Which agent to apply
        var agentType = "none";
@@ -106,24 +106,23 @@ function filters(){
            if(armsToDisplay.indexOf(this.lineSeries[i].name) == -1)  
              continue;
 
-           if(this.displaySingleGraph){
-             if(agentType != "none"){
+           if(agentType == "none"){
+             /*if(agentType != "none"){
                var agentData = this.agents.getScores(agentType, this.lineSeries[i].data);
                tmpSeries["all"].push({
                  "name": this.lineSeries[i].name + "-" + agentType,
                  "data": agentData
                });
-             }
+             }*/
+             tmpSeries["all"].push(this.lineSeries[i]);
            }else{
              tmpSeries[i] = [];
              tmpSeries[i].push(this.lineSeries[i]);
-             if(agentType != "none"){
-               var agentData = this.agents.getScores(agentType, this.lineSeries[i].data);  
-               tmpSeries[i].push({
-                 "name": this.lineSeries[i].name + "-" + agentType,
-                 "data": agentData
-               });
-             }
+             var agentData = this.agents.getScores(agentType, this.lineSeries[i].data);  
+             tmpSeries[i].push({
+               "name": this.lineSeries[i].name + "-" + agentType,
+               "data": agentData
+             });
            }
          }
        }else{
@@ -145,7 +144,7 @@ function filters(){
        this.updateGraph(this.graphSeries, graphType);
 
       //Update the tooltips
-       var tooltipInfo = this.displaySingleGraph ? info.tooltipInfo["ucb1"] : info.tooltipInfo["mean_ucb1"];
+       var tooltipInfo = info.tooltipInfo[agentType];
        info.initTooltip(".graph-info", tooltipInfo);
     }
   }
@@ -371,6 +370,13 @@ function filters(){
         me.applyFilters();
       });
     },
+    "onAgentsChange": function(){
+      var me = this;
+      $("#agent").on('change', function(e){
+        me.graphs = [];
+        me.applyFilters();
+      });
+    },
     "onActiveChange": function(){
       var me = this;
       $("#multi-select-au").on('change', function(e){
@@ -387,6 +393,7 @@ function filters(){
     "init": function(){
       var me = this;
       this.onArmsChange();
+      this.onAgentsChange();
       this.onNoGraphChange();
       $("#live-apply").click(function(){
         me.applyFilters();
@@ -394,12 +401,21 @@ function filters(){
     },
     "applyFilters": function(){
       this.armsToDisplay = this.getArmsToDisplay();
-      var displaySingleGraph = $(".number-graphs")[1].checked;  
+      //var displaySingleGraph = $(".number-graphs")[1].checked;  
       var tmpSeries = [];
       this.graphSeries = [];
 
+      //Which agent to apply
+      var agentType = "none";
+      var agents = $("#agent").children();
+      for(var i=0; i<agents.length; i++){
+        if(agents[i].selected){
+          agentType = agents[i].value;
+          break;
+        }
+      }
 
-      if(displaySingleGraph){
+      if(agentType == "none"){
         for(var i=0; i<this.singleGraphSeries.length; i++){
           if(this.armsToDisplay.indexOf(this.singleGraphSeries[i].name.split(" ")[0]) == -1){
             continue;
@@ -407,7 +423,8 @@ function filters(){
           tmpSeries.push(this.singleGraphSeries[i]);
         }
         this.graphSeries.push(tmpSeries);
-      }else{
+      }else if(agentType == "UCB1"){
+        debugger;
         for(var i=0; i<this.multipleGraphSeries.length; i++){
           if(this.armsToDisplay.indexOf(this.multipleGraphSeries[i][0].name.split(" ")[0]) == -1){
             continue;
@@ -419,7 +436,7 @@ function filters(){
       this.updateGraph(this.graphSeries, "line");
 
       //Update the tooltips
-      var tooltipInfo = displaySingleGraph ? info.tooltipInfo["ucb1"] : info.tooltipInfo["mean_ucb1"]; 
+      var tooltipInfo = info.tooltipInfo[agentType]; 
       info.initTooltip(".graph-info", tooltipInfo); 
     }
   }
