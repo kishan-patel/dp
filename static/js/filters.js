@@ -27,7 +27,7 @@ function filters(){
     },
     "onTypeChange": function(){
       var me = this;
-      $(".graph-type").on('click', function(e){
+      $("#graph-type").on('change', function(e){
         me.applyFilters();
       });
     },
@@ -64,17 +64,16 @@ function filters(){
      },
     "applyFilters": function(){
        var filteredSeries = [];
+
        //Bar or line chart
-       var displayLineGraph = $(".graph-type")[0].checked;
-       var graphType;
-       if(displayLineGraph){
-         this.displayLine = true;
-         graphType = "line"
-       }else{
-         this.displayLine = false;
-         graphType ="bar";
+       var graphType="line";
+       var graphTypeSelected = $("#graph-type").children();
+       for(var i=0; i<graphTypeSelected.length; i++){
+           if(graphTypeSelected[i].selected){
+             graphType = graphTypeSelected[i].value;
+           }
        }
-       
+
        //Which arms to display
        var armsToDisplay = [];
        var armsSelected = $("#multi-select-arms").children();
@@ -101,7 +100,7 @@ function filters(){
        //Apply the filters 
        var tmpSeries = {};
        tmpSeries["all"] = [];
-       if(this.displayLine){
+       if(graphType == "line"){
          for(var i=0; i<this.lineSeries.length; i++){
            if(armsToDisplay.indexOf(this.lineSeries[i].name) == -1)  
              continue;
