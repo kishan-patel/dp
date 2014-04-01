@@ -46,7 +46,17 @@ function agents(){
           break;
         }
       }
+
+      //If this is the first time we are seeing any data for this alternative.
       if(!found){
+        var mc = [];
+        var ucbc = [];
+
+        for(var j=0; j<totalTimesPlayed; j++){
+          mc.push({x:j, y:0});
+          ucbc.push({x:j, y:0});
+        }
+
         alternatives.push({
           alternative: armPlayedNew,
           times_played: 1,
@@ -54,10 +64,7 @@ function agents(){
           mean_scores: [],
           ucb_scores: [],
         });
-        for(var j=0; j<totalTimesPlayed; j++){
-          mean_scores.push({x:j, y:0});
-          ucb_scores.push({x:j, y:0});
-        }
+        
         armPlayedOld = alternatives[alternatives.length-1];
       }
       armPlayedOld.times_played+=1
