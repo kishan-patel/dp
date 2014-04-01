@@ -54,6 +54,10 @@ function agents(){
           mean_scores: [],
           ucb_scores: [],
         });
+        for(var j=0; j<totalTimesPlayed; j++){
+          mean_scores.push({x:j, y:0});
+          ucb_scores.push({x:j, y:0});
+        }
         armPlayedOld = alternatives[alternatives.length-1];
       }
       armPlayedOld.times_played+=1

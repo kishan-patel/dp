@@ -1,29 +1,15 @@
 function initializer(){
   this.fileInitialzer = {
-    "fileFilter": {},
     "init": function(){
       $("#agent").multiselect();
       $("#graph-type").multiselect();
       createEmptyGraph();
-      this.fileFilter = new filters().fileFilter;
-      this.fileFilter.init();
-      var fileFilter = this.fileFilter;
+      var fileFilter = new filters().fileFilter;
+      fileFilter.init();
       $("#file-upload").change(function(evt){
         FR.readFile(evt, 'line', function(fileString){
           var lineInfo = DataUtil.getLineData(fileString);
           var barInfo = DataUtil.getBarData(fileString);
-          var colorPalette = new Rickshaw.Color.Palette();
-          var colorOfArms = {};
-          var armName;
-          for(var i=0; i<lineInfo.data.length; i++){
-            armName = lineInfo.data[i].name;
-            colorOfArms[armName] = colorPalette.color();
-            lineInfo.data[i]["color"] = colorOfArms[armName];
-          }
-          for(var i=0; i<barInfo.data.length; i++){
-            armName = barInfo.data[i].name;
-            barInfo.data[i]["color"] = colorOfArms[armName];
-          }
           fileFilter.setGraphSeries(lineInfo, barInfo);
           fileFilter.applyFilters();
         });
@@ -31,7 +17,6 @@ function initializer(){
     }
   },
   this.simulatorInitializer = {
-    "simFilter": {},
     "init": function(){
       $(".multi-select-arms").multiselect();
       $(".multi-select-agents").multiselect();
@@ -41,7 +26,6 @@ function initializer(){
     }
   },
   this.liveInitializer = {
-    "liveFilter": {},
     "initSocketEvents": function(){
       var senderId = $("#sender-id").text();
       var socket = io.connect(CONFIG.ADDRESS);
@@ -112,7 +96,7 @@ function initializer(){
       $("#agent").multiselect();
       createEmptyGraph();
       var info = new Info();
-      info.addAlert("info", "alert-container", info.alertMessages["live_socket_connection"]);
+      //info.addAlert("info", "alert-container", info.alertMessages["live_socket_connection"]);
       this.liveFilter = new filters().liveFilter;
       this.liveFilter.init();
       this.initSocketEvents();

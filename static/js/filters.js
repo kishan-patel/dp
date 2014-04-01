@@ -139,11 +139,14 @@ function filters(){
            this.graphSeries.push(tmpSeries[key]);
        }
        
+       //Title of graph
+       var graphTitle = info.agentTypeToGraphTitle[agentType];
+
        //Create the graph
-       this.updateGraph(this.graphSeries, graphType);
+       this.updateGraph(this.graphSeries, graphType, graphTitle);
 
       //Update the tooltips
-       var tooltipInfo = info.tooltipInfo[agentType];
+       var tooltipInfo = info.agentTypeToTooltip[agentType];
        info.initTooltip(".graph-info", tooltipInfo);
     }
   }
@@ -311,17 +314,20 @@ function filters(){
         this.graphSeries.push(simSeries[arm]);
       }
 
+      //Title of graph
+      var graphTitle = info.agentTypeToGraphTitle["index_values_per_arm"];
+      
       //Create the graph
-      this.updateGraph(this.graphSeries, "line");
+      this.updateGraph(this.graphSeries, "line", graphTitle);
 
       //Update the tooltips
-      var tooltipInfo = info.tooltipInfo["sim"]  
+      var tooltipInfo = info.agentTypeToTooltip["index_values_per_arm"]  
       info.initTooltip(".graph-info", tooltipInfo); 
     }
   }
 
   this.liveFilter = {
-    "updateGraph": function(graphSeries, type){
+    "updateGraph": function(graphSeries, type, graphTitle){
       if(this.graphs.length > 0){
         for(var i=0; i<graphSeries.length; i++){
           this.graphs[i].series.length =  0;
@@ -331,7 +337,7 @@ function filters(){
           this.graphs[i].update();
         }
       }else{
-        this.graphs = updateGraph(graphSeries, type)
+        this.graphs = updateGraph(graphSeries, type, graphTitle)
       }
     },
     "addArmsToFilter": function(alternatives, htmlId){
@@ -417,33 +423,35 @@ function filters(){
       if(agentType == "none"){
         for(var i=0; i<this.singleGraphSeries.length; i++){
           if(this.armsToDisplay.indexOf(this.singleGraphSeries[i].name.split(" (mean)")[0]) == -1
-              && this.armsToDisplay.indexOf(this.singleGraphSeries[i].name.split(" (ucb)")[0]) == -1){
+              && this.armsToDisplay.indexOf(this.singleGraphSeries[i].name.split(" (UCB1)")[0]) == -1){
             continue;
           }
           tmpSeries.push(this.singleGraphSeries[i]);
         }
         this.graphSeries.push(tmpSeries);
       }else if(agentType == "UCB1"){
-        debugger;
         for(var i=0; i<this.multipleGraphSeries.length; i++){
-          if(this.armsToDisplay.indexOf(this.multipleGraphSeries[i][0].name.split(" ")[0]) == -1){
+          if(this.armsToDisplay.indexOf(this.multipleGraphSeries[i][0].name.split(" (UCB1)")[0]) == -1){
             continue;
           }
           this.graphSeries.push(this.multipleGraphSeries[i]);
         }
       }
 
-      this.updateGraph(this.graphSeries, "line");
+       //Title of graph
+      var graphTitle = info.agentTypeToGraphTitle[agentType];
+
+      this.updateGraph(this.graphSeries, "line", graphTitle);
 
       //Update the tooltips
-      var tooltipInfo = info.tooltipInfo[agentType]; 
+      var tooltipInfo = info.agentTypeToTooltip[agentType]; 
       info.initTooltip(".graph-info", tooltipInfo); 
     }
   }
 
   var info = new Info();
 
-  function updateGraph(graphSeries, type){
+  function updateGraph(graphSeries, type, graphTitle){
     $(".mab-graph").empty();
     var panelString = "";
     GraphUtil.initColorPalette();
@@ -451,7 +459,7 @@ function filters(){
     for(var i=0; i<graphSeries.length; i++){
       panelString = "";
       panelString = "<div class='panel panel-default'>"+
-                    "<div class='panel-heading'>MAB Plots<span class='glyphicon glyphicon-info-sign graph-info' style='float:right;'></span></div>"+
+                    "<div class='panel-heading'>"+graphTitle(graphSeries[i][0])+"<span class='glyphicon glyphicon-info-sign graph-info' style='float:right;'></span></div>"+
                     "<div class='panel-body'>"+
                       "<div id='graph-holder-"+i+"'></div><br/>"+
                       "<div id='range-holder-"+i+"'></div><br/>"+
