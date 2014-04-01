@@ -22,7 +22,7 @@ function Info(){
 
   this.titles = {
     "mean_for_all_arms": function(s){ return "Mean of all arms"},
-    "ucb_and_mean_per_arm": function(s){ return "UCB1 and mean of Arm"+s.name.split(/\(.*\)/)[0]},
+    "ucb_and_mean_per_arm": function(s){ return "UCB1 and mean of Arm "+s.name.split(/\(.*\)/)[0]},
     "index_values_per_arm": function(s){ return "Indices for "+s.name.split(/\(.*\)/)[0]},
     "index_values_for_all_arms": function(s){return s.name.split(/\(.*\)/)+" values for each arm"}
   }
