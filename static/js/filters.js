@@ -140,13 +140,13 @@ function filters(){
        }
        
        //Title of graph
-       var graphTitle = info.agentTypeToGraphTitle[agentType];
+       var graphTitle = info.titles[agentType];
 
        //Create the graph
        this.updateGraph(this.graphSeries, graphType, graphTitle);
 
       //Update the tooltips
-       var tooltipInfo = info.agentTypeToTooltip[agentType];
+       var tooltipInfo = info.tooltipInfo[agentType];
        info.initTooltip(".graph-info", tooltipInfo);
     }
   }
@@ -315,13 +315,13 @@ function filters(){
       }
 
       //Title of graph
-      var graphTitle = info.agentTypeToGraphTitle["index_values_per_arm"];
+      var graphTitle = info.titles["index_values_per_arm"];
       
       //Create the graph
       this.updateGraph(this.graphSeries, "line", graphTitle);
 
       //Update the tooltips
-      var tooltipInfo = info.agentTypeToTooltip["index_values_per_arm"]  
+      var tooltipInfo = info.tooltipInfo["index_values_per_arm"]  
       info.initTooltip(".graph-info", tooltipInfo); 
     }
   }
@@ -439,12 +439,12 @@ function filters(){
       }
 
        //Title of graph
-      var graphTitle = info.agentTypeToGraphTitle[agentType];
+      var graphTitle = info.titles[agentType];
 
       this.updateGraph(this.graphSeries, "line", graphTitle);
 
       //Update the tooltips
-      var tooltipInfo = info.agentTypeToTooltip[agentType]; 
+      var tooltipInfo = info.tooltipInfo[agentType]; 
       info.initTooltip(".graph-info", tooltipInfo); 
     }
   }
