@@ -15,9 +15,7 @@ var Sender = senderModel.Sender;
 var getUCBLiveScores = agents.getUCBLiveScores;
 
 //We have to adjust the transport method when hosting the application on openshift.
-if(process.env.OPENSHIFT){
-  io.set('transports', ['xhr-polling']);
-}
+io.set('transports', ['xhr-polling']);
 
 //Load data for all senders.
 Sender.find(function(err, senderObjs){
