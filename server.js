@@ -14,6 +14,11 @@ var viewers = {};
 var Sender = senderModel.Sender;
 var getUCBLiveScores = agents.getUCBLiveScores;
 
+//We have to adjust the transport method when hosting the application on openshift.
+if(process.env.OPENSHIFT){
+  io.set('transports', ['xhr-polling']);
+}
+
 //Load data for all senders.
 Sender.find(function(err, senderObjs){
   for(var i=0; i<senderObjs.length; i++){
@@ -135,7 +140,7 @@ app.post('/send', function(req, res){
     viewers[i].emit('update_graph', senders[senderId].data);
   }
 
-  res.send(200);
+  res.send(201);
 });
 
 app.get('/get-id', function(req, res){
