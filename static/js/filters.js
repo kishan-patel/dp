@@ -416,7 +416,8 @@ function filters(){
 
       if(agentType == "none"){
         for(var i=0; i<this.singleGraphSeries.length; i++){
-          if(this.armsToDisplay.indexOf(this.singleGraphSeries[i].name.split(" ")[0]) == -1){
+          if(this.armsToDisplay.indexOf(this.singleGraphSeries[i].name.split(" (mean)")[0]) == -1
+              && this.armsToDisplay.indexOf(this.singleGraphSeries[i].name.split(" (ucb)")[0]) == -1){
             continue;
           }
           tmpSeries.push(this.singleGraphSeries[i]);
