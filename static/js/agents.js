@@ -52,7 +52,7 @@ function agents(){
         var mc = [];
         var ucbc = [];
 
-        for(var j=0; j<totalTimesPlayed; j++){
+        for(var j=0; j<totalTimesPlayed-1; j++){
           mc.push({x:j, y:0});
           ucbc.push({x:j, y:0});
         }
@@ -61,8 +61,8 @@ function agents(){
           alternative: armPlayedNew,
           times_played: 1,
           rewards: parseFloat(result),
-          mean_scores: [],
-          ucb_scores: [],
+          mean_scores: mc,
+          ucb_scores: ucbc,
         });
         
         armPlayedOld = alternatives[alternatives.length-1];
