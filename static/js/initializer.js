@@ -20,6 +20,7 @@ function initializer(){
     "init": function(){
       $(".multi-select-arms").multiselect();
       $(".multi-select-agents").multiselect();
+      $("#sim-display").multiselect();
       createEmptyGraph();
       this.simFilter = new filters().simulatorFilter;
       this.simFilter.init();

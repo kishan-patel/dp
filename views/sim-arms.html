@@ -2,16 +2,27 @@
   <div class="panel-heading"><b>Alternatives</b></div>
   <div class="panel-body">
     <div id="arms">
-      Arm 1:&nbsp
+      <div class="armName" style="display:inline;">
+        Arm 1:&nbsp
+      </div>
       <select class="multi-select-arms">
-        <option value="Bernoulli" selected>Bernoulli</option>
-      </select>
-      p=<input type="text" value="0.4" size="1"><br/><br/>
-      Arm 2:&nbsp
+        <option value="bernoulli" selected>Bernoulli</option>
+        <option value="gaussian">Gaussian</option>
+      </select><br/><br/>
+      <div class="param-container">
+        p=<input type="text" value="0.4" size="1">
+      </div><br/><br/>
+      <div class="armName" style="display:inline;">
+        Arm 2:&nbsp
+      </div>
       <select class="multi-select-arms">
-        <option value="Bernoulli" selected>Bernoulli</option>
-      </select>
-      p=<input type="text" value="0.9" size="1"><br/><br/>
+        <option value="bernoulli">Bernoulli</option>
+        <option value="gaussian" selected>Gaussian</option>
+      </select><br/><br/>
+      <div class="param-container">
+        mean=<input class="gaussian-mean" type="text" value="0.8" size="1">
+        variance=<input class="gaussian-variance" type="text" value="0.2" size="1">
+      </div><br/><br/>
       <button type="button" class="btn btn-default btn-sm" id="add-arm">Add</button>
     </div>
   </div>

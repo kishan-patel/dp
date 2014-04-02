@@ -193,28 +193,35 @@ function filters(){
     "getStepsInfo": function(){
       return $("#steps")[0].value;
     },
-    "getArmNames": function(){
-      var armsHtml = $("#arms selected");
-      var armNames = [];
-
-      for(var i=0; i<armsHtml.length; i++){
-        armNames.push(armsHtml[i]);
-      }
-
-      return armsHtml;
-    },
     "getArmsInfo": function(){
-      var armsHtml = $("#arms selected, #arms input");
-      var armType, armProb;
-      var arms=[];
+      var armsHtml = $(".multi-select-arms");
+      var armOptions = [];
+      var armObj = {};
+      var armsInfo = [];
+      
+      for(var i=0; i<armsHtml.length; i++){
+        armObj = {};
+        armOptions = armsHtml[i].children;
 
-      for(var i=0; i<armsHtml.length; i+=2){
-        armType = armsHtml[i].value;
-        armProb = armsHtml[i+1].value;
-        arms.push({"type": armType, "prob":parseFloat(armProb)});
+        for(var j=0; j<armOptions.length; j++){
+          if(armOptions[j].selected){
+            if(armOptions[j].value == "bernoulli"){
+              //Get the probability of success
+              armObj["name"] = "bernoulli";
+              armObj["prob"] = $(armsHtml[i]).nextAll(".param-container").first().children("input:nth-child(1)").val();
+            }else if(armOptions[j].value == "gaussian"){
+              //Get the mean and the variance
+              armObj["name"] = "gaussian";
+              armObj["mean"] = $(armsHtml[i]).nextAll(".param-container").first().children("input:nth-child(1)").val();
+              armObj["variance"] = $(armsHtml[i]).nextAll(".param-container").first().children("input:nth-child(2)").val()
+            }
+            armsInfo.push(armObj);
+            break;
+          }
+        }
       }
 
-      return arms; 
+      return armsInfo;
     },
     "getAgentsInfo": function(){
       var agentsHtml = $('#agents select');
@@ -239,11 +246,27 @@ function filters(){
     "customAgents":{},
     "onArmsChange": function(){
       var me = this;
-      $("#arms>select").on("change", function(e){
+      //Whenever we select a new agent
+      $(".multi-select-arms").on("change", function(e){
+        var armType = this.value;
+        if(armType == "bernoulli"){
+          var paramHtml = "p=<input type='text' value='0.4' size='1'>";
+          $(this).nextAll(".param-container").first().empty();
+          $(this).nextAll(".param-container").first().append(paramHtml);
+        }else if(armType == "gaussian"){
+          var paramHtml = "mean=<input class='gaussian-mean' type='text' value='0.8' size='1'>" + 
+                          "variance=<input class='gaussian-variance' type='text' value='0.2' size='1'>";
+          $(this).nextAll(".param-container").first().empty();
+          $(this).nextAll(".param-container").first().append(paramHtml);
+        }
+        me.onParamChange();
         me.applyFilters();  
       });
-
-      $("#arms>input").on("change", function(e){
+    },
+    "onParamChange": function(){
+      var me = this;
+      //Whenever one of the parameters for a given agent changes
+      $(".param-container>input").on("change", function(e){
         me.applyFilters();
       });
     },
@@ -259,24 +282,26 @@ function filters(){
         me.applyFilters();
       });
     },
-    "onNoGraphChange": function(){
+    "onDisplayChange": function(){
       var me = this;
-      $(".number-graphs").on("click", function(e){
+      $("#sim-display").on('change', function(e){
+        debugger;
         me.applyFilters();
-      });
-    },                                                    
+      })
+    },                                                 
     "onAddArms": function(){
       var me = this;
       $("#add-arm").on('click', function(e){
         me.armCounter++;  
-        var html = "Arm "+me.armCounter+":&nbsp&nbsp"+
+        var html = "<div class='armName' style='display:inline;'>Arm "+me.armCounter+":&nbsp&nbsp</div>"+
                      "<select class='multi-select-arms'>"+
-                       "<option value='Bernoulli' selected>Bernoulli</option>"+
-                     "</select>&nbsp"+
-                     "p=<input type='text' value='0.5' size='1'><br/><br/>";
+                       "<option value='bernoulli' selected>Bernoulli</option>"+
+                       "<option value='gaussian'>Gaussian</option>"+
+                     "</select><br/><br/>"+
+                     "<div class='param-container'>p=<input type='text' value='0.5' size='1'></div><br/><br/>";
         $("#add-arm").before(html);
         $(".multi-select-arms").multiselect();
-
+        me.onArmsChange();
         me.applyFilters();
       });
     },
@@ -316,7 +341,7 @@ function filters(){
       this.onArmsChange();
       this.onAgentsChange();
       this.onStepsChange();
-      this.onNoGraphChange();
+      this.onDisplayChange();
       this.onAddArms();
       this.onAddAgents();
       this.applyFilters();
@@ -331,7 +356,7 @@ function filters(){
       var bandits = [];
       var armsInfo = this.getArmsInfo();
       for(var i=0; i<armsInfo.length; i++){
-        bandits.push(bndts.getBandit(armsInfo[i].type, armsInfo[i].prob));
+        bandits.push(bndts.getBandit(armsInfo[i]));
       }
       
       //Get the agents and run the simulation for each one
@@ -340,18 +365,43 @@ function filters(){
         agentsInfo.push({"type":agent, "agent_fn": this.customAgents[agent]});
       }
 
+      //Determine the type of graph to display
+      var graphToDisplay = "all_indices_per_arm";
+      var graphChosen = $("#sim-display").children();
+      for(var i=0; i<graphChosen.length; i++){
+        if(graphChosen[i].selected){
+          graphToDisplay = graphChosen[i].value;
+          break;
+        }
+      }
+
       //Run the simulation for each agent
       var simSeries = {};
       var simData = {};
       for(var i=0; i<agentsInfo.length; i++){
         simData = agnts.runSim(agentsInfo[i].type, steps, bandits, agentsInfo[i].agent_fn);
-        for(var arm in simData){
-          if(!(arm in simSeries))
-            simSeries[arm] = [];
-          simSeries[arm].push({
-            "name":"Arm "+(parseInt(arm)+1)+" ("+agentsInfo[i].type+")",
-            "data":simData[arm]
-          });
+
+        if(graphToDisplay == "all_indices_per_arm"){
+          for(var arm in simData){
+            if(!(arm in simSeries)){
+              simSeries[arm] = [];
+            }
+            simSeries[arm].push({
+              "name":"Arm "+(parseInt(arm)+1)+" ("+agentsInfo[i].type+")",
+              "data":simData[arm]
+            });
+          }
+        }else if(graphToDisplay == "all_arms_per_index"){
+          for(var arm in simData){
+            if(!(agentsInfo[i].type in simSeries)){
+              simSeries[agentsInfo[i].type] = [];
+            }
+
+            simSeries[agentsInfo[i].type].push({
+              "name":"Arm "+(parseInt(arm)+1)+" ("+agentsInfo[i].type+")",
+              "data":simData[arm]
+            })
+          }
         }
       }
 
@@ -361,13 +411,13 @@ function filters(){
       }
 
       //Title of graph
-      var graphTitle = info.titles["index_values_per_arm"];
+      var graphTitle = info.titles[graphToDisplay];
       
       //Create the graph
       this.updateGraph(this.graphSeries, "line", graphTitle);
 
       //Update the tooltips
-      var tooltipInfo = info.tooltipInfo["index_values_per_arm"]  
+      var tooltipInfo = info.tooltipInfo[graphToDisplay]  
       info.initTooltip(".graph-info", tooltipInfo); 
     }
   }
