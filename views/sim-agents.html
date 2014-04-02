@@ -1,0 +1,34 @@
+ <div class="panel panel-default">
+  <div class="panel-heading"><b>Agents</b></div>
+  <div class="panel-body">
+    <div id="agents">
+      Agent 1:&nbsp
+      <select class="multi-select-agents">
+        <option value="UCB1" selected>UCB1</option>
+        <option value="e-greedy">e-greedy</option>
+        <option value="random">random</option>
+      </select><br/><br/>
+      Agent 2:&nbsp
+      <select class="multi-select-agents">
+        <option value="UCB1">UCB1</option>
+        <option value="e-greedy" selected>e-greedy</option>
+        <option value="random">random</option>
+      </select><br/><br/>
+      <input type="text" placeholder="Agent name (same as function name)..." size="48" id="agent-name"><br/><br/>
+      <textarea class="form-control" id="custom-function" rows="22" cols="4">
+/**
+@param steps:int - The number of timesteps involved in the simulation
+
+@param arms:[] - An array of agents involved in the simulation. To get a reward for a particular agent at a given timestep, call arms[i].getReward().
+
+@return scores:[] - An array of scores at each timestep for each alternative. For example, score[n] = [{x:time_step, y:mean_of_rewards}...], where n is the nth alterative.
+*/
+function functionName(steps, arms){
+//Implementation goes here
+}
+      </textarea><br/>
+      <button type="button" class="btn btn-default btn-sm" id="add-agent">Add</button>&nbsp
+      <a href="/custom-function-example" target="_blank"><button type="button" class="btn btn-default btn-sm" id="custom-example">Example</button></a>
+    </div>
+  </div>
+</div>
