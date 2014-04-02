@@ -59,8 +59,8 @@ function agents(){
 
         alternatives.push({
           alternative: armPlayedNew,
-          times_played: 1,
-          rewards: parseFloat(result),
+          times_played: 0,
+          rewards: 0,
           mean_scores: mc,
           ucb_scores: ucbc,
         });
