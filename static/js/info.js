@@ -21,16 +21,18 @@ function Info(){
   }
 
   this.titles = {
-    "none": function(s){ return "Mean reward of all arms"},
-    "UCB1": function(s){ return "UCB1 score and mean reward of Arm "+s.name.split(/\(.*\)/)[0]},
+    "means": function(s){ return "Mean reward of all alternatives"},
+    "ucb1_score_and_mean_values": function(s){ return "UCB1 score and means of rewards (Alternative "+s.name.split(/\(.*\)/)[0]+")"},
+    "ucb1_scores_and_mean_value": function(s){ return "UCB1 scores and mean reward (Alternative "+s.name.split(/\(.*\)/)[0]+")"},
     "index_values_per_arm": function(s){ return "Indices for "+s.name.split(/\(.*\)/)[0]},
-    "index_values_for_all_arms": function(s){return s.name.split(/\(.*\)/)+" values for each arm"}
+    "index_values_for_all_arms": function(s){return s.name.split(/\(.*\)/)+" values for each alternative"}
   }
 
   this.tooltipInfo = {
-    "none": "The graph displays the mean rewards for all of the alternatives at each timestep.",
-    "UCB1": "The graph displays the mean and UCB1 rewards of a single alternative at each timestep.", 
+    "means": "The graph displays the mean rewards for all of the alternatives at each timestep.",
+    "ucb1_score_and_mean_values": "The graph displays the mean of rewards and UCB score for a given alternative at each timestep. The mean of rewards of the other alternatives are shown in gray.", 
+    "ucb1_scores_and_mean_value": "The graph displays the mean of rewards and UCB1 score for a given alternative at each timestep. The UCB1 scores of the other alternatives are shown in gray.",
     "index_values_per_arm": "The graph displays the mean of the rewards for a given alternative at each timestep when a certain policy is applied to the set of all alternatives. For each policy, the mean at each timestep is computed as follows: we select an arm based on a given policy and assign it  reward; we then compute the mean of the rewards for each arm.",
-    "index_values_for_all_arms": "The graph displays the mean of the rewards obtained for all arms when the given index is applied."  
+    "index_values_for_all_arms": "The graph displays the mean of the rewards obtained for all alternatives when the given index is applied."  
   }
 }

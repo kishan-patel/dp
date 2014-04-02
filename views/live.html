@@ -1,3 +1,24 @@
 <% include index.html -%>
-<% include header.html -%>
-<% include live-iframe.html -%>
+<script>
+  $(document).ready(function(){
+    var liveInitializer = new initializer().liveInitializer;
+    liveInitializer.init();
+  });
+</script>
+<div class="row">
+  <div class="col-md-4">
+    <div class="mab-filter">
+      <div  id="mab-panel-filter">
+        <% include arms.html -%>
+        <% include agents.html -%>
+        <% include active.html -%>
+			</div>
+    </div>
+	</div>
+  <div class="col-md-8">
+    <p hidden id="sender-id"><%=senderId%></p>
+    <div class="mab-graph">
+      <% include graph-holder.html -%>
+    </div>
+  </div>
+</div>

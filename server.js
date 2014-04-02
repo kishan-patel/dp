@@ -44,17 +44,10 @@ app.get('/file', function(req, res){
   res.render('file.html', {});
 });
 
-app.get('/file-iframe', function(req, res){
-  res.render('file-iframe.html',{});
-});
-
 app.get('/simulator', function(req, res){
   res.render('simulator.html', {});
 });
 
-app.get('/simulator-iframe', function(req, res){
-  res.render('simulator-iframe.html', {});
-});
 
 app.get('/custom-function-example', function(req, res){
   res.render('custom-function-example.html', {});
@@ -65,13 +58,6 @@ app.get('/live', function(req, res){
   var query = urlParams.query;
   var senderId = query.id;
   res.render('live.html', {"senderId": senderId});
-});
-
-app.get('/live-iframe', function(req, res){
-  var urlParams = url.parse(req.url, true);
-  var query = urlParams.query;
-  var senderId = query.id;
-  res.render('live-iframe.html', {"senderId": senderId});
 });
 
 app.post('/send', function(req, res){

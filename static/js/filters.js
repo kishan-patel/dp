@@ -2,7 +2,6 @@ function filters(){
   this.fileFilter = {
     "updateGraph": updateGraph,
     "addArmsToFilter": addArmsToFilter,
-    "agents": new agents(),
     "displaySingleGraph": true,
     "lineSeries": [],
     "barSeries": [],
@@ -17,11 +16,12 @@ function filters(){
       }
 
       //Add arms to select boxes in filter
-      //addArmsToFilter(armsToAddToFilter, "#arm-checkboxes-holder");
       addArmsToMultiSelect(armsToAddToFilter, "multi-select-arms-holder", "multi-select-arms", "selected");
       addArmsToMultiSelect(armsToAddToFilter, "multi-select-au-holder", "multi-select-au", "");
       $("#multi-select-arms").multiselect();
       $("#multi-select-au").multiselect();
+
+      //Setup listeners
       this.onArmsChange();
       this.onActiveChange();
     },
@@ -83,12 +83,9 @@ function filters(){
          }
        }
        this.armsToDisplay = armsToDisplay;
-
-       //How many graphs to display
-       //this.displaySingleGraph = $(".number-graphs")[1].checked;
        
        //Which agent to apply
-       var agentType = "none";
+       var agentType = "means";
        var agents = $("#agent").children();
        for(var i=0; i<agents.length; i++){
          if(agents[i].selected){
@@ -99,55 +96,95 @@ function filters(){
 
        //Apply the filters 
        var tmpSeries = {};
-       tmpSeries["all"] = [];
-       if(graphType == "line"){
-         for(var i=0; i<this.lineSeries.length; i++){
-           if(armsToDisplay.indexOf(this.lineSeries[i].name) == -1)  
-             continue;
+       tmpSeries["means"] = [];
 
-           if(agentType == "none"){
-             /*if(agentType != "none"){
-               var agentData = this.agents.getScores(agentType, this.lineSeries[i].data);
-               tmpSeries["all"].push({
-                 "name": this.lineSeries[i].name + "-" + agentType,
-                 "data": agentData
-               });
-             }*/
-             tmpSeries["all"].push(this.lineSeries[i]);
-           }else{
-             tmpSeries[i] = [];
-             tmpSeries[i].push(this.lineSeries[i]);
-             var agentData = this.agents.getScores(agentType, this.lineSeries[i].data);  
-             tmpSeries[i].push({
-               "name": this.lineSeries[i].name + "-" + agentType,
-               "data": agentData
-             });
-           }
-         }
-       }else{
-         for(var i=0; i<this.barSeries.length; i++){
-           if(armsToDisplay.indexOf(this.barSeries[i].name) == -1)
-             continue;
-           tmpSeries["all"].push(this.barSeries[i]);
-         }
-       }
+      //Apply the filters and display the line graphs.
+      if(graphType == "line"){
+        for(var i=0; i<this.lineSeries.length; i++){
+          if(armsToDisplay.indexOf(this.lineSeries[i].name) == -1){
+            continue;
+          }
 
-       //Format the graph series before creating the graph
-       this.graphSeries = [];
-       for(var key in tmpSeries){
-         if(tmpSeries[key].length > 0)
-           this.graphSeries.push(tmpSeries[key]);
-       }
+          if(agentType == "means"){
+            tmpSeries["means"].push(this.lineSeries[i]);
+          }else if(agentType == "ucb1_score_and_mean_values"){
+            tmpSeries[i] = [];
+            
+            //Push the mean value series for the present arm.
+            tmpSeries[i].push(this.lineSeries[i]);
+
+            //Calculate the ucb1 scores for the the present arm.
+            var agentData = agnts.getScores(agentType, this.lineSeries[i].data);  
+            tmpSeries[i].push({
+              "name": this.lineSeries[i].name + " (UCB1)",
+              "data": agentData
+            });
+
+            //Push the other means as well but their color will be weak.
+            for(var j=0; j<this.lineSeries.length; j++){
+              if(i != j){
+                tmpSeries[i].push({
+                  name: this.lineSeries[j].name,
+                  data: this.lineSeries[j].data,
+                  color: weakColorCode
+                });
+              }           
+            }
+          }else if(agentType == "ucb1_scores_and_mean_value"){
+            tmpSeries[i] = [];
+            
+            //Push the mean value series for the present arm.
+            tmpSeries[i].push(this.lineSeries[i]);
+
+            //Calculate the ucb1 scores for the the present arm.
+            var agentData = agnts.getScores(agentType, this.lineSeries[i].data);  
+            tmpSeries[i].push({
+              "name": this.lineSeries[i].name + " (UCB1)",
+              "data": agentData
+            });
+
+            //Push the other ucb1 scores for the other arms as well.
+            for(var j=0; j<this.lineSeries.length; j++){
+              if(i != j){
+                agentData = agnts.getScores(agentType, this.lineSeries[j].data);  
+                tmpSeries[i].push({
+                  "name": this.lineSeries[j].name + " (UCB1)",
+                  "data": agentData,
+                  "color": weakColorCode
+                });
+              }           
+            }
+          }
+        }
+      }
+
+      //Apply the filters and display bar graph.
+      if(graphType == "bar"){
+        for(var i=0; i<this.barSeries.length; i++){
+          if(armsToDisplay.indexOf(this.barSeries[i].name) == -1){
+           continue;
+          }
+          tmpSeries["means"].push(this.barSeries[i]);
+        }
+      }
+
+      //Format the graph series before creating the graph
+      this.graphSeries = [];
+      for(var key in tmpSeries){
+        if(tmpSeries[key].length > 0){
+          this.graphSeries.push(tmpSeries[key]);
+        }
+      }
        
-       //Title of graph
-       var graphTitle = info.titles[agentType];
+      //Title of graph
+      var graphTitle = info.titles[agentType];
 
-       //Create the graph
-       this.updateGraph(this.graphSeries, graphType, graphTitle);
+      //Create the graph
+      this.updateGraph(this.graphSeries, graphType, graphTitle);
 
       //Update the tooltips
-       var tooltipInfo = info.tooltipInfo[agentType];
-       info.initTooltip(".graph-info", tooltipInfo);
+      var tooltipInfo = info.tooltipInfo[agentType];
+      info.initTooltip(".graph-info", tooltipInfo);
     }
   }
 
@@ -155,6 +192,16 @@ function filters(){
     "updateGraph": updateGraph,
     "getStepsInfo": function(){
       return $("#steps")[0].value;
+    },
+    "getArmNames": function(){
+      var armsHtml = $("#arms selected");
+      var armNames = [];
+
+      for(var i=0; i<armsHtml.length; i++){
+        armNames.push(armsHtml[i]);
+      }
+
+      return armsHtml;
     },
     "getArmsInfo": function(){
       var armsHtml = $("#arms selected, #arms input");
@@ -186,8 +233,6 @@ function filters(){
 
       return agents;
     },
-    "agents": new agents(),
-    "bandits": new bandits(),
     "graphSeries": [],
     "armCounter": 2,
     "agentCounter": 2,
@@ -231,6 +276,7 @@ function filters(){
                      "p=<input type='text' value='0.5' size='1'><br/><br/>";
         $("#add-arm").before(html);
         $(".multi-select-arms").multiselect();
+
         me.applyFilters();
       });
     },
@@ -285,7 +331,7 @@ function filters(){
       var bandits = [];
       var armsInfo = this.getArmsInfo();
       for(var i=0; i<armsInfo.length; i++){
-        bandits.push(this.bandits.getBandit(armsInfo[i].type, armsInfo[i].prob));
+        bandits.push(bndts.getBandit(armsInfo[i].type, armsInfo[i].prob));
       }
       
       //Get the agents and run the simulation for each one
@@ -298,7 +344,7 @@ function filters(){
       var simSeries = {};
       var simData = {};
       for(var i=0; i<agentsInfo.length; i++){
-        simData = this.agents.runSim(agentsInfo[i].type, steps, bandits, agentsInfo[i].agent_fn);
+        simData = agnts.runSim(agentsInfo[i].type, steps, bandits, agentsInfo[i].agent_fn);
         for(var arm in simData){
           if(!(arm in simSeries))
             simSeries[arm] = [];
@@ -345,7 +391,12 @@ function filters(){
       addArmsToMultiSelect(alternatives, "multi-select-au-holder", "multi-select-au", "");
       $("#multi-select-arms").multiselect();
       $("#multi-select-au").multiselect();
+      
+      //The page needs to be re-rendered as the number
+      //of arms has changed.
       this.graphs = [];
+
+      //Set up event listeners.
       this.onArmsChange();
       this.onActiveChange();
     },
@@ -411,7 +462,7 @@ function filters(){
       this.graphSeries = [];
 
       //Which agent to apply
-      var agentType = "none";
+      var agentType = "means";
       var agents = $("#agent").children();
       for(var i=0; i<agents.length; i++){
         if(agents[i].selected){
@@ -420,21 +471,44 @@ function filters(){
         }
       }
 
-      if(agentType == "none"){
+      if(agentType == "means"){//Displaying the mean
         for(var i=0; i<this.singleGraphSeries.length; i++){
-          if(this.armsToDisplay.indexOf(this.singleGraphSeries[i].name.split(" (mean)")[0]) == -1
-              && this.armsToDisplay.indexOf(this.singleGraphSeries[i].name.split(" (UCB1)")[0]) == -1){
-            continue;
+          if(this.armsToDisplay.indexOf(this.singleGraphSeries[i].name.split(/\s\(.*\)/)[0]) == -1){
+            continue
           }
+
           tmpSeries.push(this.singleGraphSeries[i]);
         }
         this.graphSeries.push(tmpSeries);
-      }else if(agentType == "UCB1"){
+      }else if(agentType == "ucb1_score_and_mean_values" || agentType == "ucb1_scores_and_mean_value"){//Display the mean and ucb score for each arm.
         for(var i=0; i<this.multipleGraphSeries.length; i++){
-          if(this.armsToDisplay.indexOf(this.multipleGraphSeries[i][0].name.split(" (UCB1)")[0]) == -1){
+          tmpSeries = [];
+
+          if(this.armsToDisplay.indexOf(this.multipleGraphSeries[i][0].name.split(/\s\(.*\)/)[0]) == -1){
             continue;
           }
-          this.graphSeries.push(this.multipleGraphSeries[i]);
+
+          for(var j=0; j<this.multipleGraphSeries[i].length; j++){
+            tmpSeries.push(this.multipleGraphSeries[i][j]);
+          }
+
+          //We display the mean or ucb1 scores for the other arms as well, but these will be in gray.
+          var meanOrUCB = agentType == "ucb1_score_and_mean_values" ? "(mean)" : "(UCB1)"; 
+          for(var j=0; j<this.multipleGraphSeries.length; j++){
+            if(i != j){
+              for(var k=0; k<this.multipleGraphSeries[j].length; k++){
+                if(this.multipleGraphSeries[j][k].name.indexOf(meanOrUCB) != -1){
+                  tmpSeries.push({
+                    name: this.multipleGraphSeries[j][k].name,
+                    data: this.multipleGraphSeries[j][k].data,
+                    color: weakColorCode
+                  })
+                }
+              }
+            }
+          }
+
+          this.graphSeries.push(tmpSeries);
         }
       }
 
@@ -450,6 +524,13 @@ function filters(){
   }
 
   var info = new Info();
+  var weakColorCode =  GraphUtil.weakColorCode;
+  var agnts = new agents();
+  var bndts = new bandits();
+
+  function getArmName(armName){
+    return armName.split(/\s\(.*\)/)[0];
+  }
 
   function updateGraph(graphSeries, type, graphTitle){
     $(".mab-graph").empty();

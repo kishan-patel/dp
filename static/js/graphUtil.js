@@ -11,7 +11,9 @@ function graphUtil() {
 
      //Set the color for each arm
      for(var i=0; i<series.length; i++){
-       series[i].color = palette.color();
+       if(series[i].color != this.weakColorCode){
+        series[i].color = palette.color();
+        }
      }
 
      //Create the graph
@@ -63,6 +65,8 @@ function graphUtil() {
      palette = new Rickshaw.Color.Palette({"scheme": scheme});
    }
 
+   this.weakColorCode = "#E0E0E0";
+
    function addDetailedHover(graph){
      new Rickshaw.Graph.HoverDetail({
        graph: graph,
@@ -70,8 +74,10 @@ function graphUtil() {
          var allSeries = this.graph.series;
          var swatch, content = "";
          for(var i=0; i<allSeries.length; i++){
-           swatch = "<span class='detail_swatch' style='background-color: " + allSeries[i].color + "'></span>";
-           content += swatch + allSeries[i].name + ": (x,y) = ("+allSeries[i].data[x].x+","+parseFloat(allSeries[i].data[x].y).toFixed(2)+")<br/>";
+          if(allSeries[i].color != "#E0E0E0" || allSeries[i].name == series.name){
+            swatch = "<span class='detail_swatch' style='background-color: " + allSeries[i].color + "'></span>";
+            content += swatch + allSeries[i].name + ": (x,y) = ("+allSeries[i].data[x].x+","+parseFloat(allSeries[i].data[x].y).toFixed(2)+")<br/>";
+          }
          }
 
          return content;
