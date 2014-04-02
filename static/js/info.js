@@ -32,7 +32,7 @@ function Info(){
     "means": "The graph displays the mean rewards for all of the alternatives at each timestep.",
     "ucb1_score_and_mean_values": "The graph displays the mean of rewards and UCB score for a given alternative at each timestep. The mean of rewards of the other alternatives are shown in gray.", 
     "ucb1_scores_and_mean_value": "The graph displays the mean of rewards and UCB1 score for a given alternative at each timestep. The UCB1 scores of the other alternatives are shown in gray.",
-    "all_indices_per_arm": "The graph displays the mean of the rewards for a given alternative at each timestep when a certain policy is applied to the set of all alternatives. For each policy, the mean at each timestep is computed as follows: we select an arm based on a given policy and assign it a reward; we then compute the mean of the rewards for each arm.",
-    "all_arms_per_index": "The graph displays the mean of the rewards obtained for all alternatives when the given index is applied."  
+    "all_indices_per_arm": "The graph displays the mean of the rewards for a given alternative at each timestep when a certain index policy is applied to the set of all alternatives. For each index policy, the mean at each timestep is computed as follows: we select an arm based on a given index policy and assign it a reward; we then compute the mean of the rewards for each arm.",
+    "all_arms_per_index": "The graph displays the mean of the rewards obtained for all alternatives when the given index policy is applied."  
   }
 }
