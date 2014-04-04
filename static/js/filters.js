@@ -339,6 +339,7 @@ function filters(){
     },
     "init": function(){
       this.onArmsChange();
+      this.onParamChange();
       this.onAgentsChange();
       this.onStepsChange();
       this.onDisplayChange();
