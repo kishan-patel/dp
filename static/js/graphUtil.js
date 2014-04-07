@@ -48,17 +48,21 @@ function graphUtil() {
      //Add hover details to the graph
      addDetailedHover(graph);
     
-    //Add a range slider to the graph
-     if(graphType == "line"){ 
-       var preview = new Rickshaw.Graph.RangeSlider.Preview({
-         graph: graph,
-         element: document.getElementById(rangeHolderId)
-       });
-     }
+    //Add a range slider
+    var preview = new Rickshaw.Graph.RangeSlider.Preview({
+      graph: graph,
+      element: document.getElementById(rangeHolderId)
+    });
 
-     graph.render();
+    //Set the window of the range slider
+    var windowSize = $("#window-size")[0].value;
+    graph.window.xMin = series[0].data.length < windowSize ? 0 : series[0].data.length - windowSize;
+    graph.window.rangeSlider = preview;
+    
+    //Display the graph
+    graph.render();
      
-     return graph;
+    return graph;
    }
 
    this.initColorPalette = function(){

@@ -6,6 +6,7 @@ function filters(){
     "lineSeries": [],
     "barSeries": [],
     "graphSeries": [],
+    "graphs": [],
     "setGraphSeries": function(lineSeries, barSeries){
       this.lineSeries = lineSeries.data;
       this.barSeries = barSeries.data;
@@ -61,6 +62,7 @@ function filters(){
        this.onAgentsChange();
        this.onActiveChange();
        this.onNoGraphChange();
+       onWindowSizeChange(this);
      },
     "applyFilters": function(){
        var filteredSeries = [];
@@ -180,7 +182,7 @@ function filters(){
       var graphTitle = info.titles[agentType];
 
       //Create the graph
-      this.updateGraph(this.graphSeries, graphType, graphTitle);
+      this.graphs = this.updateGraph(this.graphSeries, graphType, graphTitle);
 
       //Update the tooltips
       var tooltipInfo = info.tooltipInfo[agentType];
@@ -244,6 +246,7 @@ function filters(){
     "armCounter": 2,
     "agentCounter": 2,
     "customAgents":{},
+    "graphs": [],
     "onArmsChange": function(){
       var me = this;
       //Whenever we select a new agent
@@ -346,6 +349,7 @@ function filters(){
       this.onAddArms();
       this.onAddAgents();
       this.applyFilters();
+      onWindowSizeChange(this);
     },
     "applyFilters": function(){
       this.graphSeries = [];
@@ -415,7 +419,7 @@ function filters(){
       var graphTitle = info.titles[graphToDisplay];
       
       //Create the graph
-      this.updateGraph(this.graphSeries, "line", graphTitle);
+      this.graphs = this.updateGraph(this.graphSeries, "line", graphTitle);
 
       //Update the tooltips
       var tooltipInfo = info.tooltipInfo[graphToDisplay]  
@@ -431,6 +435,8 @@ function filters(){
           for(var j=0; j<graphSeries[i].length; j++){
             this.graphs[i].series.push(graphSeries[i][j]);
           }
+          var windowSize = $("#window-size")[0].value;
+          this.graphs[i].window.xMin = this.graphs[i].series[0].data.length < windowSize ? 0 : this.graphs[i].series[0].data.length - windowSize;
           this.graphs[i].update();
         }
       }else{
@@ -502,9 +508,7 @@ function filters(){
       this.onArmsChange();
       this.onAgentsChange();
       this.onNoGraphChange();
-      $("#live-apply").click(function(){
-        me.applyFilters();
-      });
+      onWindowSizeChange(this);
     },
     "applyFilters": function(){
       this.armsToDisplay = this.getArmsToDisplay();
@@ -578,6 +582,17 @@ function filters(){
   var weakColorCode =  GraphUtil.weakColorCode;
   var agnts = new agents();
   var bndts = new bandits();
+
+  function onWindowSizeChange(filter){
+    $("#window-size").on("change", function(e){
+      var graphs = filter.graphs;
+      var windowSize = $("#window-size")[0].value;
+      for(var i=0; i<graphs.length; i++){
+        graphs[i].window.xMin = graphs[i].series[0].data.length < windowSize ? 0 : graphs[i].series[0].data.length - windowSize;
+        graphs[i].update();
+      }
+    });
+  }
 
   function getArmName(armName){
     return armName.split(/\s\(.*\)/)[0];

@@ -43,7 +43,8 @@ function initializer(){
       });
 
       socket.on('update_graph', function(series){
-        var palette = new Rickshaw.Color.Palette();
+        var palette1 = new Rickshaw.Color.Palette({"scheme":"colorwheel"});
+        var palette2 = new Rickshaw.Color.Palette({"scheme":"munin"});
         var graphSeries = [];
         var alternatives = series.alternatives
         var ucbObj = {};
@@ -65,12 +66,12 @@ function initializer(){
 
           ucbObj = {
             "name": alternatives[i].alternative+" (UCB1)",
-            "color": palette.color(),
+            "color": palette2.color(),
             "data": alternatives[i].ucb_scores
           };
           meanObj = {
             "name": alternatives[i].alternative+" (mean)",
-            "color": palette.color(),
+            "color": palette1.color(),
             "data": alternatives[i].mean_scores
           };
           singleGraphSeries.push(meanObj);
