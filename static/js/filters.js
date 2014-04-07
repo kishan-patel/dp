@@ -162,6 +162,7 @@ function filters(){
 
       //Apply the filters and display bar graph.
       if(graphType == "bar"){
+        agentType = "barInfo";
         for(var i=0; i<this.barSeries.length; i++){
           if(armsToDisplay.indexOf(this.barSeries[i].name) == -1){
            continue;
