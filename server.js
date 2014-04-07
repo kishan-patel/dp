@@ -152,7 +152,9 @@ io.sockets.on('connection', function(socket){
   socket.on('viewer_connect', function(id){
     if(senders[id]){
       senders[id]["viewers"].push(socket); 
-      socket.emit('update_graph',senders[id].data);
+      if(Object.keys(senders[id].data).length){
+        socket.emit('update_graph',senders[id].data); 
+      }
     }else{
       senders[id] = {"viewers":[], "data":{}};
       senders[id]["viewers"].push(socket);
