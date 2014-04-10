@@ -2,7 +2,7 @@ var https = require('https')
   , express = require('express')
   , config = require('config.js')
   , agents = require('./static/js/agents.js').agents
-  , senderModel = require('./models/sender.js')
+  , senderModel = require('sender.js')
   , shortId = require('shortid')
   , url = require('url')
 
