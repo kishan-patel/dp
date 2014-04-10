@@ -1,110 +1,45 @@
 {
-    "id": "l1oFC61K9",
+    "id": "surbhi",
     "data": [
         {
-            "alternative": 1,
+            "alternative": "arm 1",
             "time": 25022014700,
-            "reward": 1
+            "reward": 0.11
         },
         {
-            "alternative": 2,
+            "alternative": "arm 2",
             "time": 25022014700,
-            "reward": 0
+            "reward": 0.23
         },
         {
-            "alternative": 2,
+            "alternative": "arm 2",
             "time": 25022014700,
-            "reward": 1
+            "reward": 0.44
         },
         {
-            "alternative": 1,
+            "alternative": "arm 1",
             "time": 25022014700,
-            "reward": 1
+            "reward": 0.67
         },
         {
-            "alternative": 1,
+            "alternative": "arm 2",
             "time": 25022014700,
-            "reward": 1
+            "reward": 0.89
         },
         {
-            "alternative": 1,
+            "alternative": "arm 2",
             "time": 25022014700,
-            "reward": 0
+            "reward": 0.33
         },
         {
-            "alternative": 1,
+            "alternative": "arm 1",
             "time": 25022014700,
-            "reward": 1
+            "reward": 0.22
         },
         {
-            "alternative": 2,
+            "alternative": "arm 1",
             "time": 25022014700,
-            "reward": 1
-        },
-        {
-            "alternative": 2,
-            "time": 25022014700,
-            "reward": 1
-        },
-        {
-            "alternative": 1,
-            "time": 25022014700,
-            "reward": 1
-        },
-        {
-            "alternative": 1,
-            "time": 25022014700,
-            "reward": 1
-        },
-        {
-            "alternative": 2,
-            "time": 25022014700,
-            "reward": 1
-        },
-        {
-            "alternative": 2,
-            "time": 25022014700,
-            "reward": 0
-        },
-        {
-            "alternative": 1,
-            "time": 25022014700,
-            "reward": 1
-        },
-        {
-            "alternative": 2,
-            "time": 25022014700,
-            "reward": 1
-        },
-        {
-            "alternative": 1,
-            "time": 25022014700,
-            "reward": 1
-        },
-        {
-            "alternative": 1,
-            "time": 25022014700,
-            "reward": 0
-        },
-        {
-            "alternative": 1,
-            "time": 25022014700,
-            "reward": 1
-        },
-        {
-            "alternative": 2,
-            "time": 25022014700,
-            "reward": 1
-        },
-        {
-            "alternative": 2,
-            "time": 25022014700,
-            "reward": 0
-        },
-        {
-            "alternative": 2,
-            "time": 25022014700,
-            "reward": 0
+            "reward": 0.11
         }
     ]
 }

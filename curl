@@ -1,0 +1,54 @@
+curl -v -X POST -H 'Content-Type: application/json' -d '{"id":"kishanpatel","data":[{"alternative":"Green","time":1396282027039,"reward":1}]}' http://dp-kpatel.rhcloud.com/send
+
+curl -v -X POST -H 'Content-Type: application/json' -d '{"id":"kishanpatel","data":[{"alternative":"Green","time":1396282027039,"reward":1}]}' http://localhost:8080/send
+
+
+curl -v -X POST -H 'Content-Type: application/json' -d '{"id":"ekd7eYWen","data":[{"alternative":"Brown","time":1396282027039,"reward":1}]}' http://dp-kpatel.rhcloud.com/send
+
+curl -v -X POST -H 'Content-Type: application/json' -d '{"id":"l1oFC61K9","data":[{"alternative":"3","time":1396282027039,"reward":1}, {"alternative":"2","time":1396282027039,"reward":1}]}' http://dp-kpatel.rhcloud.com/send
+
+
+<!--
+/* 
+   Function normal.
+
+   Generator of pseudo-random number according to a normal distribution
+   with mean=0 and variance=1.
+   Use the Box-Mulder (trigonometric) method, and discards one of the
+   two generated random numbers. 
+*/
+
+function normal() {
+  var u1,u2;
+  u1 = u2 = 0.;
+  while (u1 * u2 == 0.) {
+    u1 = Math.random();
+    u2 = Math.random();
+  }
+  return Math.sqrt(-2. * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+}
+
+
+/*
+  Function gauss
+
+  Generator of pseudo-random number according to a normal distribution
+  with given mean and variance.
+  Normalizes the outcome of function normal.
+*/
+
+function gauss(mean,stdev) {
+  return stdev * normal() + 1. * mean;
+}
+
+0.13
+
+
+"<div class='armName' style='display:inline;'>Arm 3:&nbsp&nbsp</div>
+<select class='multi-select-arms'>
+<option value='Bernoulli' selected>Bernoulli</option>
+<option value='Gaussian'>Gaussian</option>
+</select><br/><br/>
+<div class='param-container'>
+p=<input type='text' value='0.5' size='1'>
+</div><br/><br/>"
