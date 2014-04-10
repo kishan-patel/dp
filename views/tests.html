@@ -1,0 +1,10 @@
+<% include index.html -%>
+<% include header.html -%>
+<script>
+  $(document).ready(function(){
+    var t = new tests();
+    t.runAllTests();
+  });
+</script>
+<div id="qunit"></div>
+

@@ -33,6 +33,7 @@ app.configure(function(){
   app.use(app.router);
   app.use(express.static(__dirname+'/static'));
   app.use(express.static(__dirname+'/lib'));
+  app.use(express.static(__dirname+'/tests'));
 });
 
 //Routes
@@ -143,6 +144,10 @@ app.get('/reset-game-data', function(req, res){
 
 app.get('/api', function(req, res){
   res.render('api.html', {});
+});
+
+app.get('/tests', function(req, res){
+  res.render('tests.html', {});
 });
 
 //When a viewer connects, add its socket to the list of listeners for a given 

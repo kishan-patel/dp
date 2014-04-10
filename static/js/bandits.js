@@ -5,12 +5,18 @@ function bandits(){
         return bernoulli(params["prob"]);
         break;
       case "gaussian":
+        if(params["variance"] < 0){
+          info.addAlert("alert alert-info","alert-container","You cannnot have standard deviation less than 0.");
+          return 0;
+        }
         return gaussian(params["mean"], params["variance"]);
         break;
       default: 
         return;
     }
   }
+
+  var info = new Info();
 
   function bernoulli(prob){
     return {
@@ -21,7 +27,7 @@ function bandits(){
     }
   }
 
-  function gaussian(mean, stdev){
+  function gaussian(mean, variance){
     function generateGaussianNumber(){
       var u1, u2;
       var u1 = u2 = 0;
@@ -34,13 +40,12 @@ function bandits(){
 
     return {
       "getReward": function(){
+        var stdev = 1.*Math.sqrt(variance);
+
         //Generate a gaussian random number from the mean and variance
         var gaussianNumber = stdev*generateGaussianNumber()+1.*mean;
 
-        if(stdev < 0){
-          alert ("You cannnot have standard deviation less than 0.");
-          return 0;
-        }else if(stdev == 0){
+        if(stdev == 0){
           if (gaussianNumber < mean){
             return 0;
           }else{
